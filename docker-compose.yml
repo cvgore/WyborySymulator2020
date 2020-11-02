@@ -17,9 +17,10 @@ services:
       - "8000:8000"
     depends_on:
       - db
+      - redis
 
   adminer:
-    image: adminer:alpine
+    image: adminer
     ports:
       - 8080:8080
 
