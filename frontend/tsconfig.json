@@ -1,0 +1,30 @@
+{
+	"extends": "../common/tsconfig.json",
+	"compilerOptions": {
+		"jsx": "preserve",
+		"baseUrl": "./",
+		"paths": {
+			"@/*": [
+				"src/*"
+			],
+			"%/*": [
+				"../common/*"
+			]
+		},
+		"lib": [
+			"dom",
+			"dom.iterable"
+		],
+		"outDir": "./public"
+	},
+	"include": [
+		"src/**/*.ts",
+		"src/**/*.tsx",
+		"src/**/*.vue",
+		"tests/**/*.tsx",
+		"tests/**/*.ts"
+	],
+	"exclude": [
+		"node_modules"
+	]
+}

@@ -1,32 +1,83 @@
-version: "3"
+version: "3.7"
 
 services:
-  db:
-    image: postgres:alpine
-    environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    ports:
-      - "5432:5432"
+    backend:
+        build: ./backend
+        ports:
+            - "3000:3000"
+        depends_on:
+            - db
+            - redis
+        volumes:
+            - ./common:/usr/src/common:ro
+            - ./backend:/usr/src/app
+        networks:
+            - local_net
 
-  web:
-    build: .
-    command: python manage.py runserver 0.0.0.0:8000
-    volumes:
-      - .:/code
-    ports:
-      - "8000:8000"
-    depends_on:
-      - db
-      - redis
+    frontend:
+        build: ./frontend
+        ports:
+            - "8000:8000"
+        depends_on:
+            - db
+            - redis
+        volumes:
+            - ./common:/usr/src/common:ro
+            - ./frontend:/usr/src/app
 
-  adminer:
-    image: adminer
-    ports:
-      - "8080:8080"
+    db:
+        image: postgres:alpine
+        environment:
+            - POSTGRES_DB=postgres
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+        ports:
+            - "5432:5432"
+        networks:
+            - local_net
 
-  redis:
-    image: redis:alpine
-    ports:
-      - "6379:6379"
+    pgadmin:
+        image: dpage/pgadmin4:latest
+        environment:
+            - PGADMIN_DEFAULT_EMAIL=pg@admin
+            - PGADMIN_DEFAULT_PASSWORD=postgres
+            - PGADMIN_LISTEN_ADDRESS=0.0.0.0
+            - PGADMIN_LISTEN_PORT=8080
+        ports:
+            - "8080:8080"
+        volumes:
+            - ./docker/pgadmin4/servers.json:/pgadmin4/servers.json:ro
+        networks:
+            - local_net
+
+    redis:
+        image: redis:alpine
+        ports:
+            - "6379:6379"
+        networks:
+            - local_net
+
+    mailhog:
+        image: mailhog/mailhog:latest
+        ports:
+            - "1025:1025"
+            - "8025:8025"
+        networks:
+            - local_net
+
+    pra:
+        image: erikdubbelboer/phpredisadmin:latest
+        entrypoint: ["php", "-S", "0.0.0.0:8008"]
+        environment:
+            - REDIS_1_HOST=redis
+            - REDIS_1_NAME=redis
+            - REDIS_1_PORT=6379
+        ports:
+            - "8008:8008"
+        networks:
+            - local_net
+        init: true
+
+networks:
+    local_net:
+        driver: bridge
