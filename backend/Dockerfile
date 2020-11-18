@@ -3,12 +3,10 @@ FROM node:lts-alpine
 # Set current dir
 WORKDIR /usr/src/app
 
-RUN chown 1000:1000 -R /usr/src/app
-
-USER 1000
-
 # Install dependencies
-RUN yarn install
+COPY yarn.lock .
+COPY package.json .
+RUN yarn --frozen-lockfile --verbose
 
 # Run server
 EXPOSE 3000

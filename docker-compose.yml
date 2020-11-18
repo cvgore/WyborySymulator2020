@@ -9,21 +9,25 @@ services:
             - db
             - redis
         volumes:
-            - ${PROJECT_PATH}/common:/usr/src/common:ro
-            - ${PROJECT_PATH}/backend:/usr/src/app
+            - ./common:/usr/src/common
+            - ./backend:/usr/src/app
         networks:
             - local_net
+        dns: 1.1.1.1
 
     frontend:
         build: ./frontend
+        env_file:
+            - .env
         ports:
             - "8000:8000"
         depends_on:
             - db
             - redis
         volumes:
-            - ${PROJECT_PATH}/common:/usr/src/common:ro
-            - ${PROJECT_PATH}/frontend:/usr/src/app
+            - ./common:/usr/src/common:ro
+            - ./frontend:/usr/src/app
+        dns: 1.1.1.1
 
     db:
         image: postgres:alpine
@@ -46,7 +50,7 @@ services:
         ports:
             - "8080:8080"
         volumes:
-            - ${PROJECT_PATH}/docker/pgadmin4/servers.json:/pgadmin4/servers.json:ro
+            - ./docker/pgadmin4/servers.json:/pgadmin4/servers.json:ro
         networks:
             - local_net
 
