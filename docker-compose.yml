@@ -9,8 +9,9 @@ services:
             - db
             - redis
         volumes:
-            - ./common:/usr/src/common
-            - ./backend:/usr/src/app
+            - ./common/:/usr/src/common/
+            - ./backend/:/usr/src/app/
+            - /usr/src/app/node_modules
         networks:
             - local_net
         dns: 1.1.1.1
@@ -25,8 +26,9 @@ services:
             - db
             - redis
         volumes:
-            - ./common:/usr/src/common:ro
-            - ./frontend:/usr/src/app
+            - ./common/:/usr/src/common:ro
+            - ./frontend/:/usr/src/app/
+            - /usr/src/app/node_modules
         dns: 1.1.1.1
 
     db:
