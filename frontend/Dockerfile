@@ -9,6 +9,6 @@ COPY package.json .
 RUN yarn --frozen-lockfile --verbose
 
 # Run vue server
-EXPOSE 8000
+EXPOSE 8080
 
-CMD ["yarn", "serve", "--port", "8000"]
+CMD ["yarn", "serve"]
