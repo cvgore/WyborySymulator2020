@@ -9,8 +9,8 @@ services:
             - db
             - redis
         volumes:
-            - ./common:/usr/src/common:ro
-            - ./backend:/usr/src/app
+            - ${PROJECT_PATH}/common:/usr/src/common:ro
+            - ${PROJECT_PATH}/backend:/usr/src/app
         networks:
             - local_net
 
@@ -22,8 +22,8 @@ services:
             - db
             - redis
         volumes:
-            - ./common:/usr/src/common:ro
-            - ./frontend:/usr/src/app
+            - ${PROJECT_PATH}/common:/usr/src/common:ro
+            - ${PROJECT_PATH}/frontend:/usr/src/app
 
     db:
         image: postgres:alpine
@@ -46,7 +46,7 @@ services:
         ports:
             - "8080:8080"
         volumes:
-            - ./docker/pgadmin4/servers.json:/pgadmin4/servers.json:ro
+            - ${PROJECT_PATH}/docker/pgadmin4/servers.json:/pgadmin4/servers.json:ro
         networks:
             - local_net
 
