@@ -14,10 +14,6 @@
 		"skipLibCheck": true,
 		"esModuleInterop": true,
 		"importHelpers": true,
-		"lib": [
-			"esnext",
-			"es2015"
-		],
 		"types": [
 			"webpack-env",
 			"jest"

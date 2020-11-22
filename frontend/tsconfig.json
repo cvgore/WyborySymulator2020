@@ -13,7 +13,9 @@
 		},
 		"lib": [
 			"dom",
-			"dom.iterable"
+			"dom.iterable",
+			"ESNext",
+			"ES2015"
 		],
 		"outDir": "./public"
 	},
