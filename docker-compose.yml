@@ -3,30 +3,30 @@ version: "3.7"
 services:
     backend:
         build: ./backend
+        tty: true
         ports:
             - "3000:3000"
         depends_on:
             - db
             - redis
         volumes:
-            - ./common/:/usr/src/common/
+            - ./common/:/usr/src/common:ro
             - ./backend/:/usr/src/app/
-            - /usr/src/app/node_modules
         networks:
             - local_net
         dns: 1.1.1.1
+        command: ./start.sh
 
     frontend:
         build: ./frontend
-        env_file:
-            - .env
+        tty: true
         ports:
             - "8080:8080"
         volumes:
             - ./common/:/usr/src/common:ro
             - ./frontend/:/usr/src/app/
-            - /usr/src/app/node_modules
         dns: 1.1.1.1
+        command: ./start.sh
 
     db:
         image: postgres:alpine
@@ -84,3 +84,4 @@ services:
 networks:
     local_net:
         driver: bridge
+
