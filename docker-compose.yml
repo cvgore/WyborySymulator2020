@@ -15,7 +15,7 @@ services:
         networks:
             - local_net
         dns: 1.1.1.1
-        command: ./start.sh
+        command: "./start.sh"
 
     frontend:
         build: ./frontend

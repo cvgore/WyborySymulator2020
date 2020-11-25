@@ -1,3 +1,3 @@
-#!/usr/bin/env sh
+#!/bin/sh
 
 yarn --frozen-lockfile && yarn start

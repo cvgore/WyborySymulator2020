@@ -7,7 +7,7 @@ import { AppService } from './app.service';
 	imports: [
 		TypeOrmModule.forRoot({
 			type: 'postgres',
-			host: process.env.DB_HOST,
+			host: "db",
 			port: Number(process.env.DB_PORT),
 			username: process.env.DB_USERNAME,
 			password: process.env.DB_PASSWORD,
