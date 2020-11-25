@@ -5,16 +5,7 @@ import { AppService } from './app.service';
 
 @Module({
 	imports: [
-		TypeOrmModule.forRoot({
-			type: 'postgres',
-			host: "db",
-			port: Number(process.env.DB_PORT),
-			username: process.env.DB_USERNAME,
-			password: process.env.DB_PASSWORD,
-			database: process.env.DB_DATABASE,
-			entities: [],
-			synchronize: process.env.NODE_ENV !== 'production',
-		}),
+		TypeOrmModule.forRoot(),
 	],
 	controllers: [AppController],
 	providers: [AppService],
