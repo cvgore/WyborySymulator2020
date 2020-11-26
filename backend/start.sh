@@ -1,3 +1,3 @@
 #!/bin/sh
 
-yarn --frozen-lockfile && yarn start
+yarn && yarn start:dev

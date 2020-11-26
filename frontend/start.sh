@@ -1,3 +1,3 @@
 #!/bin/sh
 
-yarn --frozen-lockfile && yarn serve
+yarn && yarn serve
