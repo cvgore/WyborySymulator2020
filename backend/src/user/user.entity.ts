@@ -1,6 +1,6 @@
 import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { IsDate, IsEmail } from 'class-validator';
-import * as argon2 from 'argon2';
+import { hash } from 'argon2';
 
 @Entity('user')
 export class UserEntity {
@@ -11,7 +11,7 @@ export class UserEntity {
 	@IsEmail()
 	email!: string;
 
-	@Column({ nullable: true })
+	@Column()
 	@IsDate()
 	emailVerifiedAt!: Date | null;
 
@@ -28,7 +28,7 @@ export class UserEntity {
 
 	@BeforeInsert()
 	async hashPassword() {
-		this.password = await argon2.hash(this.password);
+		this.password = await hash(this.password);
 	}
 
 	@BeforeInsert()
