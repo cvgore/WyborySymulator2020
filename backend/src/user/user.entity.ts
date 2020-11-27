@@ -5,26 +5,26 @@ import * as argon2 from 'argon2';
 @Entity('user')
 export class UserEntity {
 	@PrimaryGeneratedColumn()
-	id: number;
+	id!: number;
 
 	@Column()
 	@IsEmail()
-	email: string;
+	email!: string;
+
+	@Column({ nullable: true })
+	@IsDate()
+	emailVerifiedAt!: Date | null;
 
 	@Column()
 	@IsDate()
-	emailVerifiedAt: Date | null;
+	createdAt!: Date;
 
 	@Column()
 	@IsDate()
-	createdAt: Date;
+	updatedAt!: Date;
 
 	@Column()
-	@IsDate()
-	updatedAt: Date;
-
-	@Column()
-	password: string;
+	password!: string;
 
 	@BeforeInsert()
 	async hashPassword() {
