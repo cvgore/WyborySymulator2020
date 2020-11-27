@@ -4,8 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 @Module({
-	imports: [
-		TypeOrmModule.forRoot(),
+	imports: [		TypeOrmModule.forRoot(),
 	],
 	controllers: [AppController],
 	providers: [AppService],
