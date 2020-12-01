@@ -10,6 +10,6 @@
 }
 body {
   font-family: 'Montserrat', sans-serif;
-  padding: 0 150px;
+  padding: 0 250px;
 }
 </style>

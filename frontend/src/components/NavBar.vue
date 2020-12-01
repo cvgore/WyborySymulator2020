@@ -31,7 +31,6 @@ export default {
   grid-template-columns: 1fr 3fr;
   justify-items: center;
   align-items: center;
-  padding: 80px 150px;
 }
 
 .links {
