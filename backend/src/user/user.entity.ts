@@ -11,7 +11,7 @@ export class UserEntity {
 	@IsEmail()
 	email!: string;
 
-	@Column({type: 'timestamp'})x
+	@Column({type: 'timestamp'})
 	@IsDate()
 	emailVerifiedAt!: Date | null;
 
