@@ -1,18 +1,22 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn, } from 'typeorm';
 import { IsDate, IsEmail } from 'class-validator';
+import { Exclude, Expose } from 'class-transformer';
 import { hash } from 'argon2';
+import { Inject } from '@nestjs/common';
 
 @Entity('user')
-export class UserEntity {
+export class User {
 	@PrimaryGeneratedColumn()
+	@Exclude({toPlainOnly: true})
 	id!: number;
 
 	@Column()
 	@IsEmail()
 	email!: string;
 
-	@Column({type: 'timestamp'})x
+	@Column({type: 'timestamp'})
 	@IsDate()
+	@Exclude({toPlainOnly: true})
 	emailVerifiedAt!: Date | null;
 
 	@Column({type: 'timestamp'})
@@ -24,6 +28,7 @@ export class UserEntity {
 	updatedAt!: Date;
 
 	@Column()
+	@Exclude()
 	password!: string;
 
 	@BeforeInsert()
@@ -40,5 +45,18 @@ export class UserEntity {
 	@BeforeUpdate()
 	setUpdatedAt() {
 		this.updatedAt = new Date();
+	}
+
+	constructor(partial: Partial<User>) {
+		Object.assign(this, partial);
+	}
+
+	@Expose({toPlainOnly: true})
+	get isEmailVerified(): boolean {
+		return this.emailVerifiedAt !== null;
+	}
+
+	get safeId(): string {
+		return hashids
 	}
 }

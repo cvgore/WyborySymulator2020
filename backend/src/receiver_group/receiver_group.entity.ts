@@ -1,15 +1,14 @@
-import {BeforeInsert, BeforeUpdate, Column, Entity, OneToOne, PrimaryGeneratedColumn} from 'typeorm';
-import {UserEntity} from "../user/user.entity";
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from '../users/user.entity';
 
 
 @Entity('receiver_group')
-export class Receiver_groupEntity{
+export class Receiver_groupEntity {
 	@PrimaryGeneratedColumn()
 	id!: number;
-	@OneToOne(type => UserEntity)
-	user!: UserEntity;
+	@OneToOne(type => User)
+	user!: User;
 	@Column()
 	name!: string;
-
 }
 
