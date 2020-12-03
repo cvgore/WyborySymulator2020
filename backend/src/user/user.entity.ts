@@ -2,8 +2,8 @@ import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } fr
 import { IsDate, IsEmail } from 'class-validator';
 import { hash } from 'argon2';
 
-@Entity('user')
-export class UserEntity {
+@Entity()
+export class User{
 	@PrimaryGeneratedColumn()
 	id!: number;
 
