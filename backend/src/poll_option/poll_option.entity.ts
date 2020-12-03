@@ -3,7 +3,7 @@ import {IsDate} from "class-validator";
 
 
 @Entity()
-export class Receivers{
+export class PollOption{
 	@PrimaryGeneratedColumn()
 	id!: number;
 	@Column()
