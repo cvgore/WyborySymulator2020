@@ -1,9 +1,8 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { IsDate,  } from 'class-validator';
-import { hash } from 'argon2';
+import {BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
+import {IsDate,} from 'class-validator';
 
 @Entity()
-export class PollVote{
+export class PollVote {
 	@PrimaryGeneratedColumn()
 	id!: number;
 	@Column()
@@ -16,17 +15,18 @@ export class PollVote{
 	@Column({type: "timestamp"})
 	@IsDate()
 	created_At!: Date;
-	@Column({type:"timestamp"})
+	@Column({type: "timestamp"})
 	@IsDate()
 	updatedAt!: Date;
 
 	@BeforeInsert()
-	setCreatedAt(){
+	setCreatedAt() {
 		this.created_At = new Date();
 	}
+
 	@BeforeInsert()
 	@BeforeUpdate()
-	setUpdatedAt(){
+	setUpdatedAt() {
 		this.updatedAt = new Date();
 	}
 }

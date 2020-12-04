@@ -1,9 +1,9 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { IsDate, IsEmail } from 'class-validator';
-import { hash } from 'argon2';
+import {BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
+import {IsDate, IsEmail} from 'class-validator';
+import {hash} from 'argon2';
 
 @Entity()
-export class User{
+export class User {
 	@PrimaryGeneratedColumn()
 	id!: number;
 

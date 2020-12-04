@@ -1,9 +1,8 @@
-import {BeforeInsert, BeforeUpdate, Column, Entity, OneToOne, PrimaryGeneratedColumn} from 'typeorm';
+import {BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
 import {IsDate} from "class-validator";
 
-
 @Entity()
-export class PollOption{
+export class PollOption {
 	@PrimaryGeneratedColumn()
 	id!: number;
 	@Column()

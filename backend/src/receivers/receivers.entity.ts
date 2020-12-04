@@ -3,7 +3,7 @@ import {ReceiverGroup} from "../receiver_group/receiver_group.entity";
 
 
 @Entity()
-export class Receivers{
+export class Receivers {
 	@PrimaryGeneratedColumn()
 	id!: number;
 	@OneToOne(type => ReceiverGroup)

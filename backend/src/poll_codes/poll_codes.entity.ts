@@ -1,28 +1,21 @@
-import {PrimaryGeneratedColumn, Column, Entity, BeforeInsert} from 'typeorm'
-import { IsDate,  } from 'class-validator';
+import {BeforeInsert, Column, Entity, PrimaryGeneratedColumn} from 'typeorm'
+import {IsDate,} from 'class-validator';
+
 @Entity()
-export class PollCodes{
+export class PollCodes {
 	@PrimaryGeneratedColumn()
 	id!: number;
 	@Column()
 	poll_id!: number;
 	@Column()
 	code!: number;
-	@Column({type:"timestamp"})
+	@Column({type: "timestamp"})
 	@IsDate()
 	used_at!: Date;
 
 	@BeforeInsert()
-	setUsedAt(){
-		this.used_at= new Date();
+	setUsedAt() {
+		this.used_at = new Date();
 	}
-
-
-
-
-
-
-
-
 }
 
