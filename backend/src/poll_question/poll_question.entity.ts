@@ -1,10 +1,8 @@
 import {BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
 import {IsDate} from "class-validator";
 
-
-
 @Entity()
-export class PollQuestion{
+export class PollQuestion {
 	@PrimaryGeneratedColumn()
 	id!: number;
 
@@ -20,7 +18,6 @@ export class PollQuestion{
 	@Column({type: 'timestamp'})
 	@IsDate()
 	updatedAt!: Date;
-
 
 	@BeforeInsert()
 	setCreatedAt() {

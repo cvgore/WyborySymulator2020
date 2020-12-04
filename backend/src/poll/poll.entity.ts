@@ -1,10 +1,8 @@
-import {BeforeInsert, BeforeUpdate, Column, Entity, OneToOne, PrimaryGeneratedColumn} from 'typeorm';
-import {User} from "../user/user.entity";
-import {IsDate, IsEmail} from "class-validator";
-import {hash} from "argon2";
+import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
+import {IsDate} from "class-validator";
 
 @Entity()
-export class Poll{
+export class Poll {
 	@PrimaryGeneratedColumn()
 	id!: number;
 
@@ -23,6 +21,7 @@ export class Poll{
 	@Column({type: 'timestamp'})
 	@IsDate()
 	valid_from!: Date;
+
 	@Column({type: 'timestamp'})
 	@IsDate()
 	valid_until!: Date;
@@ -38,6 +37,4 @@ export class Poll{
 	@Column({type: 'timestamp'})
 	@IsDate()
 	updatedAt!: Date;
-
-
 }
