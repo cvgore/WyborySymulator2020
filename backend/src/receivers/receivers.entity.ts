@@ -1,12 +1,12 @@
 import {Column, Entity, OneToOne, PrimaryGeneratedColumn} from 'typeorm';
-import {Receiver_groupEntity} from "../receiver_group/receiver_group.entity";
+import {ReceiverGroup} from "../receiver_group/receiver_group.entity";
 
-@Entity('receivers')
-export class ReceiversEntity {
+@Entity()
+export class Receivers {
 	@PrimaryGeneratedColumn()
 	id!: number;
-	@OneToOne(type => Receiver_groupEntity)
-	receiver_group!: Receiver_groupEntity;
+	@OneToOne(type => ReceiverGroup)
+	receiver_group!: ReceiverGroup;
 	@Column()
 	email!: string;
 }
