@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { NestContainer } from '@nestjs/core';
 
 @Injectable()
 export class AppService {
@@ -7,6 +6,8 @@ export class AppService {
 		return 'jebana kontrola bledow';
 	}
 
-	async getAppSalt(): Promise<string> {
+	getAppSalt(): string {
+		return process.env.APP_SALT as string;
 	}
+
 }

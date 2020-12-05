@@ -2,7 +2,7 @@ import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn, } f
 import { IsDate, IsEmail } from 'class-validator';
 import { Exclude, Expose } from 'class-transformer';
 import { hash } from 'argon2';
-import { Inject } from '@nestjs/common';
+import { toHashids } from '@/core/helpers/hashids';
 
 @Entity('user')
 export class User {
@@ -56,7 +56,8 @@ export class User {
 		return this.emailVerifiedAt !== null;
 	}
 
+	@Expose()
 	get safeId(): string {
-		return hashids
+		return toHashids(this.id);
 	}
 }
