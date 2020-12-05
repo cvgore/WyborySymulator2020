@@ -1,5 +1,6 @@
-import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
-import {IsDate} from "class-validator";
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { IsDate } from 'class-validator';
+import { PollCodes } from '../poll_codes/poll_codes.entity';
 
 @Entity()
 export class Poll {
@@ -17,6 +18,9 @@ export class Poll {
 
 	@Column()
 	color_schema!: number;
+
+	@OneToMany(_ => PollCodes, pollCode => pollCode.poll)
+	pollCodes!: PollCodes[];
 
 	@Column({type: 'timestamp'})
 	@IsDate()
