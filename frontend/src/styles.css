@@ -9,17 +9,3 @@ body {
 	font-family: 'Alegreya', serif;
 	background-color: hsl(29, 67%, 88%);
 }
-
-@media (min-width: 1200px) {
-	body {
-		font-size: 1.2em;
-		padding: 0 150px;
-	}
-}
-
-@media (min-width: 1500px) {
-	body {
-		font-size: 1.5em;
-		padding: 0 250px;
-	}
-}

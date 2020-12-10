@@ -31,6 +31,7 @@ export default {
 .DrawerToggle div {
   width: 90%;
   height: 3px;
+  margin: 4px;
   background-color: hsl(28, 0%, 0%);
 }
 

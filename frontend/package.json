@@ -3,13 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-	  "serve": "yarn exec vue-cli-service serve",
-	  "build": "yarn exec vue-cli-service build",
-	  "test:unit": "yarn exec vue-cli-service test:unit",
-	  "test:e2e": "yarn exec vue-cli-service test:e2e",
-	  "lint": "yarn exec vue-cli-service lint"
+    "serve": "yarn exec vue-cli-service serve",
+    "build": "yarn exec vue-cli-service build",
+    "test:unit": "yarn exec vue-cli-service test:unit",
+    "test:e2e": "yarn exec vue-cli-service test:e2e",
+    "lint": "yarn exec vue-cli-service lint"
   },
   "dependencies": {
+    "axios": "^0.21.0",
     "core-js": "^3.6.5",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
@@ -47,7 +48,6 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {},
     "overrides": [
       {
         "files": [

@@ -4,8 +4,8 @@
     :closed="sideDrawerClosedHandler"
     :isOpen="showSideDrawer"
   />
-  <main>
-    <slot/>
+  <main class="japierdole">
+      <slot/>
   </main>
 </template>
 
@@ -34,3 +34,8 @@ export default {
   },
 };
 </script>
+<style>
+.japierdole {
+  margin: 80px;
+}
+</style>

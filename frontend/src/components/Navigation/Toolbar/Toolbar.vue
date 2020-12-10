@@ -26,12 +26,13 @@ export default {
 <style scoped>
 .Toolbar {
   padding: 10px;
-  height: 70px;
 }
 
 @media (max-width: 499px) {
   .DesktopOnly {
-    display: none;
+    width: 0;
+    height: 0;
+    visibility: hidden;
   }
 }
 </style>
