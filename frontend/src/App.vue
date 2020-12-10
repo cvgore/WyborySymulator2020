@@ -1,15 +1,17 @@
 <template>
-  <router-view/>
+  <Layout>
+
+  </Layout>
 </template>
 
-<style lang="css">
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
-body {
-  font-family: 'Montserrat', sans-serif;
-  padding: 0 250px;
-}
+<script>
+import Layout from '@/components/Layout.vue';
+
+export default {
+  components: { Layout },
+};
+</script>
+
+<style>
+@import "./styles.css";
 </style>

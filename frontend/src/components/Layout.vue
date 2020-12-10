@@ -1,21 +1,36 @@
 <template>
-  <NavBar/>
-  <Content/>
+  <Toolbar :drawer-toggle-clicked="sideDrawerToggleHandler"/>
+  <SideDrawer
+    :closed="sideDrawerClosedHandler"
+    :isOpen="showSideDrawer"
+  />
+  <main>
+    <slot/>
+  </main>
 </template>
 
 <script>
-import NavBar from '@/components/NavBar.vue';
-import Content from '@/components/Content.vue';
+import SideDrawer from '@/components/Navigation/SideDrawer/SideDrawer.vue';
+import Toolbar from '@/components/Navigation/Toolbar/Toolbar.vue';
 
 export default {
   name: 'Layout',
   components: {
-    Content,
-    NavBar,
+    SideDrawer,
+    Toolbar,
+  },
+  data() {
+    return {
+      showSideDrawer: false,
+    };
+  },
+  methods: {
+    sideDrawerClosedHandler() {
+      this.showSideDrawer = false;
+    },
+    sideDrawerToggleHandler() {
+      this.showSideDrawer = !this.showSideDrawer;
+    },
   },
 };
 </script>
-
-<style scoped lang="css">
-
-</style>
