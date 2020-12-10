@@ -1,10 +1,108 @@
 {
 	"surveys": [
 		{
-			"name": "Ankieta 1",
-			"voters": [
-				"Kaziu"
-			]
+			"id": 1,
+			"title": "Ankieta 1",
+			"createdOn": "2020-08-07T12:07:56+00:00",
+			"numberOfQuestions": 3,
+			"status": "active"
+		},
+		{
+			"id": 2,
+			"title": "Ankieta 2",
+			"createdOn": "2020-08-07T12:07:56+00:00",
+			"numberOfQuestions": 3,
+			"status": "closed"
+		},
+		{
+			"id": 3,
+			"title": "Ankieta 3",
+			"createdOn": "2020-02-07T12:07:56+00:00",
+			"numberOfQuestions": 5,
+			"status": "closed"
 		}
-	]
+	],
+	"questions": [
+		{
+			"idQuestion": 1,
+			"idOfSurvey": 1,
+			"question": {
+				"question_text": "Co kurwa?"
+			},
+			"choice_list": {
+				"choices" : [
+					{
+						"choiceId": 1,
+						"label": "Opt1"
+					},
+					{
+						"choiceId": 2,
+						"label": "Opt2"
+					},
+					{
+						"choiceId": 3,
+						"label": "Opt3"
+					},
+					{
+						"choiceId": 4,
+						"label": "Opt4"
+					}
+				]
+			}
+		},
+		{
+			"idQuestion": 2,
+			"idOfSurvey": 1,
+			"question": {
+				"question_text": "Co kurwa?"
+			},
+			"choice_list": {
+				"choices" : [
+					{
+						"choiceId": 1,
+						"label": "Opt1"
+					},
+					{
+						"choiceId": 2,
+						"label": "Opt2"
+					},
+					{
+						"choiceId": 3,
+						"label": "Opt3"
+					},
+					{
+						"choiceId": 4,
+						"label": "Opt4"
+					}
+				]
+			}
+		},
+		{
+			"idQuestion": 3,
+			"idOfSurvey": 1,
+			"question": {
+				"question_text": "Co kurwa?"
+			},
+			"choice_list": {
+				"choices" : [
+					{
+						"choiceId": 1,
+						"label": "Opt1"
+					},
+					{
+						"choiceId": 2,
+						"label": "Opt2"
+					},
+					{
+						"choiceId": 3,
+						"label": "Opt3"
+					},
+					{
+						"choiceId": 4,
+						"label": "Opt4"
+					}
+				]
+			}
+		}
+	],
 }

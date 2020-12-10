@@ -27,11 +27,12 @@ export default {
     font-size: 21px;
     padding: 10px 20px;
     display: grid;
-    grid-template-columns: 1fr 3fr;
+    grid-template-columns: 50% 500px;
+    justify-content: space-between;
   }
   .links {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     flex-direction: row;
   }
 }

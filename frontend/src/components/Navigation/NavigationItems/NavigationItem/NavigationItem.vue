@@ -24,14 +24,13 @@ export default {
   color: #ffffff;
   font-weight: bold;
   text-shadow: 1px 2px 2px black;
-  transition: text-shadow .2s ease-out;
+  transition: color.2s ease-out;
 }
 .link:hover{
-  color: black;
-  text-shadow: 1px 2px 2px white;
+  color: #f3dfdf;
 }
 .router-link-active {
-  color: black;
-  text-shadow: 1px 2px 2px white;
+  color: #f1b4b4;
+  text-shadow: 1px 2px 2px #211616;
 }
 </style>

@@ -26,6 +26,8 @@ export default {
 <style scoped>
 .Toolbar {
   padding: 10px;
+  background-color: hsl(29, 40%, 20%);
+  color:white;
 }
 
 @media (max-width: 499px) {

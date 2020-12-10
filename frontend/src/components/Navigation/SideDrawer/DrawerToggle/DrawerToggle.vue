@@ -32,7 +32,7 @@ export default {
   width: 90%;
   height: 3px;
   margin: 4px;
-  background-color: hsl(28, 0%, 0%);
+  background-color: hsl(0, 0%, 99%);
 }
 
 @media (min-width: 500px) {
