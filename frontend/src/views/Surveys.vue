@@ -1,47 +1,47 @@
 <template>
   <section>
-    <LineSpacer :title-text="'Surveys'"/>
     <section class="marg">
       <div>
         <p class="surv-txt">Open Surveys</p>
-        <span>liczba</span>
-        <div>
-
-        </div>
       </div>
+      <article class="box">
+        <SurveyItem />
+      </article>
       <div>
         <p class="surv-txt">Closed Surveys</p>
-        <span>liczba</span>
       </div>
+      <article class="box">
+        <SurveyItem />
+      </article>
     </section>
   </section>
 </template>
 
 <script>
-import LineSpacer from '@/components/UI/LineSpacer.vue';
-import { ref } from 'vue';
-import axios from '@/axios';
+import SurveyItem from '@/components/Surveys/SurveyItem/SurveyItem.vue';
 
 export default {
   name: 'Surveys',
-  components: {
-    LineSpacer,
-  },
-  async setup() {
-    const surveys = ref([]);
-    const data = await axios.get('surveys');
-    surveys.value = data.data;
-  },
+  components: { SurveyItem },
 };
 </script>
 
 <style scoped>
-.marg {
-  margin-top: 25px;
+.marg > div {
+  padding-left: 90px;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  background-color: #EEF1F4;
+  min-height: 100px;
 }
-
 .surv-txt {
-  font-size: 1.5em;
-  font-weight: 600;
+  font-size: 1.2em;
+  color: #7f7b7b;
+}
+.box {
+  background-color: hsl(201, 28%, 90%);
+  min-height: max-content;
+  padding: 20px 50px;
 }
 </style>

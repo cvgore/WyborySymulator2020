@@ -5,6 +5,7 @@
       <NavigationItem :link="'/surveys'">Surveys</NavigationItem>
       <NavigationItem :link="'/login'">Login</NavigationItem>
       <NavigationItem :link="'/register'">Register</NavigationItem>
+      <button class="btn-srv">Create New Survey</button>
     </nav>
   </section>
 </template>
@@ -21,19 +22,49 @@ export default {
 <style scoped>
 .container {
   display: flex;
+  margin: 0 50px;
+  align-items: center;
 }
 @media (min-width: 500px) {
   .container {
-    font-size: 21px;
     padding: 10px 20px;
     display: grid;
     grid-template-columns: 50% 500px;
-    justify-content: space-between;
+    justify-content: center;
+  }
+  .btn-srv {
+    padding: 25px 10px;
+    height: 25px;
+    border: 0px;
+    border-radius: 5px;
+    background-color: #67a067;
+    display: flex;
+    align-items: center;
+    color: white;
+    transition: background-color .1s ease-in;
+    cursor: pointer;
+  }
+  .btn-srv:hover{
+    background-color: #66b866;
   }
   .links {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     flex-direction: row;
+  }
+}
+@media (max-width: 900px) {
+  .container {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+  .links {
+    padding: 0 30px;
+    width: 100vw;
+  }
+  .container > p {
+    display: none;
   }
 }
 </style>
