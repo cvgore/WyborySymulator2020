@@ -18,7 +18,8 @@
 		"test:watch": "npx jest --watch",
 		"test:cov": "npx jest --coverage",
 		"test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-		"test:e2e": "npx jest --config ./test/jest-e2e.json"
+		"test:e2e": "npx jest --config ./test/jest-e2e.json",
+		"postinstall": "patch-package"
 	},
 	"dependencies": {
 		"@nestjs/common": "^7.5.1",
@@ -28,7 +29,9 @@
 		"argon2": "^0.27.0",
 		"class-validator": "^0.12.2",
 		"mysql": "^2.18.1",
+		"patch-package": "^6.2.2",
 		"pg": "^8.5.1",
+		"postinstall-postinstall": "^2.1.0",
 		"redis": "^3.0.2",
 		"reflect-metadata": "^0.1.13",
 		"rimraf": "^3.0.2",

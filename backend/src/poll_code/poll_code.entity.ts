@@ -5,7 +5,7 @@ import { randomBytes } from '../core/promisified';
 
 @Entity()
 @Unique(['code'])
-export class PollCodes {
+export class PollCode {
 	@PrimaryGeneratedColumn()
 	id!: number;
 
@@ -18,11 +18,11 @@ export class PollCodes {
 
 	@Column({type: 'timestamp'})
 	@IsDate()
-	used_at!: Date | null;
+	usedAt!: Date | null;
 
 	useCode() {
-		if (this.used_at === null) {
-			this.used_at = new Date();
+		if (this.usedAt === null) {
+			this.usedAt = new Date();
 		}
 	}
 
