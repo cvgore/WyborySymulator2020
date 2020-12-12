@@ -5,7 +5,7 @@
       <NavigationItem :link="'/surveys'">Surveys</NavigationItem>
       <NavigationItem :link="'/login'">Login</NavigationItem>
       <NavigationItem :link="'/register'">Register</NavigationItem>
-      <button class="btn-srv">Create New Survey</button>
+      <NavigationItem :link="'/create-survey'" class="btn-srv ">Create New Survey</NavigationItem>
     </nav>
   </section>
 </template>
@@ -35,12 +35,11 @@ export default {
   .btn-srv {
     padding: 25px 10px;
     height: 25px;
-    border: 0px;
+    border: 0;
     border-radius: 5px;
     background-color: #67a067;
     display: flex;
     align-items: center;
-    color: white;
     transition: background-color .1s ease-in;
     cursor: pointer;
   }

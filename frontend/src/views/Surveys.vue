@@ -28,7 +28,7 @@ export default {
 
 <style scoped>
 .marg > div {
-  padding-left: 90px;
+  padding-left: 50px;
   display: flex;
   align-items: center;
   justify-items: center;
