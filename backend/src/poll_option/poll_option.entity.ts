@@ -1,19 +1,14 @@
 import {BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
-import {IsDate, IsEmail} from 'class-validator';
-import {hash} from 'argon2';
+import {IsDate} from "class-validator";
 
 @Entity()
-export class User {
+export class PollOption {
 	@PrimaryGeneratedColumn()
 	id!: number;
-
 	@Column()
-	@IsEmail()
-	email!: string;
-
-	@Column({type: 'timestamp'})
-	@IsDate()
-	emailVerifiedAt!: Date | null;
+	poll_id!: number;
+	@Column()
+	name!: string;
 
 	@Column({type: 'timestamp'})
 	@IsDate()
@@ -22,14 +17,6 @@ export class User {
 	@Column({type: 'timestamp'})
 	@IsDate()
 	updatedAt!: Date;
-
-	@Column()
-	password!: string;
-
-	@BeforeInsert()
-	async hashPassword() {
-		this.password = await hash(this.password);
-	}
 
 	@BeforeInsert()
 	setCreatedAt() {
