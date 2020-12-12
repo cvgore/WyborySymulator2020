@@ -1,6 +1,5 @@
 <template>
   <section>
-    <LineSpacer :title-text="'Register'"/>
     <form class="form-container" @submit.prevent="submitForm">
       <div>
         <label for="name">Email</label><br>
@@ -16,11 +15,9 @@
 </template>
 
 <script>
-import LineSpacer from '@/components/UI/LineSpacer.vue';
 
 export default {
   name: 'Login',
-  components: { LineSpacer },
   data() {
     return {
       email: '',

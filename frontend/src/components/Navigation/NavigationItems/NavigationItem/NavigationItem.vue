@@ -21,16 +21,15 @@ export default {
 <style scoped>
 .link {
   text-decoration: none;
-  color: #ffffff;
-  font-weight: bold;
-  text-shadow: 1px 2px 2px black;
-  transition: color.2s ease-out;
+  color: black;
+  font-weight: inherit;
+  transition: font-weight .2s ease;
 }
 .link:hover{
-  color: #f3dfdf;
+  color:slategray;
 }
 .router-link-active {
-  color: #f1b4b4;
-  text-shadow: 1px 2px 2px #211616;
+  color: #090303;
+  font-weight: bold;
 }
 </style>
