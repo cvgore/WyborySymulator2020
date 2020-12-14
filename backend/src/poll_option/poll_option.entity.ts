@@ -5,8 +5,10 @@ import {IsDate} from "class-validator";
 export class PollOption {
 	@PrimaryGeneratedColumn()
 	id!: number;
+
 	@Column()
 	poll_id!: number;
+
 	@Column()
 	name!: string;
 

@@ -1,108 +1,77 @@
 {
-	"surveys": [
+	"polls": [
 		{
 			"id": 1,
-			"title": "Ankieta 1",
-			"createdOn": "2020-08-07T12:07:56+00:00",
-			"numberOfQuestions": 3,
-			"status": "active"
+			"name": "Poll 1",
+			"type": "anonymous",
+			"colorSchema": "default",
+			"validFrom": "2020-08-07T00:00:00+00:00",
+			"validUntil": "2021-08-07T00:00:00+00:00",
+			"publishedAt": "2020-08-07T12:07:56+00:00",
+			"createdAt": "2020-08-07T12:07:56+00:00"
 		},
 		{
 			"id": 2,
-			"title": "Ankieta 2",
-			"createdOn": "2020-08-07T12:07:56+00:00",
-			"numberOfQuestions": 3,
-			"status": "closed"
+			"name": "Poll 2",
+			"type": "anonymous",
+			"colorSchema": "default",
+			"validFrom": "2020-08-07T00:00:00+00:00",
+			"validUntil": "2021-08-07T00:00:00+00:00",
+			"publishedAt": null,
+			"createdAt": "2020-08-07T12:07:56+00:00"
 		},
 		{
 			"id": 3,
-			"title": "Ankieta 3",
-			"createdOn": "2020-02-07T12:07:56+00:00",
-			"numberOfQuestions": 5,
-			"status": "closed"
+			"name": "Poll 3",
+			"type": "anonymous",
+			"colorSchema": "default",
+			"validFrom": "2020-08-07T00:00:00+00:00",
+			"validUntil": "2021-08-07T00:00:00+00:00",
+			"publishedAt": "2020-09-17T12:07:56+00:00",
+			"createdAt": "2020-08-07T12:07:56+00:00"
 		}
 	],
-	"questions": [
+	"pollOptions": [
 		{
-			"idQuestion": 1,
-			"idOfSurvey": 1,
-			"question": {
-				"question_text": "Co kurwa?"
-			},
-			"choice_list": {
-				"choices" : [
-					{
-						"choiceId": 1,
-						"label": "Opt1"
-					},
-					{
-						"choiceId": 2,
-						"label": "Opt2"
-					},
-					{
-						"choiceId": 3,
-						"label": "Opt3"
-					},
-					{
-						"choiceId": 4,
-						"label": "Opt4"
-					}
-				]
-			}
+			"id": 1,
+			"pollId": 1,
+			"name": "Yes"
 		},
 		{
-			"idQuestion": 2,
-			"idOfSurvey": 1,
-			"question": {
-				"question_text": "Co kurwa?"
-			},
-			"choice_list": {
-				"choices" : [
-					{
-						"choiceId": 1,
-						"label": "Opt1"
-					},
-					{
-						"choiceId": 2,
-						"label": "Opt2"
-					},
-					{
-						"choiceId": 3,
-						"label": "Opt3"
-					},
-					{
-						"choiceId": 4,
-						"label": "Opt4"
-					}
-				]
-			}
+			"id": 2,
+			"pollId": 1,
+			"name": "No"
 		},
 		{
-			"idQuestion": 3,
-			"idOfSurvey": 1,
-			"question": {
-				"question_text": "Co kurwa?"
-			},
-			"choice_list": {
-				"choices" : [
-					{
-						"choiceId": 1,
-						"label": "Opt1"
-					},
-					{
-						"choiceId": 2,
-						"label": "Opt2"
-					},
-					{
-						"choiceId": 3,
-						"label": "Opt3"
-					},
-					{
-						"choiceId": 4,
-						"label": "Opt4"
-					}
-				]
-			}
+			"id": 3,
+			"pollId": 1,
+			"name": "Maybe"
 		}
 	],
+	"pollQuestion": [
+		{
+			"id": 1,
+			"pollId": 1,
+			"name": "Aware of ducks?",
+			"type": "enum"
+		},
+		{
+			"id": 2,
+			"pollId": 1,
+			"name": "Wanna drink?",
+			"type": "text"
+		},
+		{
+			"id": 3,
+			"pollId": 2,
+			"name": "Walaszek works?",
+			"type": "number"
+		},
+		{
+			"id": 4,
+			"pollId": 3,
+			"name": "Test question 1",
+			"type": "number"
+		}
+	]
 }

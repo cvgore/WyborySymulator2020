@@ -14,25 +14,25 @@ export class Poll {
 	user_id!: number;
 
 	@Column()
-	type!: string;
+	type!: 'anonymous';
 
 	@Column()
-	color_schema!: number;
+	colorSchema!: number;
 
 	@OneToMany(_ => PollCodes, pollCode => pollCode.poll)
 	pollCodes!: PollCodes[];
 
 	@Column({type: 'timestamp'})
 	@IsDate()
-	valid_from!: Date;
+	validFrom!: Date;
 
 	@Column({type: 'timestamp'})
 	@IsDate()
-	valid_until!: Date;
+	validUntil!: Date;
 
 	@Column({type: 'timestamp'})
 	@IsDate()
-	published_at!: Date;
+	publishedAt!: Date;
 
 	@Column({type: 'timestamp'})
 	@IsDate()

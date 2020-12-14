@@ -8,7 +8,8 @@ export class PollQuestion {
 	id!: number;
 
 	@Column()
-	label!: string;
+	name!: string;
+
 	@Column()
 	type!: string;
 
