@@ -1,15 +1,18 @@
-import {BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
-import {IsDate} from "class-validator";
+import { BeforeInsert, BeforeUpdate, Column, Entity, Index, ManyToOne, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import { IsDate } from 'class-validator';
+import { Poll } from '../poll/poll.entity';
 
 @Entity()
+@Unique(['poll', 'name'])
 export class PollOption {
 	@PrimaryGeneratedColumn()
 	id!: number;
 
-	@Column()
-	poll_id!: number;
+	@ManyToOne(_ => Poll, poll => poll.pollOptions)
+	poll!: Poll;
 
 	@Column()
+	@Index()
 	name!: string;
 
 	@Column({type: 'timestamp'})
