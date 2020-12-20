@@ -12,7 +12,7 @@ export class Voter {
 		createForeignKeyConstraints: false,
 	})
 	@JoinColumn({
-		name: 'struct_id',
+		name: 'structId',
 		referencedColumnName: 'id',
 	})
 	pollCode!: PollCode | null;
@@ -21,7 +21,7 @@ export class Voter {
 		createForeignKeyConstraints: false,
 	})
 	@JoinColumn({
-		name: 'struct_id',
+		name: 'structId',
 		referencedColumnName: 'id',
 	})
 	user!: User | null;

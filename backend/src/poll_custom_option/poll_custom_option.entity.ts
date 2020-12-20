@@ -7,10 +7,10 @@ export class PollCustomOption {
 	@PrimaryGeneratedColumn()
 	id!: number;
 
-	@OneToMany(_ => PollOption, pollOption => pollOption.poll)
+	@OneToMany(_ => PollOption, pollOption => pollOption.pollCustomOption)
 	pollOption!: PollOption;
 
-	// @ManyToOne(_ => Voter)
-	// voter!: Voter;
+	@ManyToOne(_ => Voter)
+	voter!: Voter;
 }
 

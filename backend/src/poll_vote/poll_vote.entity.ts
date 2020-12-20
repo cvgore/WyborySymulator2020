@@ -22,10 +22,10 @@ export class PollVote {
 	@OneToMany(_ => Poll, poll => poll.pollVotes)
 	poll!: Poll;
 
-	@ManyToOne(_ => PollQuestion, pollQuestion => pollQuestion.pollVotes)
+	@ManyToOne(_ => PollQuestion)
 	pollQuestion!: PollQuestion;
 
-	@OneToMany(_ => PollOption, pollOption => pollOption.pollVotes)
+	@ManyToOne(_ => PollOption, pollOption => pollOption.pollVotes)
 	pollOption!: PollOption;
 
 	@OneToOne(_ => PollCustomOption)

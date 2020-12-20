@@ -9,7 +9,7 @@ export class PollCode {
 	@PrimaryGeneratedColumn()
 	id!: number;
 
-	@ManyToOne(_ => Poll, poll => poll.pollCodes)
+	@ManyToOne(_ => Poll)
 	poll!: Poll;
 
 	@Column()

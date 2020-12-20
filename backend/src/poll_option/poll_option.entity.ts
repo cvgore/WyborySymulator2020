@@ -5,6 +5,7 @@ import {
 	Entity,
 	Index,
 	ManyToOne,
+	OneToMany,
 	OneToOne,
 	PrimaryGeneratedColumn,
 	Unique
@@ -23,10 +24,10 @@ export class PollOption {
 	@ManyToOne(_ => Poll, poll => poll.pollOptions)
 	poll!: Poll;
 
-	@OneToOne(_ => PollCustomOption, pollCustomOption => pollCustomOption.pollOption)
+	@OneToOne(_ => PollCustomOption)
 	pollCustomOption!: PollCustomOption | null;
 
-	@ManyToOne(_ => PollVote)
+	@OneToMany(_ => PollVote, pollVote => pollVote.pollOption)
 	pollVotes!: PollVote[];
 
 	@Column()
