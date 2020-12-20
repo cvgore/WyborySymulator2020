@@ -1,10 +1,13 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn, } from 'typeorm';
 import { IsDate, IsEmail } from 'class-validator';
+import { Exclude, Expose } from 'class-transformer';
 import { hash } from 'argon2';
+import { toHashids } from '@/core/helpers/hashids';
 
 @Entity()
 export class User {
 	@PrimaryGeneratedColumn()
+	@Exclude({toPlainOnly: true})
 	id!: number;
 
 	@Column()
@@ -13,6 +16,7 @@ export class User {
 
 	@Column({type: 'timestamp'})
 	@IsDate()
+	@Exclude({toPlainOnly: true})
 	emailVerifiedAt!: Date | null;
 
 	@Column({type: 'timestamp'})
@@ -23,14 +27,6 @@ export class User {
 	@IsDate()
 	updatedAt!: Date;
 
-	@Column()
-	password!: string;
-
-	@BeforeInsert()
-	async hashPassword() {
-		this.password = await hash(this.password);
-	}
-
 	@BeforeInsert()
 	setCreatedAt() {
 		this.createdAt = new Date();
@@ -40,5 +36,19 @@ export class User {
 	@BeforeUpdate()
 	setUpdatedAt() {
 		this.updatedAt = new Date();
+	}
+
+	constructor(partial: Partial<User>) {
+		Object.assign(this, partial);
+	}
+
+	@Expose({toPlainOnly: true})
+	get isEmailVerified(): boolean {
+		return this.emailVerifiedAt !== null;
+	}
+
+	@Expose()
+	get safeId(): string {
+		return toHashids(this.id);
 	}
 }

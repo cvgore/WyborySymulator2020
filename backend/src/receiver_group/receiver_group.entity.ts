@@ -1,6 +1,6 @@
 import { Column, Entity, OneToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { User } from '../user/user.entity';
-import { Receiver } from '../receiver/receiver.entity';
+import { User } from '@/user/user.entity';
+import { Receiver } from '@/receiver/receiver.entity';
 
 @Entity()
 export class ReceiverGroup {
