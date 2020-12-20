@@ -1,6 +1,18 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, Index, ManyToOne, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import {
+	BeforeInsert,
+	BeforeUpdate,
+	Column,
+	Entity,
+	Index,
+	ManyToOne,
+	OneToOne,
+	PrimaryGeneratedColumn,
+	Unique
+} from 'typeorm';
 import { IsDate } from 'class-validator';
 import { Poll } from '../poll/poll.entity';
+import { PollCustomOption } from '../poll_custom_option/poll_custom_option.entity';
+import { PollVote } from '../poll_vote/poll_vote.entity';
 
 @Entity()
 @Unique(['poll', 'name'])
@@ -10,6 +22,12 @@ export class PollOption {
 
 	@ManyToOne(_ => Poll, poll => poll.pollOptions)
 	poll!: Poll;
+
+	@OneToOne(_ => PollCustomOption, pollCustomOption => pollCustomOption.pollOption)
+	pollCustomOption!: PollCustomOption | null;
+
+	@ManyToOne(_ => PollVote)
+	pollVotes!: PollVote[];
 
 	@Column()
 	@Index()

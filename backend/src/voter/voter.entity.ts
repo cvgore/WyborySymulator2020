@@ -1,14 +1,16 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { JoinColumn, OneToOne } from 'typeorm/index';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, Unique } from 'typeorm';
 import { PollCode } from '../poll_code/poll_code.entity';
 import { User } from '../user/user.entity';
 
 @Entity()
-export class Voters {
+@Unique(['structId', 'structType'])
+export class Voter {
 	@PrimaryGeneratedColumn()
 	id!: number;
 
-	@OneToOne(_ => PollCode)
+	@OneToOne(_ => PollCode, {
+		createForeignKeyConstraints: false,
+	})
 	@JoinColumn({
 		name: 'struct_id',
 		referencedColumnName: 'id',
@@ -16,7 +18,7 @@ export class Voters {
 	pollCode!: PollCode | null;
 
 	@OneToOne(_ => User, {
-
+		createForeignKeyConstraints: false,
 	})
 	@JoinColumn({
 		name: 'struct_id',
@@ -25,13 +27,13 @@ export class Voters {
 	user!: User | null;
 
 	@Column()
-	struct_id!: number;
+	structId!: number;
 
 	@Column({type: 'enum', enum: ['user', 'poll_code']})
-	struct_type!: 'user' | 'poll_code';
+	structType!: 'user' | 'poll_code';
 
 	get struct(): PollCode | User | null {
-		switch (this.struct_type) {
+		switch (this.structType) {
 			case 'user':
 				return this.user;
 			case 'poll_code':
