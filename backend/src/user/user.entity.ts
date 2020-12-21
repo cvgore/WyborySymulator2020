@@ -1,7 +1,6 @@
 import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn, } from 'typeorm';
 import { IsDate, IsEmail } from 'class-validator';
 import { Exclude, Expose } from 'class-transformer';
-import { hash } from 'argon2';
 import { toHashids } from '@/core/helpers/hashids';
 
 @Entity()

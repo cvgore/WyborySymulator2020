@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, Inject, Injectable } from '@nestjs/commo
 import { GoogleRecaptchaValidator } from '../services/google-recaptcha.validator';
 import { GoogleRecaptchaGuardOptions } from '../interfaces/google-recaptcha-guard-options';
 import { RECAPTCHA_OPTIONS, RECAPTCHA_RESPONSE_PROVIDER } from '../provider.declarations';
-import { GoogleRecaptchaException } from '..';
+import { GoogleRecaptchaException } from '../index';
 import { Reflector } from '@nestjs/core';
 
 @Injectable()

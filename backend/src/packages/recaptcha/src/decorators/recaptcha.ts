@@ -1,5 +1,5 @@
 import { applyDecorators, SetMetadata, UseGuards } from '@nestjs/common';
-import { GoogleRecaptchaGuard } from '..';
+import { GoogleRecaptchaGuard } from '../index';
 import { RecaptchaResponseProvider } from '../types';
 import { RECAPTCHA_RESPONSE_PROVIDER } from '../provider.declarations';
 

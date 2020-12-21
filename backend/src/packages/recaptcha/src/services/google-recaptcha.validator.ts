@@ -3,7 +3,7 @@ import { GoogleRecaptchaValidatorOptions } from '../interfaces/google-recaptcha-
 import { RECAPTCHA_OPTIONS } from '../provider.declarations';
 import * as qs from 'querystring';
 import { GoogleRecaptchaValidationResult } from '../interfaces/google-recaptcha-validation-result';
-import { ErrorCode } from '..';
+import { ErrorCode } from '../index';
 
 @Injectable()
 export class GoogleRecaptchaValidator {
