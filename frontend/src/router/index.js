@@ -11,16 +11,14 @@ const routes = [
     redirect: '/surveys',
   },
   {
+    path: '/surveys/:id',
+    name: 'survey',
+    component: Test
+  },
+  {
     path: '/surveys',
     name: 'surveys',
     component: Surveys,
-    children: [
-      {
-        name: 'survey',
-        path: ":id",
-        component: Test
-      }
-    ]
   },
   {
     path: '/login',

@@ -52,13 +52,14 @@ export default {
   align-content: space-between;
   background-color: white;
   border-radius: 3px;
+  text-decoration: none;
+  color:black;
 }
-
 .boxdata:hover {
   background-color: hsl(210, 21%, 95%);
 }
 .closed {
-  color: red;
+  color: #a73a3a;
 }
 .open {
   color: gray;
@@ -67,6 +68,7 @@ export default {
   display: flex;
   justify-content: space-between;
 }
+
 .spec > span,
 .surveyinfos {
   font-weight: bold;
@@ -74,7 +76,9 @@ export default {
 }
 .title {
   font-weight: bolder;
+  font-size: 1.4em;
   margin-bottom: 10px;
   cursor: pointer;
+  color:black;
 }
 </style>
