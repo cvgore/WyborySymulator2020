@@ -5,24 +5,38 @@
         <p class="surv-txt">Open Surveys</p>
       </div>
       <article class="box">
+        <SuspenseWithError>
+          <template #default>
+            <SurveyList />
+          </template>
+          <template #fallback>
+            <p>loading...</p>
+          </template>
+          <template #error>
+            <h1>i failed to load</h1>
+          </template>
+        </SuspenseWithError>
         <SurveyList />
       </article>
       <div>
         <p class="surv-txt">Closed Surveys</p>
       </div>
       <article class="box">
-        <SurveyList />
+        <p>co</p>
       </article>
     </section>
   </section>
 </template>
 
 <script>
-import SurveyList from '@/components/Surveys/SurveysList/SurveyList.vue';
-
+import SurveyList from '../components/Surveys/SurveysList/SurveyList';
+import SuspenseWithError from '../components/SuspenseWithError/SuspenseWithError';
 export default {
   name: 'Surveys',
-  components: { SurveyList },
+  components: {
+    SuspenseWithError,
+    SurveyList
+  },
 };
 
 </script>

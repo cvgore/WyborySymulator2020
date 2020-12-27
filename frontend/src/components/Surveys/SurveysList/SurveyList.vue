@@ -16,7 +16,7 @@ export default {
   components: { SurveyItem },
   async setup() {
     const surveys = ref(null);
-    const result = await axios.get('/posts');
+    const result = await axios.get('/polls');
     surveys.value = result.data;
     return {
       surveys,

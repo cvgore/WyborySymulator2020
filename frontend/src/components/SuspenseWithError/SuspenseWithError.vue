@@ -1,5 +1,5 @@
 <template>
-  <slot v-if="" name="error"></slot>
+  <slot v-if="error" name="error"></slot>
   <Suspense>
     <template #default>
       <slot name="default"></slot>

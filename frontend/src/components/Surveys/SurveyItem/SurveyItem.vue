@@ -1,18 +1,29 @@
 <template>
   <section class="boxdata">
-    <p class="title">Jakaś ankieta</p>
+    <p class="title">{{ post.name }}</p>
     <div class="spec">
-      <p>10 pytań</p>
+      <div>
+        <p>Otwarta do: {{ parseData }}</p>
+        <p></p>
+      </div>
+      <div>10 pytań</div>
       <p>2 odpowiedzi</p>
     </div>
   </section>
 </template>
 
 <script>
+import { DateTime } from 'luxon';
 export default {
   name: 'SurveyItem',
   props: {
     post: Object,
+  },
+  setup(props) {
+    const parseData = DateTime.fromISO(props.post.validUntil).toFormat('dd LLL yyyy');
+    return {
+      parseData,
+    };
   },
 };
 </script>
@@ -20,6 +31,7 @@ export default {
 <style scoped>
 .boxdata {
   padding: 20px 30px;
+  margin: 5px 0px;
   display: flex;
   flex-direction: column;
   background-color: white;
@@ -31,7 +43,7 @@ export default {
   justify-content: space-between;
   font-weight: bold;
   font-size: 10px;
-  color:gray;
+  color: gray;
 }
 .title {
   font-weight: bolder;
