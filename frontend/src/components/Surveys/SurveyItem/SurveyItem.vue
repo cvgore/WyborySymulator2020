@@ -1,28 +1,44 @@
 <template>
   <section class="boxdata">
-    <p class="title">{{ post.name }}</p>
     <div class="spec">
-      <div>
-        <p>Otwarta do: {{ parseData }}</p>
-        <p></p>
-      </div>
-      <div>10 pytań</div>
-      <p>2 odpowiedzi</p>
+      <p class="title">{{ post.name }}</p>
+      <p v-if="activePoll" class="surveyinfos open">Otwarta do: {{ format }}</p>
+      <p v-else class="surveyinfos closed">Zamknięta</p>
+    </div>
+    <div class="spec">
+      <span>{{questions}} pytanie/a</span>
+      <span>XxX odpowiedzi</span>
     </div>
   </section>
 </template>
 
 <script>
 import { DateTime } from 'luxon';
+import { ref } from 'vue';
+import axios from '../../../axios';
 export default {
   name: 'SurveyItem',
   props: {
     post: Object,
   },
-  setup(props) {
-    const parseData = DateTime.fromISO(props.post.validUntil).toFormat('dd LLL yyyy');
+  async setup(props) {
+    const questions = ref(null);
+    const activePoll = ref(true);
+
+    const result = await axios.get(`/pollQuestion?pollId=${props.post.id}`);
+    questions.value = result.data.length;
+
+    const parseData = DateTime.fromISO(props.post.validUntil);
+    if (parseData >= DateTime.local()) {
+      activePoll.value = true;
+    } else {
+      activePoll.value = false;
+    }
+    const format = parseData.toFormat('dd LLL yyyy');
     return {
-      parseData,
+      format,
+      activePoll,
+      questions
     };
   },
 };
@@ -31,19 +47,30 @@ export default {
 <style scoped>
 .boxdata {
   padding: 20px 30px;
-  margin: 5px 0px;
   display: flex;
   flex-direction: column;
+  align-content: space-between;
   background-color: white;
   border-radius: 3px;
-  width: 100%;
+}
+
+.boxdata:hover {
+  background-color: hsl(210, 21%, 95%);
+}
+.closed {
+  color: red;
+}
+.open {
+  color: gray;
 }
 .spec {
   display: flex;
   justify-content: space-between;
+}
+.spec > span,
+.surveyinfos {
   font-weight: bold;
   font-size: 10px;
-  color: gray;
 }
 .title {
   font-weight: bolder;

@@ -4,6 +4,7 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import 'primevue/resources/themes/mdc-light-indigo/theme.css';
+import 'primeflex/primeflex.css';
 
 createApp(App)
   .use(store)

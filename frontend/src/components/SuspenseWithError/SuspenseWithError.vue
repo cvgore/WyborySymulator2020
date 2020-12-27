@@ -1,18 +1,19 @@
 <template>
-  <slot v-if="error" name="error"></slot>
-  <Suspense>
+  <slot v-if="error" name="error"/>
+  <Suspense v-else>
     <template #default>
-      <slot name="default"></slot>
+      <slot name="default"/>
     </template>
     <template #fallback>
-      <slot name="fallback"></slot>
+      <div class="wrapper">
+        <slot name="fallback"/>
+      </div>
     </template>
   </Suspense>
 </template>
 
 <script>
 import { ref, onErrorCaptured } from 'vue';
-
 export default {
   name: 'SuspenseWithError',
   setup(){
@@ -26,4 +27,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.wrapper {
+  display: flex;
+  justify-content: center;
+}
+</style>
