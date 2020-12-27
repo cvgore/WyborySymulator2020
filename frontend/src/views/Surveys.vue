@@ -5,25 +5,26 @@
         <p class="surv-txt">Open Surveys</p>
       </div>
       <article class="box">
-        <SurveyItem />
+        <SurveyList />
       </article>
       <div>
         <p class="surv-txt">Closed Surveys</p>
       </div>
       <article class="box">
-        <SurveyItem />
+        <SurveyList />
       </article>
     </section>
   </section>
 </template>
 
 <script>
-import SurveyItem from '@/components/Surveys/SurveyItem/SurveyItem.vue';
+import SurveyList from '@/components/Surveys/SurveysList/SurveyList.vue';
 
 export default {
   name: 'Surveys',
-  components: { SurveyItem },
+  components: { SurveyList },
 };
+
 </script>
 
 <style scoped>
@@ -32,7 +33,7 @@ export default {
   display: flex;
   align-items: center;
   justify-items: center;
-  background-color: #EEF1F4;
+  background-color: #eef1f4;
   min-height: 100px;
 }
 .surv-txt {
