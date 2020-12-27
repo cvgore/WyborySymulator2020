@@ -1,5 +1,5 @@
 <template>
-  <section class="boxdata">
+  <router-link :to="{name: 'survey' , params: {id : post.id}}" class="boxdata">
     <div class="spec">
       <p class="title">{{ post.name }}</p>
       <p v-if="activePoll" class="surveyinfos open">Otwarta do: {{ format }}</p>
@@ -7,9 +7,9 @@
     </div>
     <div class="spec">
       <span>{{questions}} pytanie/a</span>
-      <span>XxX odpowiedzi</span>
+      <span>XxX odpowiedzi <small v-if='!activePoll'>| Zobacz wyniki</small></span>
     </div>
-  </section>
+  </router-link>
 </template>
 
 <script>

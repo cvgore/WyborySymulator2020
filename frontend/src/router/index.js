@@ -3,6 +3,7 @@ import SurveyDB from '@/views/SurveyDB.vue';
 import Login from '@/views/Login.vue';
 import Register from '@/views/Register.vue';
 import Surveys from '@/views/Surveys.vue';
+import Test from '../components/test.vue'
 
 const routes = [
   {
@@ -13,6 +14,13 @@ const routes = [
     path: '/surveys',
     name: 'surveys',
     component: Surveys,
+    children: [
+      {
+        name: 'survey',
+        path: ":id",
+        component: Test
+      }
+    ]
   },
   {
     path: '/login',
