@@ -9,10 +9,10 @@ import {
 	PrimaryGeneratedColumn
 } from 'typeorm';
 import { IsDate, } from 'class-validator';
-import { PollQuestion } from '../poll_question/poll_question.entity';
-import { Poll } from '../poll/poll.entity';
-import { PollOption } from '../poll_option/poll_option.entity';
-import { PollCustomOption } from '../poll_custom_option/poll_custom_option.entity';
+import { PollQuestion } from '@/poll_question/poll_question.entity';
+import { Poll } from '@/poll/poll.entity';
+import { PollOption } from '@/poll_option/poll_option.entity';
+import { PollCustomOption } from '@/poll_custom_option/poll_custom_option.entity';
 
 @Entity()
 export class PollVote {

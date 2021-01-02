@@ -1,6 +1,6 @@
 import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { IsDate } from 'class-validator';
-import { PollVote } from '../poll_vote/poll_vote.entity';
+import { PollVote } from '@/poll_vote/poll_vote.entity';
 
 @Entity()
 export class PollQuestion {

@@ -1,7 +1,7 @@
 import { BeforeInsert, Column, Entity, Index, ManyToOne, PrimaryGeneratedColumn, Unique } from 'typeorm';
 import { IsDate, } from 'class-validator';
-import { Poll } from '../poll/poll.entity';
-import { randomBytes } from '../core/promisified';
+import { Poll } from '@/poll/poll.entity';
+import { randomBytes } from '@/core/promisified';
 
 @Entity()
 @Unique(['code'])
