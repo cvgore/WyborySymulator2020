@@ -1,3 +1,3 @@
 #!/bin/sh
 
-yarn && yarn start:dev
+yarn && yarn prebuild && yarn start:dev

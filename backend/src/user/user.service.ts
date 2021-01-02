@@ -8,19 +8,22 @@ export class UserService {
 	constructor(
 		@InjectRepository(User)
 		private usersRepository: Repository<User>,
-	) {}
-
-	findAll(): Promise<User[]> {
-		return this.usersRepository.find();
+	) {
 	}
 
-	findOne(id: string): Promise<User|undefined> {
+	async existsByEmail(email: string): Promise<boolean> {
+		return await this.usersRepository.count({
+			where: {
+				email
+			},
+		}) > 1;
+	}
+
+	findOne(id: string): Promise<User | undefined> {
 		return this.usersRepository.findOne(id);
 	}
 
 	async remove(id: string): Promise<void> {
 		await this.usersRepository.delete(id);
 	}
-
-
 }

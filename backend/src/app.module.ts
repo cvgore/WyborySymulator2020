@@ -4,11 +4,13 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { HcaptchaModule } from './packages/recaptcha/src';
-// @ts-ignore
-import * as RedisStore from 'cache-manager-redis-store';
 import config from '@/core/config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DatabaseType } from 'typeorm';
+import { User } from '@/user/user.entity';
+import { CacheConfigService } from '@/cache/cache-config.service';
+import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 type SupportedDatabaseType = Extract<DatabaseType, 'mysql' | 'postgres'>;
 
@@ -19,9 +21,9 @@ type SupportedDatabaseType = Extract<DatabaseType, 'mysql' | 'postgres'>;
 			cache: process.env.NODE_ENV === 'production',
 			load: [config]
 		}),
-
 		TypeOrmModule.forRootAsync({
 			imports: [ConfigModule],
+			inject: [ConfigService],
 			useFactory: (configService: ConfigService) => ({
 				type: configService.get<SupportedDatabaseType>('db.conn')!,
 				host: configService.get<string>('db.host'),
@@ -29,34 +31,45 @@ type SupportedDatabaseType = Extract<DatabaseType, 'mysql' | 'postgres'>;
 				username: configService.get<string>('db.user'),
 				password: configService.get<string>('db.pass'),
 				database: configService.get<string>('db.name'),
-				entities: [`dist/**/*.entity.js`],
+				entities: [
+					User
+				],
 				synchronize: configService.get<boolean>('db.sync'),
 			}),
-			inject: [ConfigService],
 		}),
 		HcaptchaModule.forRootAsync({
 			imports: [ConfigModule],
+			inject: [ConfigService],
 			useFactory: (config: ConfigService) => ({
 				secretKey: config.get<string>('crypto.hcaptchaSecret')!,
 				response: (req: any) => req.headers['X-Captcha-Response'],
 				skipIf: config.get<boolean>('isLocal'),
 			}),
+		}),
+		MailerModule.forRootAsync({
+			imports: [ConfigModule],
 			inject: [ConfigService],
+			useFactory: (config: ConfigService) => ({
+				transport: config.get('mail.transport'),
+				defaults: {
+					from: config.get('mail.from'),
+				},
+				template: {
+					dir: __dirname + '/templates',
+					adapter: new PugAdapter(),
+					options: {
+						strict: true,
+					},
+				},
+			}),
 		}),
 		CacheModule.registerAsync({
-			imports: [ConfigModule],
-			useFactory: (config: ConfigService) => ({
-				store: RedisStore,
-				host: config.get<string>('redis.host'),
-				port: config.get<number>('redis.port'),
-				db: config.get<number>('redis.db'),
-				password: config.get<string>('redis.pass'),
-			}),
-			inject: [ConfigService],
+			useClass: CacheConfigService
 		}),
+		UserModule
 	],
 	controllers: [AppController],
-	providers: [AppService],
+	providers: [AppService, ConfigService],
 })
 export class AppModule {
 }

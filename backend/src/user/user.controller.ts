@@ -1,24 +1,36 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Recaptcha } from '@/packages/recaptcha/src';
-import { LoginUserDto } from '@/user/dto/login-user.dto';
-import { LoginTwoFactorStore } from '@/user/login-two-factor.store';
-import CompositeTokenDto from '@/user/dto/composite-token.dto';
+import { RequestLoginDto } from '@/user/dto/request-login.dto';
+import { LoginService } from '@/user/login.service';
+import CompositeToken from '@/user/composite-token';
+import { LoginCompositeTokenDto } from '@/user/dto/login-composite-token.dto';
 
-@Controller()
+@Controller('user/')
 export class UserController {
 	constructor(
 		private readonly userService: UserService,
-		private readonly loginTwoFactorStore: LoginTwoFactorStore,
+		private readonly loginService: LoginService,
 	) {
 	}
 
 	@Recaptcha()
-	@Post('login')
-	async login(@Body() data: LoginUserDto): Promise<CompositeTokenDto> {
-		const token = this.loginTwoFactorStore.generateLoginCompositeToken(data.email, true);
+	@Post('login/request')
+	async requestLogin(@Body() data: RequestLoginDto): Promise<CompositeToken> {
+		const tokenShouldBeFake = !await this.userService.existsByEmail(data.email);
 
-		return token;
+		return this.loginService.generateLoginCompositeToken(data.email, tokenShouldBeFake);
+	}
+
+	@Recaptcha()
+	@Post('login/authorize')
+	async login(@Body() data: LoginCompositeTokenDto): Promise<boolean> {
+		await this.loginService.verifyCompositeToken(data.email, {
+			token: data.token,
+			ts: data.ts,
+		});
+
+		return true;
 	}
 }
 
