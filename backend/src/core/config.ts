@@ -28,6 +28,11 @@ export default () => ({
 		pass: process.env.REDIS_PASS,
 	},
 
+	mail: {
+		transport: process.env.MAIL_TRANSPORT,
+		from: process.env.MAIL_FROM || '"wyborySim2k20-Local" <ws2k20local@localhost>'
+	},
+
 	auth: {
 		magicLink: {
 			lifetime: parseInt(process.env.AUTH_MAGIC_LIFETIME!, 10) || 60 * 12 // 12 minutes by default

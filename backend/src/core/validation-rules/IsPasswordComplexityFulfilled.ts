@@ -1,5 +1,8 @@
 import { registerDecorator, ValidationOptions } from 'class-validator';
 
+/**
+ * @deprecated
+ */
 export function IsPasswordComplexityFulfilled(validationOptions?: ValidationOptions) {
 	return function (object: Object, propertyName: string) {
 		registerDecorator({
@@ -26,6 +29,10 @@ export function IsPasswordComplexityFulfilled(validationOptions?: ValidationOpti
 // - 8 chars long
 // - contain at least one lower case and upper case letter
 // - contain at least one digit
+
+/**
+ * @deprecated
+ */
 export function checkPasswordComplexity(value: any): Promise<boolean> {
 	return new Promise((resolve) => {
 		const result = typeof value === 'string'
