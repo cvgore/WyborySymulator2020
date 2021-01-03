@@ -3,8 +3,9 @@ export default class CompositeToken {
 
 	ts!: number;
 
-	static equals(composite: CompositeToken, another: CompositeToken): boolean {
-		return another.token === composite.token
+	static equals(composite: CompositeToken | null, another: CompositeToken): boolean {
+		return composite !== null
+			&& another.token === composite.token
 			&& another.ts === composite.ts;
 	}
 }

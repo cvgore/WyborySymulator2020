@@ -17,20 +17,20 @@ export class UserController {
 	@Recaptcha()
 	@Post('login/request')
 	async requestLogin(@Body() data: RequestLoginDto): Promise<CompositeToken> {
-		const tokenShouldBeFake = !await this.userService.existsByEmail(data.email);
-
-		return this.loginService.generateLoginCompositeToken(data.email, tokenShouldBeFake);
+		return this.loginService.generateLoginCompositeToken(data.email);
 	}
 
 	@Recaptcha()
 	@Post('login/authorize')
-	async login(@Body() data: LoginCompositeTokenDto): Promise<boolean> {
+	async login(@Body() data: LoginCompositeTokenDto): Promise<undefined> {
 		await this.loginService.verifyCompositeToken(data.email, {
 			token: data.token,
-			ts: data.ts,
+			ts: typeof data.ts === 'string' ? parseInt(data.ts) : data.ts,
 		});
 
-		return true;
+		const user = await this.userService.findByEmailOrCreate(data.email);
+
+		return undefined;
 	}
 }
 

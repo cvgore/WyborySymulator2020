@@ -10,6 +10,6 @@ export class LoginCompositeTokenDto {
 	@IsNumberString({
 		no_symbols: true
 	})
-	ts!: number;
+	ts!: string | number;
 }
 

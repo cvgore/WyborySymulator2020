@@ -5,6 +5,12 @@ export default () => ({
 
 	port: parseInt(process.env.PORT!, 10) || 3000,
 
+	unixPath: process.env.UNIX_PATH,
+
+	app: {
+		trustProxy: !!process.env.TRUST_PROXIES
+	},
+
 	crypto: {
 		appSecret: process.env.APP_SALT,
 		hashidsSecret: process.env.HASHIDS_SALT,
@@ -37,5 +43,11 @@ export default () => ({
 		magicLink: {
 			lifetime: parseInt(process.env.AUTH_MAGIC_LIFETIME!, 10) || 60 * 12 // 12 minutes by default
 		}
-	}
+	},
+
+	cookie: {
+		secure: !!process.env.COOKIE_SECURE
+	},
+
+
 });

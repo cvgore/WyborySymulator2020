@@ -12,6 +12,7 @@ export class LocalEnvGuard implements CanActivate {
 	canActivate(context: ExecutionContext): boolean | Promise<boolean> {
 		if (!this.configService.get<boolean>('isLocal')) {
 			const request: Request = context.switchToHttp().getRequest();
+
 			// Mimics Express default route not found message
 			throw new NotFoundException(`Cannot ${request.method.toUpperCase()} ${request.url}`);
 		}

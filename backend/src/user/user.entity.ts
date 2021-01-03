@@ -15,11 +15,6 @@ export class User {
 
 	@Column({type: 'timestamp'})
 	@IsDate()
-	@Exclude({toPlainOnly: true})
-	emailVerifiedAt!: Date | null;
-
-	@Column({type: 'timestamp'})
-	@IsDate()
 	createdAt!: Date;
 
 	@Column({type: 'timestamp'})
@@ -39,11 +34,6 @@ export class User {
 
 	constructor(partial: Partial<User>) {
 		Object.assign(this, partial);
-	}
-
-	@Expose({toPlainOnly: true})
-	get isEmailVerified(): boolean {
-		return this.emailVerifiedAt !== null;
 	}
 
 	@Expose()
