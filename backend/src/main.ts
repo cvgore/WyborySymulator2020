@@ -7,6 +7,7 @@ import session from 'express-session';
 import { ConfigService } from '@nestjs/config';
 import ConnectRedis from 'connect-redis';
 import { createClient } from 'redis';
+import passport from 'passport';
 
 declare const module: any;
 
@@ -68,6 +69,9 @@ async function bootstrap() {
 			}
 		})
 	);
+
+	app.use(passport.initialize());
+	app.use(passport.session());
 
 	await app.listen(config.get('unixPath')! || config.get('port')!);
 
