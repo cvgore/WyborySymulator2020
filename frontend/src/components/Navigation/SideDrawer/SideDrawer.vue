@@ -7,11 +7,9 @@
     class="sideDrawer"
     :class="isOpen ? 'open' : 'close'"
   >
-    <div>
       <nav>
         <NavigationItems/>
       </nav>
-    </div>
   </section>
 </template>
 

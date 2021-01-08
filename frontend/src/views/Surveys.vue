@@ -34,8 +34,3 @@ export default {
 
 </script>
 
-<style scoped>
-.box {
-  background-color: hsl(201, 28%, 90%);
-}
-</style>

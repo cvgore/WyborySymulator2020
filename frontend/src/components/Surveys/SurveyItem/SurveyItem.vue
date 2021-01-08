@@ -1,14 +1,13 @@
 <template>
-  <router-link :to="{name: 'survey' , params: {id : post.id}}" class="boxdata">
-    <div class="spec">
-      <p class="title">{{ post.name }}</p>
-      <p v-if="activePoll" class="surveyinfos open">Otwarta do: {{ format }}</p>
-      <p v-else class="surveyinfos closed">Zamknięta</p>
-    </div>
-    <div class="spec">
-      <span>{{questions}} pytanie/a</span>
-      <span>XxX odpowiedzi <small v-if='!activePoll'>| Zobacz wyniki</small></span>
-    </div>
+  <router-link :to="{ name: 'survey', params: { id: post.id } }" class="card">
+    <section class="card-desc">
+      <span v-if="activePoll">Open to {{format}}</span>
+      <p>{{post.name}}</p>
+    </section>
+    <section class="card-details">
+      <span>{{questions}}<br/> questions</span>
+      <span>X<br/> answers</span>
+    </section>
   </router-link>
 </template>
 
@@ -34,51 +33,62 @@ export default {
     } else {
       activePoll.value = false;
     }
-    const format = parseData.toFormat('dd LLL yyyy');
+    const format = parseData.toFormat('dd.LL.yyyy');
     return {
       format,
       activePoll,
-      questions
+      questions,
     };
   },
 };
 </script>
 
 <style scoped>
-.boxdata {
-  padding: 20px 30px;
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;600&display=swap');
+.card {
   display: flex;
   flex-direction: column;
-  align-content: space-between;
-  background-color: white;
-  border-radius: 3px;
+  justify-content: space-between;
+  background-color: #fcfffc;
+  border-radius: 25px;
   text-decoration: none;
   color:black;
+  font-family: 'Rubik', sans-serif;
 }
-.boxdata:hover {
-  background-color: hsl(210, 21%, 95%);
-}
-.closed {
-  color: #a73a3a;
-}
-.open {
-  color: gray;
-}
-.spec {
+.card-desc {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f5f1f1;
+  border-radius: 25px 25px 0 0;
+  flex: 1;
+  padding: 25px;
 }
-
-.spec > span,
-.surveyinfos {
-  font-weight: bold;
-  font-size: 10px;
+.card-desc span {
+  align-self: flex-end;
+  font-weight: 300;
 }
-.title {
-  font-weight: bolder;
-  font-size: 1.4em;
-  margin-bottom: 10px;
-  cursor: pointer;
-  color:black;
+.card-desc p {
+  align-self: baseline;
+  padding: 20px 40px;
+  max-width: 300px;
+  font-size: 2.5em;
+  font-weight: 600;
+}
+.card-details {
+  display: flex;
+  text-align: center;
+  justify-content: space-around;
+  align-items: center;
+  height: 50px;
+  border-radius: 0 0 25px 25px;
+}
+@media (min-width: 950px) {
+  .card-desc p {
+    align-self: center;
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
 }
 </style>

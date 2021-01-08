@@ -21,15 +21,16 @@ export default {
 <style scoped>
 .link {
   text-decoration: none;
-  color: black;
-  font-weight: inherit;
+  color: hsl(15, 88%, 62%);
+  font-weight: 700;
   transition: font-weight .2s ease;
+  font-size: 1.3em;
 }
 .link:hover{
-  color:slategray;
+  color: hsl(15, 88%, 52%);
 }
 .router-link-active {
-  color: #090303;
+  color: hsl(15, 58%, 62%);
   font-weight: bold;
 }
 </style>

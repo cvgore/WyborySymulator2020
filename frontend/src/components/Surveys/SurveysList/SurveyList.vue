@@ -1,15 +1,17 @@
 <template>
-  <div class="pollState">
-    <p class="surv-txt">Open Surveys ( {{ openedPolls.length }} )</p>
-  </div>
-  <section class="surveywrapper">
-    <SurveyItem v-for="post in openedPolls" :post="post" :key="post.id" />
-  </section>
-  <div class="pollState">
-    <p class="surv-txt">Closed Surveys ( {{ closedPolls.length }} )</p>
-  </div>
-  <section class="surveywrapper">
-    <SurveyItem v-for="post in closedPolls" :post="post" :key="post.id" />
+  <section class="container">
+    <div class="card-category">
+      <p>Open</p>
+    </div>
+    <div class="cards-container">
+      <SurveyItem v-for="post in openedPolls" :post="post" :key="post.id" />
+    </div>
+    <div class="card-category">
+    <p>Closed</p>
+    </div>
+    <div class="cards-container">
+      <SurveyItem v-for="post in closedPolls" :post="post" :key="post.id" />
+    </div>
   </section>
 </template>
 
@@ -48,23 +50,38 @@ export default {
 </script>
 
 <style scoped>
-.surv-txt {
-  font-size: 1.2em;
-  color: #7f7b7b;
-}
-.surveywrapper {
+.cards-container {
   display: grid;
-  grid-template-columns: minmax(auto, 800px);
-  grid-gap: 10px;
-  justify-content: center;
-  padding: 10px;
+  grid-template-columns: 1fr;
+  grid-auto-rows: 250px;
+  grid-gap: 20px 0;
 }
-.pollState {
-  padding-left: 50px;
+.container {
+  padding: 0 20px;
+}
+.card-category {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #eef1f4;
-  min-height: 100px;
+  margin: 50px 0;
+}
+.card-category p {
+  font-weight: 700;
+  margin: 0 20px 0 0;
+  font-size: 1.8em;
+}
+@media (min-width: 500px) {
+  .container {
+    padding: 0 80px;
+    margin-top: 120px;
+  }
+  .card-category p {
+    font-size: 1.3em;
+  }
+}
+@media(min-width: 950px) {
+  .cards-container {
+    grid-template-columns: repeat(3,1fr);
+    grid-auto-rows: 350px;
+    grid-gap: 20px;
+  }
 }
 </style>
