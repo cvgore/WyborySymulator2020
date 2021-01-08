@@ -71,7 +71,6 @@ export default {
 @media (min-width: 500px) {
   .container {
     padding: 0 80px;
-    margin-top: 120px;
   }
   .card-category p {
     font-size: 1.3em;

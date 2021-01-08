@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{ name: 'survey', params: { id: post.id } }" class="card">
+  <router-link :to="{ name: 'poll', params: { id: post.id } }" class="card">
     <section class="card-desc">
       <span v-if="activePoll">Open to {{format}}</span>
       <p>{{post.name}}</p>
