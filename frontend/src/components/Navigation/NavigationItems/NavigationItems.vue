@@ -1,8 +1,8 @@
 <template>
   <section class="nav-wrapper">
-    <div class="logo">
+    <router-link to="/" class="logo">
       <Logo />
-    </div>
+    </router-link>
     <div class="head-wrapper">
       <section class="container">
         <router-link to="/log-on" class="log-on">Register / Log in</router-link>
@@ -48,6 +48,8 @@ export default {
   color: black;
 }
 .logo {
+  text-decoration: none;
+  color:black;
   grid-column: 1/2;
 }
 .container {
