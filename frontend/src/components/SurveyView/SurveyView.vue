@@ -1,10 +1,11 @@
 <template>
-  <MarginatorTopator>
-    <section class="quest-wrapper">
+    <section class="info-wrapper">
       <h3>{{pickedPoll.name}}</h3>
       <p>Open until : {{date}}</p>
     </section>
-  </MarginatorTopator>
+    <section class="container">
+      <Question v-for="question in questions" :question="question" :key="question.id" />
+    </section>
 </template>
 
 <script>
@@ -14,9 +15,10 @@ import {useRoute} from "vue-router";
 import axios from "@/axios";
 import {ref} from "vue";
 import {DateTime} from "luxon";
+import Question from "@/components/SurveyView/Question";
 export default {
   name: 'FillPoll',
-  components: { MarginatorTopator },
+  components: {Question, MarginatorTopator },
   async setup() {
     const questions = ref(null);
     const store = useStore();
@@ -37,10 +39,13 @@ export default {
 };
 </script>
 <style scoped>
-.quest-wrapper {
+.info-wrapper {
   width: 100%;
-  padding: 0 50px;
   display: flex;
   justify-content: space-around;
+}
+.container {
+  display: flex;
+  flex-direction: column;
 }
 </style>
