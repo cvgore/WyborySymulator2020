@@ -1,7 +1,7 @@
 <template>
   <MarginatorTopator>
     <section>
-      <article class="box">
+      <article>
         <SuspenseWithError>
           <template #default>
             <SurveyList />
@@ -13,7 +13,6 @@
             <h1>Serwer nie działa i chuj</h1>
           </template>
         </SuspenseWithError>
-        <SurveyList />
       </article>
     </section>
   </MarginatorTopator>

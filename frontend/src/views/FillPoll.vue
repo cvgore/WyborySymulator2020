@@ -1,28 +1,29 @@
 <template>
   <MarginatorTopator>
-    <p>siema</p>
-    <div>
-      {{id}}
-    </div>
+    <section>
+      <article>
+        <SuspenseWithError>
+          <template #default>
+            <SurveyView />
+          </template>
+          <template #fallback>
+            <p>loading...</p>
+          </template>
+          <template #error>
+            <h1>Serwer nie działa i chuj</h1>
+          </template>
+        </SuspenseWithError>
+      </article>
+    </section>
   </MarginatorTopator>
 </template>
 
 <script>
 import MarginatorTopator from '@/components/UI/MarginatorTopator';
-import { useStore } from 'vuex';
-import {useRoute} from "vue-router";
+import SurveyView from '@/components/SurveyView/SurveyView';
+import SuspenseWithError from '@/components/SuspenseWithError/SuspenseWithError';
 export default {
   name: 'FillPoll',
-  components: { MarginatorTopator },
-  setup() {
-    const store = useStore();
-    const route = useRoute();
-    const id = parseInt(route.params.id);
-    const pickedPoll = store.state.poll.polls.find(el => el.id === id);
-    console.log(pickedPoll);
-    return {
-      id,
-    }
-  },
+  components: { MarginatorTopator, SurveyView,SuspenseWithError },
 };
 </script>
