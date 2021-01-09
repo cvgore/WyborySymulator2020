@@ -7,7 +7,7 @@
             <SurveyList />
           </template>
           <template #fallback>
-            <ProgressSpinner />
+            <p>loading...</p>
           </template>
           <template #error>
             <h1>Serwer nie działa i chuj</h1>
@@ -22,7 +22,6 @@
 <script>
 import SurveyList from '../components/Surveys/SurveysList/SurveyList';
 import SuspenseWithError from '../components/SuspenseWithError/SuspenseWithError';
-import ProgressSpinner from 'primevue/progressspinner'
 import MarginatorTopator from "@/components/UI/MarginatorTopator";
 export default {
   name: 'Surveys',
@@ -30,7 +29,6 @@ export default {
     MarginatorTopator,
     SuspenseWithError,
     SurveyList,
-    ProgressSpinner
   },
 };
 

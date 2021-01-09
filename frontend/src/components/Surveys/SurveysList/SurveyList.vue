@@ -19,18 +19,20 @@
 import { DateTime } from 'luxon';
 import { ref } from 'vue';
 import axios from '@/axios';
-import SurveyItem from '@/components/Surveys/SurveyItem/SurveyItem.vue';
-import Badge from 'primevue/badge';
+import SurveyItem from '../SurveyItem/SurveyItem';
+import {useStore} from 'vuex';
+import {STORE_POLLS} from "../../../store/mutations.type";
 export default {
   name: 'SurveyList',
-  components: { SurveyItem, Badge },
+  components: { SurveyItem },
   async setup() {
+    const store = useStore();
     const surveys = ref(null);
     const openedPolls = ref([]);
     const closedPolls = ref([]);
-    const result = await axios.get('/polls');
-    surveys.value = result.data;
-
+    const { data } = await axios.get('/polls');
+    surveys.value = data;
+    await store.commit(STORE_POLLS,data);
     surveys.value.forEach((poll) => {
       const check = DateTime.fromISO(poll.validUntil) >= DateTime.local();
       if (check) {
