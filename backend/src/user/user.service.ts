@@ -19,8 +19,6 @@ export class UserService {
 		}) > 0;
 	}
 
-	async findByEmail(email)
-
 	async findByEmailOrCreate(email: string): Promise<User> {
 		let user = await this.usersRepository.findOne(void 0, {
 			where: {
@@ -28,10 +26,7 @@ export class UserService {
 			}
 		});
 
-
 		if (user === undefined) {
-
-			console.log('creating user', email, user);
 			user = await this.usersRepository.create({
 				email
 			});
