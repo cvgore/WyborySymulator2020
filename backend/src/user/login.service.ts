@@ -14,10 +14,11 @@ export class LoginService {
 	) {
 	}
 
-	private cacheKey(email: string): string {
+	private cacheKey(email: string, ts: number): string {
 		const hashedEmail = this.hasher().update(email).digest().toString('hex');
+		const descriptor = ts.toString(16);
 
-		return `ltf:${hashedEmail}`;
+		return `ltf:${hashedEmail}:${descriptor}`;
 	}
 
 	private hasher() {
@@ -29,7 +30,7 @@ export class LoginService {
 		const ts = +new Date();
 		const composite: CompositeToken = {token, ts};
 
-		await this.cacheManager.set(this.cacheKey(email), composite, {
+		await this.cacheManager.set(this.cacheKey(email, ts), composite, {
 			ttl: this.config.get<number>('auth.magicLink.lifetime')!
 		});
 
@@ -37,7 +38,7 @@ export class LoginService {
 	}
 
 	public async verifyCompositeToken(email: string, composite: CompositeToken): Promise<true> {
-		const key = this.cacheKey(email);
+		const key = this.cacheKey(email, composite.ts);
 
 		const storedComposite = await this.cacheManager.get<string>(key);
 
@@ -45,7 +46,7 @@ export class LoginService {
 			throw new InvalidCompositeToken();
 		}
 
-		// Removing verified composite token, so no longer can use it to log in
+		// Removing verified composite token, so no longer can be used to log in
 		await this.cacheManager.del(key);
 
 		return true;

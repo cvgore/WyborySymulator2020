@@ -3,10 +3,10 @@ import rateLimit from 'express-rate-limit';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import e, { Express } from 'express';
-import session from 'express-session';
+// import session from 'express-session';
 import { ConfigService } from '@nestjs/config';
-import ConnectRedis from 'connect-redis';
-import { createClient } from 'redis';
+// import ConnectRedis from 'connect-redis';
+// import { createClient } from 'redis';
 import passport from 'passport';
 
 declare const module: any;
@@ -25,28 +25,28 @@ async function bootstrap() {
 
 	const config: ConfigService = app.get(ConfigService);
 
-	app.use(
-		session({
-			secret: config.get<string>('crypto.appSecret')!,
-			resave: false,
-			saveUninitialized: false,
-			cookie: {
-				httpOnly: true,
-				maxAge: 12 * 60 * 60,
-				secure: config.get<boolean>('cookie.secure'),
-			},
-			name: 'ws2k20_sess',
-			store: new (ConnectRedis(session))({
-				ttl: 12 * 60 * 60,
-				client: createClient({
-					host: config.get<string>('redis.host'),
-					port: config.get<number>('redis.port'),
-					db: config.get<number>('redis.db')! + 1,
-					password: config.get<string>('redis.pass'),
-				})
-			})
-		}),
-	);
+	// app.use(
+	// 	session({
+	// 		secret: config.get<string>('crypto.appSecret')!,
+	// 		resave: false,
+	// 		saveUninitialized: false,
+	// 		cookie: {
+	// 			httpOnly: true,
+	// 			maxAge: 12 * 60 * 60,
+	// 			secure: config.get<boolean>('cookie.secure'),
+	// 		},
+	// 		name: 'ws2k20_sess',
+	// 		store: new (ConnectRedis(session))({
+	// 			ttl: 12 * 60 * 60,
+	// 			client: createClient({
+	// 				host: config.get<string>('redis.host'),
+	// 				port: config.get<number>('redis.port'),
+	// 				db: config.get<number>('redis.db')! + 1,
+	// 				password: config.get<string>('redis.pass'),
+	// 			})
+	// 		})
+	// 	}),
+	// );
 
 	// Remove unwanted X-Powered-By header
 	const express: Express = app.getHttpAdapter().getInstance();
@@ -71,7 +71,6 @@ async function bootstrap() {
 	);
 
 	app.use(passport.initialize());
-	app.use(passport.session());
 
 	await app.listen(config.get('unixPath')! || config.get('port')!);
 

@@ -1,0 +1,26 @@
+### Request login code (sent to mailbox)
+POST {{url}}/user/login/request
+Accept: application/json
+Content-Type: application/json
+
+{
+	"email": "lookapa@wp.pl"
+}
+
+### Complete 2fa authorization
+POST {{url}}/user/login/authorize
+Accept: application/json
+Content-Type: application/json
+
+{
+	"email": "lookapa@wp.pl",
+	"token": "6a48b727-942e-4ad4-bc6f-1a8bd495c827",
+	"ts": 1610444414897
+}
+
+> {% client.global.set("auth_token", response.body.json.access_token); %}
+
+### Check whoami
+GET {{url}}/user/me
+Accept: application/json
+Authorization: Bearer {{auth_token}}

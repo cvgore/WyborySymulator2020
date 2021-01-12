@@ -1,4 +1,4 @@
-import { IsEmail, IsInt, IsNumberString, IsUUID } from 'class-validator';
+import { IsEmail, IsInt, IsUUID } from 'class-validator';
 
 export class LoginCompositeTokenDto {
 	@IsEmail()
@@ -7,9 +7,7 @@ export class LoginCompositeTokenDto {
 	@IsUUID('4')
 	token!: string;
 
-	@IsNumberString({
-		no_symbols: true
-	})
-	ts!: string | number;
+	@IsInt()
+	ts!: number;
 }
 

@@ -11,6 +11,7 @@ import { User } from '@/user/user.entity';
 import { CacheConfigService } from '@/cache/cache-config.service';
 import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { AuthModule } from '@/auth/auth.module';
 
 type SupportedDatabaseType = Extract<DatabaseType, 'mysql' | 'postgres'>;
 
@@ -55,7 +56,7 @@ type SupportedDatabaseType = Extract<DatabaseType, 'mysql' | 'postgres'>;
 					from: config.get('mail.from'),
 				},
 				template: {
-					dir: __dirname + '/templates',
+					dir: __dirname + '/mail/templates',
 					adapter: new PugAdapter(),
 					options: {
 						strict: true,
@@ -66,7 +67,8 @@ type SupportedDatabaseType = Extract<DatabaseType, 'mysql' | 'postgres'>;
 		CacheModule.registerAsync({
 			useClass: CacheConfigService
 		}),
-		UserModule
+		UserModule,
+		AuthModule,
 	],
 	controllers: [AppController],
 	providers: [AppService, ConfigService],

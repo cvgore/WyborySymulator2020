@@ -8,7 +8,9 @@ export default () => ({
 	unixPath: process.env.UNIX_PATH,
 
 	app: {
-		trustProxy: !!process.env.TRUST_PROXIES
+		trustProxy: !!process.env.TRUST_PROXIES,
+		name: process.env.APP_NAME || 'WyborySymulator2k20',
+		url: process.env.APP_URL,
 	},
 
 	crypto: {
@@ -48,6 +50,4 @@ export default () => ({
 	cookie: {
 		secure: !!process.env.COOKIE_SECURE
 	},
-
-
 });
