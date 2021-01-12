@@ -1,7 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
-
+  {
+    path: '/polls',
+    name: 'polls',
+    component: () => import("@/views/Polls")
+  }
 ];
 
 const router = createRouter({
