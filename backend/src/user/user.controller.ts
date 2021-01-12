@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Request, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Recaptcha } from '@/packages/recaptcha/src';
 import { RequestLoginDto } from '@/user/dto/request-login.dto';
@@ -19,10 +19,10 @@ export class UserController {
 
 	@Recaptcha()
 	@Post('login/request')
-	async requestLogin(@Body() data: RequestLoginDto): Promise<void> {
+	async requestLogin(@Body() data: RequestLoginDto, @Req() request: any): Promise<void> {
 		const composite = await this.loginService.generateLoginCompositeToken(data.email);
 
-		await this.userService.sendLoginEmail(data.email, composite);
+		await this.userService.sendLoginEmail(data.email, composite, request);
 	}
 
 	@Recaptcha()

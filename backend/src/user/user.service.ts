@@ -5,6 +5,7 @@ import { User } from './user.entity';
 import { MailerService } from '@nestjs-modules/mailer';
 import CompositeToken from '@/user/composite-token';
 import { ConfigService } from '@nestjs/config';
+import { Request } from 'express';
 
 @Injectable()
 export class UserService {
@@ -45,7 +46,7 @@ export class UserService {
 		await this.usersRepository.delete(id);
 	}
 
-	async sendLoginEmail(email: string, composite: CompositeToken): Promise<void> {
+	async sendLoginEmail(email: string, composite: CompositeToken, request: Request): Promise<void> {
 		const appName = this.config.get('app.name');
 		const appUrl = this.config.get('app.url');
 
@@ -65,6 +66,8 @@ export class UserService {
 				appName,
 				url: `${appUrl}/user/login#` + compositeUrl,
 				time: this.config.get('auth.magicLink.lifetime') / 60,
+				ip: request.ip,
+				browser: request.headers['user-agent'],
 			}
 		});
 	}

@@ -4,7 +4,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-	"email": "lookapa@wp.pl"
+	"email": "{{email}}"
 }
 
 ### Complete 2fa authorization
@@ -13,9 +13,9 @@ Accept: application/json
 Content-Type: application/json
 
 {
-	"email": "lookapa@wp.pl",
-	"token": "6a48b727-942e-4ad4-bc6f-1a8bd495c827",
-	"ts": 1610444414897
+	"email": "{{email}}",
+	"token": "{{composite_token}}",
+	"ts": {{composite_ts}}
 }
 
 > {% client.global.set("auth_token", response.body.json.access_token); %}
