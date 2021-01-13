@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, Unique } from 'typeorm';
-import { PollCode } from '../poll_code/poll_code.entity';
-import { User } from '../user/user.entity';
+import { PollCode } from '@/poll_code/poll_code.entity';
+import { User } from '@/user/user.entity';
 
 @Entity()
 @Unique(['structId', 'structType'])

@@ -1,6 +1,8 @@
 .DS_Store
 node_modules
 
+.idea/httpRequests
+
 /tests/e2e/videos/
 /tests/e2e/screenshots/
 /backend/dist/
@@ -21,3 +23,6 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+tsconfig.tsbuildinfo
+http-client.private.env.json

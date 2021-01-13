@@ -11,9 +11,9 @@ import {
 	Unique
 } from 'typeorm';
 import { IsDate } from 'class-validator';
-import { Poll } from '../poll/poll.entity';
-import { PollCustomOption } from '../poll_custom_option/poll_custom_option.entity';
-import { PollVote } from '../poll_vote/poll_vote.entity';
+import { Poll } from '@/poll/poll.entity';
+import { PollCustomOption } from '@/poll_custom_option/poll_custom_option.entity';
+import { PollVote } from '@/poll_vote/poll_vote.entity';
 
 @Entity()
 @Unique(['poll', 'name'])

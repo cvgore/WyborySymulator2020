@@ -1,0 +1,66 @@
+{
+  "name": "@nestlab/google-recaptcha",
+  "version": "1.1.11",
+  "description": "Google recaptcha module for NestJS.",
+  "keywords": [
+    "nest",
+    "nestjs",
+    "module",
+    "guard",
+    "google",
+    "recaptcha",
+    "captcha",
+    "google-recaptcha",
+    "nestjs captcha",
+    "nestjs recaptcha"
+  ],
+  "private": false,
+  "main": "index.js",
+  "scripts": {
+    "build": "rimraf dist && tsc && cp package.json dist && cp README.md dist",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chvarkov/google-recaptcha.git"
+  },
+  "author": "Alexey Chvarkov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/chvarkov/google-recaptcha/issues"
+  },
+  "homepage": "https://github.com/chvarkov/google-recaptcha",
+  "peerDependencies": {
+    "@nestjs/core": ">=6.0.0 <8.0.0",
+    "@nestjs/common": ">=6.0.0 <8.0.0"
+  },
+  "devDependencies": {
+    "@nestjs/common": "^6.0.0",
+    "@nestjs/core": "^6.0.0",
+    "@nestjs/platform-express": "^6.11.11",
+    "@nestjs/testing": "^6.11.11",
+    "@types/jest": "^24.9.1",
+    "@types/node": "^12.12.14",
+    "jest": "^24.9.0",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^6.5.4",
+    "ts-jest": "^24.2.0",
+    "ts-loader": "^8.0.0",
+    "ts-node": "^8.5.2",
+    "typescript": "^3.7.2"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": ".",
+    "testRegex": ".spec.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "coverageDirectory": "./coverage",
+    "testEnvironment": "node"
+  }
+}

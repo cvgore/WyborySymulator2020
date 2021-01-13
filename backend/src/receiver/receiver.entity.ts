@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { ReceiverGroup } from '../receiver_group/receiver_group.entity';
+import { ReceiverGroup } from '@/receiver_group/receiver_group.entity';
 
 @Entity()
 export class Receiver {

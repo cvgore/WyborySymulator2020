@@ -3,6 +3,9 @@
 	"sourceRoot": "src",
 	"language": "ts",
 	"compilerOptions": {
-		"tsConfigPath": "tsconfig.json"
+		"tsConfigPath": "tsconfig.json",
+		"assets": [
+			"**/*.pug"
+		]
 	}
 }

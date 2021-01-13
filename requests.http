@@ -1,0 +1,26 @@
+### Request login code (sent to mailbox)
+POST {{url}}/user/login/request
+Accept: application/json
+Content-Type: application/json
+
+{
+	"email": "{{email}}"
+}
+
+### Complete 2fa authorization
+POST {{url}}/user/login/authorize
+Accept: application/json
+Content-Type: application/json
+
+{
+	"email": "{{email}}",
+	"token": "{{composite_token}}",
+	"ts": {{composite_ts}}
+}
+
+> {% client.global.set("auth_token", response.body.json.access_token); %}
+
+### Check whoami
+GET {{url}}/user/me
+Accept: application/json
+Authorization: Bearer {{auth_token}}

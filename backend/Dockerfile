@@ -3,4 +3,5 @@ FROM node:lts-alpine
 # Set current dir
 WORKDIR /usr/src/app
 
-RUN apk add bash zsh
+RUN apk add --update bash zsh openssh
+

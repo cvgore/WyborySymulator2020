@@ -4,18 +4,18 @@
 		"module": "CommonJS",
 		"outDir": "./dist",
 		"baseUrl": "./",
+		"paths": {
+			"@/*": [
+				"src/*"
+			],
+			"%/*": [
+				"./../common/*"
+			]
+		},
 		"types": [
 			"node",
 			"jest"
-		]
-	},
-	"paths": {
-		"@/*": [
-			"src/*"
 		],
-		"%/*": [
-			"./../common/*"
-		]
 	},
 	"include": [
 		"src/**/*.ts",

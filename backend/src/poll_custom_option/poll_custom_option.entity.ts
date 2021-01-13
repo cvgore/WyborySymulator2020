@@ -1,6 +1,6 @@
 import { Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Voter } from '../voter/voter.entity';
-import { PollOption } from '../poll_option/poll_option.entity';
+import { Voter } from '@/voter/voter.entity';
+import { PollOption } from '@/poll_option/poll_option.entity';
 
 @Entity()
 export class PollCustomOption {
