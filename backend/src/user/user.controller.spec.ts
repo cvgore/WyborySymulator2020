@@ -9,7 +9,6 @@ import { User } from '@/user/user.entity';
 import { ConfigService } from '@nestjs/config';
 import { MailerService } from '@nestjs-modules/mailer';
 import { GoogleRecaptchaValidator } from '@/packages/recaptcha/src/services/google-recaptcha.validator';
-import { GoogleRecaptchaGuard } from '@/packages/recaptcha/src';
 import { RECAPTCHA_OPTIONS } from '@/packages/recaptcha/src/provider.declarations';
 import { AXIOS_INSTANCE_TOKEN } from '@nestjs/common/http/http.constants';
 import { AuthService } from '@/auth/auth.service';
@@ -32,13 +31,15 @@ describe('UserController', () => {
 				{
 					provide: MailerService,
 					useValue: {
-						sendMail: () => {},
+						sendMail: () => {
+						},
 					}
 				},
 				{
 					provide: CACHE_MANAGER,
 					useValue: {
-						set: () => {},
+						set: () => {
+						},
 					},
 				},
 				{
