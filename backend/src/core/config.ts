@@ -3,7 +3,7 @@ export default () => ({
 
 	isLocal: process.env.NODE_ENV !== 'production',
 
-	port: parseInt(process.env.PORT!, 10) || 3000,
+	port: parseInt(process.env.PORT!, 10) || 3850,
 
 	unixPath: process.env.UNIX_PATH,
 
