@@ -1,0 +1,6 @@
+{
+	"port" : 3850,
+	"delay": 600,
+	"noCors": true,
+	"middlewares": ["json-server/cors.js"]
+}

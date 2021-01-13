@@ -1,34 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import SurveyDB from '@/views/SurveyDB.vue';
-import Login from '@/views/Login.vue';
-import Register from '@/views/Register.vue';
-import Surveys from '@/views/Surveys.vue';
 
 const routes = [
   {
-    path: '/',
-    redirect: '/surveys',
-  },
-  {
-    path: '/surveys',
-    name: 'surveys',
-    component: Surveys,
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: Login,
-  },
-  {
-    path: '/register',
-    name: 'Register',
-    component: Register,
-  },
-  {
-    path: '/create-survey',
-    name: 'CreateSurvey',
-    component: SurveyDB,
-  },
+    path: '/polls',
+    name: 'polls',
+    component: () => import("@/views/Polls")
+  }
 ];
 
 const router = createRouter({
