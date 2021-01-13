@@ -14,7 +14,7 @@ export class LoginService {
 	) {
 	}
 
-	private cacheKey(email: string, ts: number): string {
+	public cacheKey(email: string, ts: number): string {
 		const hashedEmail = this.hasher().update(email).digest().toString('hex');
 		const descriptor = ts.toString(16);
 

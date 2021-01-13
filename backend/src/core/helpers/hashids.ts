@@ -1,4 +1,4 @@
-import Hashids from 'hashids';
+import Hashids from 'hashids/cjs';
 
 const _hashidsGenerator = new Hashids(process.env.HASHIDS_SALT, 10);
 
