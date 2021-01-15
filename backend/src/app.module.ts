@@ -12,6 +12,7 @@ import { CacheConfigService } from '@/cache/cache-config.service';
 import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { AuthModule } from '@/auth/auth.module';
+import { PollModule } from '@/poll/poll.module';
 
 type SupportedDatabaseType = Extract<DatabaseType, 'mysql' | 'postgres'>;
 
@@ -69,6 +70,7 @@ type SupportedDatabaseType = Extract<DatabaseType, 'mysql' | 'postgres'>;
 		}),
 		UserModule,
 		AuthModule,
+		PollModule
 	],
 	controllers: [AppController],
 	providers: [AppService, ConfigService],
