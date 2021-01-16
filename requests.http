@@ -42,7 +42,7 @@ Content-Type: application/json
 }
 
 ### Edit poll
-PUT {{url}}/poll/8
+PUT {{url}}/poll/1
 Accept: application/json
 Authorization: Bearer {{auth_token}}
 Content-Type: application/json
@@ -53,6 +53,11 @@ Content-Type: application/json
 	"validFrom": "2020-12-16T17:59:29.09Z"
 }
 
+### Remove poll
+DELETE {{url}}/poll/4
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+
 ### Add poll option
 POST {{url}}/poll/8/option
 Accept: application/json
@@ -62,3 +67,4 @@ Content-Type: application/json
 {
 	"name": "Option {{$uuid}}"
 }
+

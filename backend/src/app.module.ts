@@ -17,7 +17,7 @@ import { Poll } from '@/poll/poll.entity';
 import { PollCode } from '@/poll_code/poll_code.entity';
 import { PollVote } from '@/poll_vote/poll_vote.entity';
 import { PollQuestion } from '@/poll_question/poll_question.entity';
-import { PollOption } from '@/poll_option/poll_option.entity';
+import { PollOption } from '@/poll-option/poll-option.entity';
 import { PollCustomOption } from '@/poll_custom_option/poll_custom_option.entity';
 import { Receiver } from '@/receiver/receiver.entity';
 import { ReceiverGroup } from '@/receiver_group/receiver_group.entity';

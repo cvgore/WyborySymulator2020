@@ -7,7 +7,7 @@ import { User } from '@/user/user.entity';
 import EditPollDto from '@/poll/dto/edit-poll.dto';
 
 @Injectable()
-export class PollService {
+export class PollOptionService {
 	constructor(
 		@InjectRepository(Poll) private readonly pollRepository: Repository<Poll>
 	) {
