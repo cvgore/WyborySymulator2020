@@ -1,5 +1,0 @@
-{
-  "statusCode": 404,
-  "message": "Cannot POST /poll/8/option",
-  "error": "Not Found"
-}
