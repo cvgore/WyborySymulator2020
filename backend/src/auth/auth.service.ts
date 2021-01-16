@@ -12,7 +12,7 @@ export class AuthService {
 	async login(user: User) {
 		const payload = {
 			username: user.email,
-			sub: user.safeId
+			sub: user.id,
 		};
 
 		return {

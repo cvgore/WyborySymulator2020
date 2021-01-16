@@ -1,9 +1,13 @@
 import { Module } from '@nestjs/common';
-import { PollService } from '@/poll/poll.service';
-import { PollController } from '@/poll/poll.controller';
+import { PollService } from './poll.service';
+import { PollController } from './poll.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Poll } from '@/poll/poll.entity';
 
 @Module({
-	imports: [],
+	imports: [
+		TypeOrmModule.forFeature([Poll]),
+	],
 	controllers: [PollController],
 	providers: [PollService],
 })

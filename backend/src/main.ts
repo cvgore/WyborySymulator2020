@@ -8,6 +8,7 @@ import { ConfigService } from '@nestjs/config';
 // import ConnectRedis from 'connect-redis';
 // import { createClient } from 'redis';
 import passport from 'passport';
+import { EntityNotFoundFilter } from '@/core/filters/entity-not-found.filter';
 
 declare const module: any;
 
@@ -21,6 +22,10 @@ async function bootstrap() {
 			whitelist: true,
 			forbidNonWhitelisted: false,
 		}),
+	);
+
+	app.useGlobalFilters(
+		new EntityNotFoundFilter()
 	);
 
 	const config: ConfigService = app.get(ConfigService);

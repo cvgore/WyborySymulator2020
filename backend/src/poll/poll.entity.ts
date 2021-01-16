@@ -35,13 +35,13 @@ export class Poll {
 	@IsDate()
 	validFrom!: Date;
 
-	@Column({type: 'timestamp'})
+	@Column({type: 'timestamp', nullable: true})
 	@IsDate()
-	validUntil!: Date;
+	validUntil!: Date | null;
 
-	@Column({type: 'timestamp'})
+	@Column({type: 'timestamp', nullable: true})
 	@IsDate()
-	publishedAt!: Date;
+	publishedAt!: Date | null;
 
 	@Column({type: 'timestamp'})
 	@IsDate()

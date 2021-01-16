@@ -1,4 +1,4 @@
-export default class MinPollDto {
+export class MinPollDto {
 	id!:number;
 
 	name!: string;

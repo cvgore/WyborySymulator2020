@@ -13,6 +13,15 @@ import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { AuthModule } from '@/auth/auth.module';
 import { PollModule } from '@/poll/poll.module';
+import { Poll } from '@/poll/poll.entity';
+import { PollCode } from '@/poll_code/poll_code.entity';
+import { PollVote } from '@/poll_vote/poll_vote.entity';
+import { PollQuestion } from '@/poll_question/poll_question.entity';
+import { PollOption } from '@/poll_option/poll_option.entity';
+import { PollCustomOption } from '@/poll_custom_option/poll_custom_option.entity';
+import { Receiver } from '@/receiver/receiver.entity';
+import { ReceiverGroup } from '@/receiver_group/receiver_group.entity';
+import { Voter } from '@/voter/voter.entity';
 
 type SupportedDatabaseType = Extract<DatabaseType, 'mysql' | 'postgres'>;
 
@@ -34,7 +43,7 @@ type SupportedDatabaseType = Extract<DatabaseType, 'mysql' | 'postgres'>;
 				password: configService.get<string>('db.pass'),
 				database: configService.get<string>('db.name'),
 				entities: [
-					User
+					User, Poll, PollCode, PollVote, PollQuestion, PollOption, PollCustomOption, Receiver, ReceiverGroup, Voter
 				],
 				synchronize: configService.get<boolean>('db.sync'),
 			}),
