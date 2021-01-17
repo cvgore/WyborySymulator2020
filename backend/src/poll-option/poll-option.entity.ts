@@ -14,15 +14,15 @@ import { IsDate } from 'class-validator';
 import { Poll } from '@/poll/poll.entity';
 import { PollCustomOption } from '@/poll_custom_option/poll_custom_option.entity';
 import { PollVote } from '@/poll_vote/poll_vote.entity';
+import { PollQuestion } from '@/poll_question/poll_question.entity';
 
 @Entity()
-@Unique(['poll', 'name'])
 export class PollOption {
 	@PrimaryGeneratedColumn()
 	id!: number;
 
-	@ManyToOne(_ => Poll, poll => poll.pollOptions)
-	poll!: Poll;
+	@ManyToOne(_ => PollQuestion, poll => poll.pollOptions)
+	pollQuestion!: PollQuestion;
 
 	@OneToOne(_ => PollCustomOption)
 	pollCustomOption!: PollCustomOption | null;

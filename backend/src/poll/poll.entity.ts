@@ -25,9 +25,6 @@ export class Poll {
 	@OneToMany(_ => PollCode, pollCode => pollCode.poll)
 	pollCodes!: PollCode[];
 
-	@OneToMany(_ => PollCode, pollOption => pollOption.poll)
-	pollOptions!: PollOption[];
-
 	@OneToMany(_ => PollVote, pollVote => pollVote.poll)
 	pollVotes!: PollVote[];
 

@@ -1,27 +1,35 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Poll } from '@/poll/poll.entity';
 import CreatePollDto from '@/poll/dto/create-poll.dto';
-import { User } from '@/user/user.entity';
 import EditPollDto from '@/poll/dto/edit-poll.dto';
+import { REQUEST } from '@nestjs/core';
 
 @Injectable()
 export class PollService {
 	constructor(
-		@InjectRepository(Poll) private readonly pollRepository: Repository<Poll>
+		@InjectRepository(Poll) private readonly pollRepository: Repository<Poll>,
+		@Inject(REQUEST) private readonly ctx: any,
 	) {
 	}
 
-	async findById(id: number): Promise<Poll | undefined> {
-		return await this.pollRepository.findOneOrFail(id);
+	private get userId(): any {
+		return this.ctx.user.id;
 	}
 
-	async createPoll(data: CreatePollDto, user: User | number): Promise<Poll> {
+	async findById(id: number): Promise<Poll | undefined> {
+		return await this.pollRepository.findOneOrFail({
+			id,
+			user: this.userId,
+		});
+	}
+
+	async createPoll(data: CreatePollDto): Promise<Poll> {
 		const poll = this.pollRepository.create(
 			Object.assign({}, data, <Poll>{
 				type: 'anonymous',
-				user,
+				user: this.userId,
 				colorSchema: 0,
 				createdAt: new Date(),
 				updatedAt: new Date(),
@@ -35,10 +43,22 @@ export class PollService {
 	}
 
 	async editPoll(id: number, data: EditPollDto): Promise<void> {
-		await this.pollRepository.update(id, <Poll>data);
+		await this.pollRepository.update({
+			id,
+			user: this.userId
+		}, <Poll>data);
 	}
 
 	async deletePoll(id: number): Promise<void> {
-		await this.pollRepository.delete(id);
+		await this.pollRepository.delete({
+			id,
+			user: this.userId,
+		});
+	}
+
+	async getAll(): Promise<Poll[]> {
+		return this.pollRepository.find({
+			user: this.userId
+		});
 	}
 }

@@ -26,8 +26,14 @@ Authorization: Bearer {{auth_token}}
 
 ### POLLS
 
+
 ### Get poll
-GET {{url}}/poll/8
+GET {{url}}/polls
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+
+### Get poll
+GET {{url}}/poll/7
 Accept: application/json
 Authorization: Bearer {{auth_token}}
 
@@ -42,23 +48,23 @@ Content-Type: application/json
 }
 
 ### Edit poll
-PUT {{url}}/poll/1
+PUT {{url}}/poll/6
 Accept: application/json
 Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 {
-	"name": "Sample poll",
+	"name": "Sample polls",
 	"validUntil": "2021-09-16T17:59:29.09Z",
 	"validFrom": "2020-12-16T17:59:29.09Z"
 }
 
 ### Remove poll
-DELETE {{url}}/poll/4
+DELETE {{url}}/poll/6
 Accept: application/json
 Authorization: Bearer {{auth_token}}
 
-### Add poll option
+### Add poll question
 POST {{url}}/poll/8/option
 Accept: application/json
 Authorization: Bearer {{auth_token}}
