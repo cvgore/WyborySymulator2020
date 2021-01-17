@@ -1,42 +1,45 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
-import { plainToClass } from 'class-transformer';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { JwtGuard } from '@/auth/guards/jwt.guard';
-import CreatePollDto from '@/poll/dto/create-poll.dto';
-import EditPollDto from '@/poll/dto/edit-poll.dto';
 import { PollOptionService } from '@/poll-option/poll-option.service';
+import CreatePollQuestionDto from '@/poll-question/dto/create-poll-question.dto';
+import { PollOption } from '@/poll-option/poll-option.entity';
+import EditPollOptionDto from '@/poll-option/dto/edit-poll-option.dto';
 
-@Controller('poll/:pollId/')
+@Controller('poll/:pollId/question/:questionId/option')
+@UseGuards(JwtGuard)
 export class PollOptionController {
-	constructor(private readonly pollOptionService: PollOptionService) {
+	constructor(
+		private readonly pollOptionService: PollOptionService,
+	) {
 	}
 
-	// @Get(':id')
-	// @UseGuards(JwtGuard)
-	// async (@Param('id') id: number): Promise<MinPollDto> {
-	// 	const poll = await this.pollOptionService.findById(id);
+	@Get('/')
+	async index(@Param('pollId') pollId: number): Promise<PollOption[]> {
+		return await this.pollOptionService.getAll(pollId);
+	}
 
-		// return plainToClass(MinPollDto, poll);
-	// }
+	@Post('/')
+	async create(@Body() data: CreatePollQuestionDto, @Param('pollQuestionId') pollQuestionId: number): Promise<PollOption> {
+		return await this.pollOptionService.createOption(data, pollQuestionId);
+	}
 
-	// @Post('/')
-	// @UseGuards(JwtGuard)
-	// async create(@Body() data: CreatePollDto, @Req() req: any): Promise<MinPollDto> {
-	// 	const poll = await this.pollOptionService.createPoll(data, req.user.userId);
 	//
-	// 	return plainToClass(MinPollDto, poll);
-	// }
-	//
-	// @Put(':id')
-	// @UseGuards(JwtGuard)
-	// async edit(@Param('id') id: number, @Body() data: EditPollDto): Promise<void> {
-	// 	await this.pollOptionService.editPoll(id, data);
-	// }
-	//
-	// @Delete(':id')
-	// @HttpCode(HttpStatus.NO_CONTENT)
-	// @UseGuards(JwtGuard)
-	// async delete(@Param('id') id: number): Promise<void> {
-	// 	await this.pollOptionService.deletePoll(id);
-	// }
+	@Put(':id')
+	@UseGuards(JwtGuard)
+	async edit(
+		@Param('id') id: number,
+		@Body() data: EditPollOptionDto,
+		@Param('pollQuestionId') pollQuestionId: number
+	): Promise<void> {
+		await this.pollOptionService.editOption(id, pollQuestionId, data);
+	}
+
+
+	@Delete(':id')
+	@HttpCode(HttpStatus.NO_CONTENT)
+	@UseGuards(JwtGuard)
+	async delete(@Param('id') id: number, @Param('pollQuestionId') pollQuestionId: number): Promise<void> {
+		await this.pollOptionService.deleteOption(id, pollQuestionId);
+	}
 }
 

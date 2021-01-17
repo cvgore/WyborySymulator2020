@@ -7,14 +7,12 @@ import {
 	ManyToOne,
 	OneToMany,
 	OneToOne,
-	PrimaryGeneratedColumn,
-	Unique
+	PrimaryGeneratedColumn
 } from 'typeorm';
 import { IsDate } from 'class-validator';
-import { Poll } from '@/poll/poll.entity';
 import { PollCustomOption } from '@/poll_custom_option/poll_custom_option.entity';
 import { PollVote } from '@/poll_vote/poll_vote.entity';
-import { PollQuestion } from '@/poll_question/poll_question.entity';
+import { PollQuestion } from '@/poll-question/poll-question.entity';
 
 @Entity()
 export class PollOption {

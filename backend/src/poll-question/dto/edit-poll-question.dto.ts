@@ -1,6 +1,6 @@
 import { IsString, MaxLength, MinLength } from 'class-validator';
 
-export default class CreatePollOptionDto {
+export default class EditPollQuestionDto {
 	@IsString()
 	@MinLength(3)
 	@MaxLength(120)
