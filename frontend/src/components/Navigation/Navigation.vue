@@ -4,7 +4,6 @@
     <div class="navbar-brand">
 <nav class="breadcrumb has-bullet-separator" aria-label="breadcrumbs">
 <ul>
-    <li><a href="#">Bulma</a></li>
     <li><a href="#">Documentation</a></li>
     <li><a href="#">Components</a></li>
     <li class="is-active"><a href="#" aria-current="page">Breadcrumb</a></li>
@@ -44,22 +43,22 @@
   <div class="columns is-4">
     <div class="column  ">
       <div class="box ">
-        <p class="title is-5 ">Ankieta1</p>
-        <p class="subtitle">Tutaj stworzysz swoją 1 ankietę.</p>
+        <p class="title is-5 ">Pool 1</p>
+        <p class="subtitle">Create your pool.</p>
         <button class="button is-primary is-large is-rounded">Add Pool</button>
       </div>
     </div>
   <div class="column ">
       <div class="box ">
-        <p class="title is-5">Ankieta2</p>
-        <p class="subtitle">Tutaj stworzysz swoją 2 ankietę.</p>
+        <p class="title is-5">Pool 2</p>
+        <p class="subtitle">Create your pool.</p>
         <button class="button is-primary is-large is-rounded">Add Pool</button>
       </div>
     </div>
  <div class="column ">
       <div class="box">
-        <p class="title is-5">Ankieta3</p>
-        <p class="subtitle">Tutaj stworzysz swoją 3 ankietę.</p>
+        <p class="title is-5">Pool 3</p>
+        <p class="subtitle">Create your pool.</p>
         <button class="button is-primary is-large is-rounded">Add Pool</button>
       </div>
 </div>

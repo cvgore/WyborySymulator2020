@@ -1,4 +1,11 @@
 <template>
+  <nav>
+    <ul>
+      <li><router-link to="/pool">PoolodAdisona</router-link></li>
+    </ul>
+  </nav>
+
+
   <div class="card">
     <div class="card-image">
       <figure class="image is-4by3">
