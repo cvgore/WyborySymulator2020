@@ -44,7 +44,8 @@ export default () => ({
 	auth: {
 		magicLink: {
 			lifetime: parseInt(process.env.AUTH_MAGIC_LIFETIME!, 10) || 60 * 12 // 12 minutes by default
-		}
+		},
+		jwtPeriod: process.env.AUTH_JWT_PERIOD || '15m',
 	},
 
 	cookie: {

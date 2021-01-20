@@ -1,6 +1,8 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { IsDate } from 'class-validator';
-import { PollVote } from '@/poll_vote/poll_vote.entity';
+import { PollCode } from '@/poll_code/poll_code.entity';
+import { PollOption } from '@/poll-option/poll-option.entity';
+import { Poll } from '@/poll/poll.entity';
 
 @Entity()
 export class PollQuestion {
@@ -13,8 +15,11 @@ export class PollQuestion {
 	@Column()
 	type!: string;
 
-	@OneToMany(_ => PollVote, pollVote => pollVote.pollQuestion)
-	pollVotes!: PollVote[];
+	@ManyToOne(_ => Poll)
+	poll!: Poll;
+
+	@OneToMany(_ => PollCode, pollOption => pollOption.poll)
+	pollOptions!: PollOption[];
 
 	@Column({type: 'timestamp'})
 	@IsDate()

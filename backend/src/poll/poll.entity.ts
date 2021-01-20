@@ -1,9 +1,9 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { IsDate } from 'class-validator';
 import { PollCode } from '@/poll_code/poll_code.entity';
-import { PollOption } from '@/poll_option/poll_option.entity';
 import { PollVote } from '@/poll_vote/poll_vote.entity';
 import { User } from '@/user/user.entity';
+import { PollQuestion } from '@/poll-question/poll-question.entity';
 
 @Entity()
 export class Poll {
@@ -22,11 +22,11 @@ export class Poll {
 	@Column()
 	colorSchema!: number;
 
+	@OneToMany(_ => PollQuestion, pollQuestion => pollQuestion.poll)
+	pollQuestions!: PollQuestion[];
+
 	@OneToMany(_ => PollCode, pollCode => pollCode.poll)
 	pollCodes!: PollCode[];
-
-	@OneToMany(_ => PollCode, pollOption => pollOption.poll)
-	pollOptions!: PollOption[];
 
 	@OneToMany(_ => PollVote, pollVote => pollVote.poll)
 	pollVotes!: PollVote[];
@@ -35,13 +35,13 @@ export class Poll {
 	@IsDate()
 	validFrom!: Date;
 
-	@Column({type: 'timestamp'})
+	@Column({type: 'timestamp', nullable: true})
 	@IsDate()
-	validUntil!: Date;
+	validUntil!: Date | null;
 
-	@Column({type: 'timestamp'})
+	@Column({type: 'timestamp', nullable: true})
 	@IsDate()
-	publishedAt!: Date;
+	publishedAt!: Date | null;
 
 	@Column({type: 'timestamp'})
 	@IsDate()

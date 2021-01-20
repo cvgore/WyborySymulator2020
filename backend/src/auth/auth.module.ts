@@ -13,7 +13,7 @@ import { JwtStrategy } from '@/auth/strategies/jwt.strategy';
 			inject: [ConfigService],
 			useFactory: (config: ConfigService) => ({
 				secret: config.get<string>('crypto.appSecret'),
-				signOptions: {expiresIn: '15m'},
+				signOptions: {expiresIn: config.get('auth.jwtPeriod')},
 			})
 		}),
 	],

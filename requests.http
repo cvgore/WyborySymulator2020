@@ -17,10 +17,117 @@ Content-Type: application/json
 	"token": "{{composite_token}}",
 	"ts": {{composite_ts}}
 }
-
 > {% client.global.set("auth_token", response.body.json.access_token); %}
 
 ### Check whoami
 GET {{url}}/user/me
 Accept: application/json
 Authorization: Bearer {{auth_token}}
+
+### POLLS
+
+
+### Get poll
+GET {{url}}/polls
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+
+### Get poll
+GET {{url}}/poll/7
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+
+### Create poll
+POST {{url}}/poll
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+	"name": "Sample poll"
+}
+
+### Edit poll
+PUT {{url}}/poll/6
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+	"name": "Sample polls",
+	"validUntil": "2021-09-16T17:59:29.09Z",
+	"validFrom": "2020-12-16T17:59:29.09Z"
+}
+
+### Remove poll
+DELETE {{url}}/poll/6
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+
+### List poll questions
+GET {{url}}/poll/8/question
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+
+###
+POST {{url}}/poll/8/question
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+	"name": "Sample question",
+	"type": "single"
+}
+
+### Edit poll question
+PUT {{url}}/poll/8/question/1
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+	"name": "Sample question123"
+}
+
+### Edit poll question
+DELETE {{url}}/poll/8/question/1
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+### List poll options
+GET {{url}}/poll/8/question/1/option
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+
+### Get poll option
+GET {{url}}/poll/8/question/1/option/1
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+
+### Add poll question
+POST {{url}}/poll/8/question/1/option
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+	"name": "Sample question"
+}
+
+### Edit poll question
+PUT {{url}}/poll/8/question/1/option/1
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+	"name": "Sample option"
+}
+
+### Edit poll question
+DELETE {{url}}/poll/8/question/1/option/1
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
