@@ -8,10 +8,10 @@
       </a>
     </div>
     <div id="navbarBasicExample" class="navbar-menu">
-      <div class="navbar-start has-text-weight-bold ">
-        <router-link to="/" class="navbar-item has-text-white" active-class="has-background-link">
+      <div class="navbar-start has-text-weight-bold">
+        <a href="/" class="navbar-item has-text-white" active-class="has-background-link">
           Lista ankiet
-        </router-link>
+        </a>
       </div>
       <div class="navbar-end">
         <div class="navbar-item">
@@ -34,3 +34,4 @@ export default {
   name: "Navigation"
 }
 </script>
+
