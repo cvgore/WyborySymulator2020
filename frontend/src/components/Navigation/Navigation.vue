@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar has-background-info" role="navigation" aria-label="main navigation">
+  <nav class="navbar has-shadow has-background-info" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
         <span aria-hidden="true"></span>
@@ -8,8 +8,8 @@
       </a>
     </div>
     <div id="navbarBasicExample" class="navbar-menu">
-      <div class="navbar-start ">
-        <router-link to="/" class="navbar-item" active-class="has-background-white">
+      <div class="navbar-start has-text-weight-bold ">
+        <router-link to="/" class="navbar-item has-text-white" active-class="has-background-link">
           Lista ankiet
         </router-link>
       </div>

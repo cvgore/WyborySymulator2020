@@ -23,6 +23,11 @@ const routes = [
       name: 'register',
       component: Register
     }]
+  },
+  {
+    path: '/polls/:id',
+    name: 'pickedPoll',
+    component: () => import('@/views/PollPreview')
   }
 ];
 

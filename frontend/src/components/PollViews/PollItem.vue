@@ -1,7 +1,7 @@
 <template>
   <tr>
     <th>
-      <router-link to="/" class="has-full-width">{{ poll.name }} </router-link>
+      <router-link :to="{name: 'pickedPoll',params: {id: poll.id}}" class="has-full-width">{{ poll.name }} </router-link>
     </th>
     <td>{{ createdAt }}</td>
     <td>{{ questions }}</td>

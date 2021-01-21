@@ -16,6 +16,9 @@ const getters = {
   },
   closedPolls: state => {
     return state.polls.filter(poll => DateTime.fromISO(poll.validUntil) <= DateTime.local())
+  },
+  getPollById: state => id => {
+    return state.polls.find(poll => poll.id === id);
   }
 }
 ;
