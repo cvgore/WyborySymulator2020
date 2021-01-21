@@ -14,9 +14,7 @@
     </ul>
   </div>
   <keep-alive>
-    <component :is="currentTab">
-
-    </component>
+    <component :is="currentTab"/>
   </keep-alive>
 </template>
 
