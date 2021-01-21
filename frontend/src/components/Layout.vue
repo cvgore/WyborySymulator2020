@@ -1,22 +1,14 @@
 <template>
-  <main>
-    <Navigation />
-    <slot/>
-  </main>
+  <Navigation/>
+  <slot/>
 </template>
-
 <script>
-
 import Navigation from "@/components/Navigation/Navigation";
+
 export default {
   name: 'Layout',
-  components: {Navigation},
-  data() {
-    return {
-      showSideDrawer: false,
-    };
-  },
+  components: {
+    Navigation
+  }
 };
 </script>
-<style>
-</style>

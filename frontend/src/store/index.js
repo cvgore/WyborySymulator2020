@@ -1,8 +1,15 @@
-import { createStore } from 'vuex';
-import poll from './poll.module'
+import {createLogger, createStore} from 'vuex';
+import poll from './poll.module';
+const debug = process.env.NODE_ENV !== 'production';
+const plugins = debug ? [createLogger({})] : [];
 export default createStore({
   modules: {
-    poll
-  }
+    'Polls': {
+      namespaced: true,
+      ...poll
+    }
+  },
+  strict: debug,
+  plugins
 });
 
