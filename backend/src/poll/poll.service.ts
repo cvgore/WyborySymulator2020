@@ -5,11 +5,18 @@ import { Poll } from '@/poll/poll.entity';
 import CreatePollDto from '@/poll/dto/create-poll.dto';
 import EditPollDto from '@/poll/dto/edit-poll.dto';
 import { REQUEST } from '@nestjs/core';
+import { EntityNotFoundError } from 'typeorm/error/EntityNotFoundError';
+import { PollAlreadyPublishedError } from '@/poll/errors/poll-already-published.error';
+import * as crypto from 'crypto';
+import { ConfigService } from '@nestjs/config';
+import PollLinkDto from '@/poll/dto/poll-link.dto';
+import { PollNotPublishedError } from '@/poll/errors/poll-not-published.error';
 
 @Injectable()
 export class PollService {
 	constructor(
 		@InjectRepository(Poll) private readonly pollRepository: Repository<Poll>,
+		private readonly configService: ConfigService,
 		@Inject(REQUEST) private readonly ctx: any,
 	) {
 	}
@@ -18,7 +25,11 @@ export class PollService {
 		return this.ctx.user.id;
 	}
 
-	async findById(id: number): Promise<Poll | undefined> {
+	private hasher(): crypto.Hmac {
+		return crypto.createHmac('sha1', this.configService.get('crypto.appSecret')!);
+	}
+
+	async findById(id: number): Promise<Poll> {
 		return await this.pollRepository.findOneOrFail({
 			id,
 			user: this.userId,
@@ -60,5 +71,41 @@ export class PollService {
 		return this.pollRepository.find({
 			user: this.userId
 		});
+	}
+
+	async publishPoll(id: number): Promise<void> {
+		const poll = await this.pollRepository.findOne({
+			id,
+			user: this.userId,
+		});
+
+		if (!poll) {
+			throw new EntityNotFoundError(Poll, id);
+		}
+
+		if (poll.publishedAt) {
+			throw new PollAlreadyPublishedError();
+		}
+
+		await this.pollRepository.update({
+			id,
+		}, {
+			publishedAt: new Date(),
+		});
+	}
+
+	async getLink(id: number): Promise<PollLinkDto> {
+		const poll = await this.findById(id);
+
+		if (!poll.publishedAt) {
+			throw new PollNotPublishedError();
+		}
+
+		const link = this.hasher().update(`poll-link(${id}, ${+poll.publishedAt})`).digest().toString('hex');
+		const appUrl = this.configService.get('app.frontUrl');
+
+		return {
+			url: `${appUrl}/vote/${link}`,
+		};
 	}
 }

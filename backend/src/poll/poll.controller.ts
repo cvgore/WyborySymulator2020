@@ -4,6 +4,7 @@ import { JwtGuard } from '@/auth/guards/jwt.guard';
 import CreatePollDto from '@/poll/dto/create-poll.dto';
 import EditPollDto from '@/poll/dto/edit-poll.dto';
 import { Poll } from '@/poll/poll.entity';
+import PollLinkDto from '@/poll/dto/poll-link.dto';
 
 @Controller('poll')
 @UseGuards(JwtGuard)
@@ -41,6 +42,18 @@ export class PollController {
 	@UseGuards(JwtGuard)
 	async delete(@Param('id') id: number): Promise<void> {
 		await this.pollService.deletePoll(id);
+	}
+
+	@Post(':id/publish')
+	@UseGuards(JwtGuard)
+	async publish(@Param('id') id: number): Promise<void> {
+		await this.pollService.publishPoll(id);
+	}
+
+	@Get(':id/link')
+	@UseGuards(JwtGuard)
+	async link(@Param('id') id: number): Promise<PollLinkDto> {
+		return await this.pollService.getLink(id);
 	}
 }
 

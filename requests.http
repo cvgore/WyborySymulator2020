@@ -28,7 +28,7 @@ Authorization: Bearer {{auth_token}}
 
 
 ### Get poll
-GET {{url}}/polls
+GET {{url}}/poll
 Accept: application/json
 Authorization: Bearer {{auth_token}}
 
@@ -61,6 +61,16 @@ Content-Type: application/json
 
 ### Remove poll
 DELETE {{url}}/poll/6
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+
+### Publish poll
+POST {{url}}/poll/8/publish
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+
+### Get link poll
+GET {{url}}/poll/8/link
 Accept: application/json
 Authorization: Bearer {{auth_token}}
 

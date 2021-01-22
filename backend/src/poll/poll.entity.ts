@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { IsDate } from 'class-validator';
-import { PollCode } from '@/poll_code/poll_code.entity';
+import { PollCode } from '@/poll-code/poll-code.entity';
 import { PollVote } from '@/poll_vote/poll_vote.entity';
 import { User } from '@/user/user.entity';
 import { PollQuestion } from '@/poll-question/poll-question.entity';

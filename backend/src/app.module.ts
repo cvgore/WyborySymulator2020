@@ -14,7 +14,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { AuthModule } from '@/auth/auth.module';
 import { PollModule } from '@/poll/poll.module';
 import { Poll } from '@/poll/poll.entity';
-import { PollCode } from '@/poll_code/poll_code.entity';
+import { PollCode } from '@/poll-code/poll-code.entity';
 import { PollVote } from '@/poll_vote/poll_vote.entity';
 import { PollQuestion } from '@/poll-question/poll-question.entity';
 import { PollOption } from '@/poll-option/poll-option.entity';

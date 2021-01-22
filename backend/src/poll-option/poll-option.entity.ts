@@ -50,4 +50,8 @@ export class PollOption {
 	setUpdatedAt() {
 		this.updatedAt = new Date();
 	}
+
+	get isSubmittedByUser(): boolean {
+		return this.pollCustomOption === null;
+	}
 }
