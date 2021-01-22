@@ -19,8 +19,8 @@ const routes = [
       name: 'log-in',
       component: Login
     },{
-      path: 'register',
-      name: 'register',
+      path: '2fa',
+      name: '2fa',
       component: Register
     }]
   },
@@ -28,6 +28,11 @@ const routes = [
     path: '/polls/:id',
     name: 'pickedPoll',
     component: () => import('@/views/PollPreview')
+  },
+  {
+    path: '/creator',
+    name: 'creatorsrator',
+    component: () => import('@/views/Creating')
   }
 ];
 

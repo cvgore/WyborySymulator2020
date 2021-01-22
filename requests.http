@@ -121,7 +121,6 @@ PUT {{url}}/poll/8/question/1/option/1
 Accept: application/json
 Authorization: Bearer {{auth_token}}
 Content-Type: application/json
-
 {
 	"name": "Sample option"
 }
