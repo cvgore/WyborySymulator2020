@@ -55,5 +55,11 @@ export class PollController {
 	async link(@Param('id') id: number): Promise<PollLinkDto> {
 		return await this.pollService.getLink(id);
 	}
+
+	@Get(':id/link')
+	@UseGuards(JwtGuard)
+	async vote(@Param('id') id: number): Promise<PollLinkDto> {
+		return await this.pollService.getLink(id);
+	}
 }
 

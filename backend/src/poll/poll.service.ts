@@ -1,11 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { IsNull, Not, Repository } from 'typeorm';
 import { Poll } from '@/poll/poll.entity';
 import CreatePollDto from '@/poll/dto/create-poll.dto';
 import EditPollDto from '@/poll/dto/edit-poll.dto';
 import { REQUEST } from '@nestjs/core';
-import { EntityNotFoundError } from 'typeorm/error/EntityNotFoundError';
 import { PollAlreadyPublishedError } from '@/poll/errors/poll-already-published.error';
 import * as crypto from 'crypto';
 import { ConfigService } from '@nestjs/config';
@@ -54,9 +53,16 @@ export class PollService {
 	}
 
 	async editPoll(id: number, data: EditPollDto): Promise<void> {
+		const poll = await this.pollRepository.findOneOrFail(id);
+
+		if (poll.publishedAt) {
+			throw new PollAlreadyPublishedError();
+		}
+
 		await this.pollRepository.update({
 			id,
-			user: this.userId
+			user: this.userId,
+			publishedAt: Not(IsNull()),
 		}, <Poll>data);
 	}
 
@@ -74,14 +80,10 @@ export class PollService {
 	}
 
 	async publishPoll(id: number): Promise<void> {
-		const poll = await this.pollRepository.findOne({
+		const poll = await this.pollRepository.findOneOrFail({
 			id,
 			user: this.userId,
 		});
-
-		if (!poll) {
-			throw new EntityNotFoundError(Poll, id);
-		}
 
 		if (poll.publishedAt) {
 			throw new PollAlreadyPublishedError();
@@ -102,7 +104,7 @@ export class PollService {
 		}
 
 		const link = this.hasher().update(`poll-link(${id}, ${+poll.publishedAt})`).digest().toString('hex');
-		const appUrl = this.configService.get('app.frontUrl');
+		const appUrl = this.configService.get<string>('app.frontUrl')!;
 
 		return {
 			url: `${appUrl}/vote/${link}`,

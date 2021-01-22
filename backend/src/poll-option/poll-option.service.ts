@@ -5,11 +5,13 @@ import { PollOption } from '@/poll-option/poll-option.entity';
 import CreatePollOptionDto from '@/poll-option/dto/create-poll-option.dto';
 import { PollQuestion } from '@/poll-question/poll-question.entity';
 import EditPollOptionDto from '@/poll-option/dto/edit-poll-option.dto';
+import { PollAlreadyPublishedError } from '@/poll/errors/poll-already-published.error';
 
 @Injectable()
 export class PollOptionService {
 	constructor(
-		@InjectRepository(PollOption) private readonly pollOptionRepository: Repository<PollOption>
+		@InjectRepository(PollOption) private readonly pollOptionRepository: Repository<PollOption>,
+		@InjectRepository(PollQuestion) private readonly pollQuestionRepository: Repository<PollQuestion>,
 	) {
 	}
 
@@ -21,7 +23,13 @@ export class PollOptionService {
 		});
 	}
 
-	async createOption(data: CreatePollOptionDto, pollQuestion: PollQuestion | number): Promise<PollOption> {
+	async createOption(data: CreatePollOptionDto, pollQuestionId: number): Promise<PollOption> {
+		const pollQuestion = await this.pollQuestionRepository.findOneOrFail(pollQuestionId);
+
+		if (pollQuestion.poll.publishedAt) {
+			throw new PollAlreadyPublishedError();
+		}
+
 		const pollOption = this.pollOptionRepository.create(
 			Object.assign({}, data, <PollOption>{
 				pollQuestion
@@ -34,6 +42,12 @@ export class PollOptionService {
 	}
 
 	async editOption(id: number, pollQuestionId: number, data: EditPollOptionDto): Promise<void> {
+		const pollQuestion = await this.pollQuestionRepository.findOneOrFail(pollQuestionId);
+
+		if (pollQuestion.poll.publishedAt) {
+			throw new PollAlreadyPublishedError();
+		}
+
 		await this.pollOptionRepository.update({
 			id,
 			pollQuestion: {
@@ -43,6 +57,12 @@ export class PollOptionService {
 	}
 
 	async deleteOption(id: number, pollQuestionId: number): Promise<void> {
+		const pollQuestion = await this.pollQuestionRepository.findOneOrFail(pollQuestionId);
+
+		if (pollQuestion.poll.publishedAt) {
+			throw new PollAlreadyPublishedError();
+		}
+
 		await this.pollOptionRepository.delete({
 			id,
 			pollQuestion: {

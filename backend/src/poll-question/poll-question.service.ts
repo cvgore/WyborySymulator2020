@@ -6,11 +6,13 @@ import EditPollOptionDto from '@/poll-option/dto/edit-poll-option.dto';
 import { Poll } from '@/poll/poll.entity';
 import CreatePollQuestionDto from '@/poll-question/dto/create-poll-question.dto';
 import { REQUEST } from '@nestjs/core';
+import { PollAlreadyPublishedError } from '@/poll/errors/poll-already-published.error';
 
 @Injectable()
 export class PollQuestionService {
 	constructor(
 		@InjectRepository(PollQuestion) private readonly pollQuestionRepository: Repository<PollQuestion>,
+		@InjectRepository(Poll) private readonly pollRepository: Repository<Poll>,
 		@Inject(REQUEST) private readonly ctx: any,
 	) {
 	}
@@ -19,7 +21,13 @@ export class PollQuestionService {
 		return this.ctx.user.id;
 	}
 
-	async createQuestion(data: CreatePollQuestionDto, poll: Poll | number): Promise<PollQuestion> {
+	async createQuestion(data: CreatePollQuestionDto, pollId: number): Promise<PollQuestion> {
+		const poll = await this.pollRepository.findOneOrFail(pollId);
+
+		if (poll.publishedAt) {
+			throw new PollAlreadyPublishedError();
+		}
+
 		const pollQuestion = this.pollQuestionRepository.create(
 			Object.assign({}, data, <PollQuestion>{
 				poll,
@@ -32,6 +40,12 @@ export class PollQuestionService {
 	}
 
 	async editQuestion(id: number, pollId: number, data: EditPollOptionDto): Promise<void> {
+		const poll = await this.pollRepository.findOneOrFail(pollId);
+
+		if (poll.publishedAt) {
+			throw new PollAlreadyPublishedError();
+		}
+
 		await this.pollQuestionRepository.update({
 			poll: {
 				user: this.userId,
@@ -42,6 +56,12 @@ export class PollQuestionService {
 	}
 
 	async deleteQuestion(id: number, pollId: number): Promise<void> {
+		const poll = await this.pollRepository.findOneOrFail(pollId);
+
+		if (poll.publishedAt) {
+			throw new PollAlreadyPublishedError();
+		}
+
 		await this.pollQuestionRepository.delete({
 			poll: {
 				user: this.userId,
