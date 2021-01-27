@@ -7,62 +7,32 @@
     <div class="field">
   <label class="label">Nazwa Ankiety</label>
   <div class="control">
-    <input class="input" type="text" placeholder="e.g Alex Smith">
+    <input class="input" type="text" placeholder="Nazwa Ankiety">
   </div>
 </div>
 
 <div class="field">
   <label class="label">Pytanie</label>
   <div class="control">
-    <input class="input" type="email" placeholder="e.g. alexsmith@gmail.com">
+    <input class="input" type="email" placeholder="Pytanie">
   </div>
 </div>
 
 
           <div class="field">
-            <label class="label">Odpowiedzi</label>
+            <label class="label">Odpowiedz:</label>
             <div class="columns">
-              <div class="column is-12 ">
-                
+              <div class="column is-12 "> 
                   <label for="exampleRadioInline1">
                     <div class="control">
-                      <input class="input" id="Pool" type="text" placeholder="odpowiedz 1" autofocus data-validate="require">
+                      <input class="input" id="Pool" type="text" placeholder="odpowiedz" autofocus data-validate="require">
                     </div>
-                      </label>
+                  </label>
               </div>
-                </div>
-                  <div class="columns">
-                    <div class="column is-12">
-                      
-                        <label for="exampleRadioInline1">
-                          <div class="control">
-                            <input class="input" id="Pool" type="text" placeholder="odpowiedz 2" autofocus data-validate="require">
-                          </div>
-                          </label>
-                    </div>
-                  </div>
-                    <div class="columns">
-                      <div class="column is-12">
-                        
-                          <label for="exampleRadioInline1">
-                            <div class="control">
-                            <input class="input" id="Pool" type="text" placeholder="odpowiedz 3" autofocus data-validate="require">
-                            </div>
-                          </label>
-                      </div>
-                    </div>
-                      <div class="columns">
-                        <div class="column is-12">
-                          
-                            <label for="exampleRadioInline1">
-                              <div class="control">
-                                <input class="input" id="Pool" type="text" placeholder="odpowiedz 4" autofocus data-validate="require">
-                              </div>
-                                </label>
-                        </div>
-                      </div>
-                    </div>
-               </div>  
+            </div>                  
+          </div>
+
+</div>  
                 
 
 </template>
