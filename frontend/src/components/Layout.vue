@@ -7,7 +7,7 @@
     <footer class="footer Footer m-3">
       <div class="content has-text-centered">
         <p>
-          Projekt wykonali <strong>Kacper Palka, Pydrian Adkacz, Dawid Zelinka.</strong>
+          Projekt wykonali <strong>Kacper Palka, Adrian Pykacz, Dawid Zelinka.</strong>
         </p>
       </div>
     </footer>
