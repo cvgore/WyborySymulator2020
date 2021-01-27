@@ -1,6 +1,6 @@
 <template>
   <div class="container is-flex is-flex-direction-column has-text-centered">
-    <table class="table is-hoverable ">
+    <table v-if="surveyType.length > 0" class="table is-hoverable ">
       <thead>
       <tr>
         <th>Tytuł ankiety</th>
@@ -10,7 +10,7 @@
         <th>Czas zakończenia</th>
       </tr>
       </thead>
-      <tbody v-if="surveyType.length > 0">
+      <tbody>
       <PollItem v-for="poll in surveyType" :key="poll.id" :poll="poll"/>
       </tbody>
     </table>

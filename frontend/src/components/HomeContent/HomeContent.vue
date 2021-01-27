@@ -1,5 +1,5 @@
 <template>
-  <div class="tabs is-centered is-boxed">
+  <div v-if="!isError.errCondition" class="tabs is-centered is-boxed">
     <ul>
       <li
         v-for="tab in tabs"
@@ -23,7 +23,7 @@ import Navigation from '@/components/Navigation/Navigation';
 import Open from '@/components/PollViews/Open';
 import Closed from '@/components/PollViews/Closed';
 import Layout from '@/components/Layout';
-import {mapActions } from 'vuex';
+import {mapActions, mapState} from 'vuex';
 
 export default {
   name: 'HomeContent',
@@ -41,6 +41,9 @@ export default {
   },
   methods: {
     ...mapActions('Polls',['fetchPolls'])
+  },
+  computed: {
+    ...mapState('Polls',['isError']),
   },
   created() {
     this.fetchPolls();
