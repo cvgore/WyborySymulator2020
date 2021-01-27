@@ -4,13 +4,13 @@
     <main class="Content">
       <slot/>
     </main>
-    <footer class="footer Footer m-3">
+    <footer class="footer">
       <div class="content has-text-centered">
         <p>
-          Projekt wykonali <strong>Kacper Palka, Pydrian Adkacz, Dawid Zelinka.</strong>
+            <a>Created by: Kacper Palka, Adrian Pykacz, Dawid Zelinka</a>
         </p>
       </div>
-    </footer>
+    </footer>     
   </div>
 </template>
 <script>
