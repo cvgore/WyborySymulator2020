@@ -6690,6 +6690,11 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
+jwt-decode@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/jwt-decode/-/jwt-decode-3.1.2.tgz#3fb319f3675a2df0c2895c8f5e9fa4b67b04ed59"
+  integrity sha512-UfpWE/VZn0iP50d8cz9NrZLM9lSWhcJ+0Gt/nm4by88UL+J1SiKN8/5dkjMmbEzwL2CAe+67GsegCbIKtbp75A==
+
 killable@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/killable/-/killable-1.0.1.tgz#4c8ce441187a061c7474fb87ca08e2a638194892"
@@ -8802,6 +8807,11 @@ realpath-native@^1.1.0:
   dependencies:
     util.promisify "^1.0.0"
 
+recaptcha-v3@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/recaptcha-v3/-/recaptcha-v3-1.8.0.tgz#b39ae7cba5322ed7027359c3f14502e44e909f83"
+  integrity sha512-ugtg4JHDZiYJwv3ZjWBBZntsTCVpRk2BD8AhVVpSw9jv71SSx+SS9H342VaE0D2XV78DpRdDuiMO9ZIgl4zI3A==
+
 regenerate-unicode-properties@^8.2.0:
   version "8.2.0"
   resolved "https://registry.yarnpkg.com/regenerate-unicode-properties/-/regenerate-unicode-properties-8.2.0.tgz#e5de7111d655e7ba60c057dbe9ff37c87e65cdec"
@@ -10566,6 +10576,13 @@ vue-loader@^15.9.2:
     loader-utils "^1.1.0"
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
+
+vue-recaptcha-v3@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/vue-recaptcha-v3/-/vue-recaptcha-v3-2.0.0.tgz#d8fd29d74d159895f3c68dd9bcfd0d9538e38f00"
+  integrity sha512-33UEpaBoIHW2XWf+Kc+ny2ri7d2LN/UgaxUNqo30fSzAxmNc71E+/mJrSBhG95iaOQCzj54fxtz/KSfesSS5sA==
+  dependencies:
+    recaptcha-v3 "^1.8.0"
 
 vue-router@^4.0.0-0:
   version "4.0.0-rc.5"

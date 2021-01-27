@@ -34,17 +34,17 @@
 	"pollOptions": [
 		{
 			"id": 1,
-			"pollId": 1,
+			"pollQuestion": 1,
 			"name": "Yes"
 		},
 		{
 			"id": 2,
-			"pollId": 1,
+			"pollQuestion": 1,
 			"name": "No"
 		},
 		{
 			"id": 3,
-			"pollId": 1,
+			"pollQuestion": 1,
 			"name": "Maybe"
 		}
 	],
