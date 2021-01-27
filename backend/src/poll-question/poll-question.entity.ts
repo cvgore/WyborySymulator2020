@@ -15,6 +15,11 @@ export class PollQuestion {
 	@Column()
 	type!: string;
 
+	@Column({
+		default: false,
+	})
+	required!: boolean;
+
 	@ManyToOne(_ => Poll)
 	poll!: Poll;
 

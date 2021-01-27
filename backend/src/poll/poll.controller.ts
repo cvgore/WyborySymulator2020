@@ -5,6 +5,8 @@ import CreatePollDto from '@/poll/dto/create-poll.dto';
 import EditPollDto from '@/poll/dto/edit-poll.dto';
 import { Poll } from '@/poll/poll.entity';
 import PollLinkDto from '@/poll/dto/poll-link.dto';
+import VotePollDto from '@/poll/dto/vote-poll.dto';
+import { Recaptcha } from '@/packages/recaptcha/src';
 
 @Controller('poll')
 @UseGuards(JwtGuard)
@@ -56,10 +58,16 @@ export class PollController {
 		return await this.pollService.getLink(id);
 	}
 
-	@Get(':id/link')
-	@UseGuards(JwtGuard)
-	async vote(@Param('id') id: number): Promise<PollLinkDto> {
-		return await this.pollService.getLink(id);
+	@Post(':id/:hash/vote')
+	@Recaptcha()
+	async vote(
+		@Param('id') id: number,
+		@Param('hash') hash: string,
+		@Body() votePoll: VotePollDto
+	): Promise<void> {
+		await this.pollService.validateVotePoll(id, hash, votePoll);
+
+
 	}
 }
 

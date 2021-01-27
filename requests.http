@@ -79,7 +79,7 @@ GET {{url}}/poll/8/question
 Accept: application/json
 Authorization: Bearer {{auth_token}}
 
-###
+### Create poll question
 POST {{url}}/poll/8/question
 Accept: application/json
 Authorization: Bearer {{auth_token}}
@@ -97,7 +97,8 @@ Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 {
-	"name": "Sample question123"
+	"name": "Sample question123",
+	"required": true
 }
 
 ### Edit poll question
@@ -141,3 +142,10 @@ DELETE {{url}}/poll/8/question/1/option/1
 Accept: application/json
 Authorization: Bearer {{auth_token}}
 Content-Type: application/json
+
+### Edit poll question
+POST {{url}}/poll/8/d6313ed3403f59d41a8c1c9bd478f6c5d3d44849/vote
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
