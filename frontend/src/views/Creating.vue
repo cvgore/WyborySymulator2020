@@ -1,10 +1,9 @@
 <template>
 <div class="columns is-10 is-offset-1">
   <div class="column is-four-fifths "></div>
-  <div class="column  "></div>
-  <div class="column "></div>
 </div>
 
+<div class="column is-10 is-offset-1">
     <div class="field">
   <label class="label">Nazwa Ankiety</label>
   <div class="control">
@@ -19,10 +18,11 @@
   </div>
 </div>
 
+
           <div class="field">
             <div class="columns">
-              <div class="column is-10 is-offset-1">
-                <input class="which-answer" id="exampleRadioInline1" type="radio" placeholder="nazwa ankiety" name="exampleRadioInline" checked="checked">
+              <div class="column is-12 ">
+                
                   <label for="exampleRadioInline1">
                     <div class="control">
                       <input class="input" id="Pool" type="text" placeholder="odpowiedz 1" autofocus data-validate="require">
@@ -31,8 +31,8 @@
               </div>
                 </div>
                   <div class="columns">
-                    <div class="column is-10 is-offset-1">
-                      <input class="which-answer" id="exampleRadioInline1" type="radio" placeholder="nazwa ankiety" name="exampleRadioInline" checked="checked">
+                    <div class="column is-12">
+                      
                         <label for="exampleRadioInline1">
                           <div class="control">
                             <input class="input" id="Pool" type="text" placeholder="odpowiedz 2" autofocus data-validate="require">
@@ -41,8 +41,8 @@
                     </div>
                   </div>
                     <div class="columns">
-                      <div class="column is-10 is-offset-1">
-                        <input class="which-answer" id="exampleRadioInline1" type="radio" placeholder="nazwa ankiety" name="exampleRadioInline" checked="checked">
+                      <div class="column is-12">
+                        
                           <label for="exampleRadioInline1">
                             <div class="control">
                             <input class="input" id="Pool" type="text" placeholder="odpowiedz 3" autofocus data-validate="require">
@@ -51,8 +51,8 @@
                       </div>
                     </div>
                       <div class="columns">
-                        <div class="column is-10 is-offset-1">
-                          <input class="which-answer" id="exampleRadioInline1" type="radio" placeholder="nazwa ankiety" name="exampleRadioInline" checked="checked">
+                        <div class="column is-12">
+                          
                             <label for="exampleRadioInline1">
                               <div class="control">
                                 <input class="input" id="Pool" type="text" placeholder="odpowiedz 4" autofocus data-validate="require">
@@ -61,7 +61,7 @@
                         </div>
                       </div>
                     </div>
-                 
+               </div>  
                 
 
 </template>
