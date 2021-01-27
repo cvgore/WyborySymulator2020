@@ -1,6 +1,6 @@
 <template>
   <div class="container is-flex is-flex-direction-column has-text-centered">
-    <table class="table is-hoverable">
+    <table class="table is-hoverable ">
       <thead>
       <tr>
         <th>Tytuł ankiety</th>

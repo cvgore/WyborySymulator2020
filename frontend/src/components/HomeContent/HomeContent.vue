@@ -1,5 +1,5 @@
 <template>
-  <div class="tabs is-centered">
+  <div class="tabs is-centered is-boxed">
     <ul>
       <li
         v-for="tab in tabs"
@@ -36,7 +36,7 @@ export default {
   data() {
     return {
       currentTab: 'Open',
-      tabs: ['Open', 'Closed'],
+      tabs: ['Open', 'Closed '],
     };
   },
   methods: {
