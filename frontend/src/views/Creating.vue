@@ -8,7 +8,7 @@
   <div class="steps-content">
     <div class="step-content has-text-centered is-active">
       <div class="field is-horizontal">
-        <div class="field-label is-normal">
+        <div class="field-label is-normal ">
           <label class="label">Nazwa Ankiety</label>
         </div>
         <div class="field-body">
