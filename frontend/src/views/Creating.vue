@@ -20,6 +20,7 @@
 
 
           <div class="field">
+            <label class="label">Odpowiedzi</label>
             <div class="columns">
               <div class="column is-12 ">
                 
