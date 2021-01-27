@@ -1,35 +1,14 @@
-import {
-	BeforeInsert,
-	BeforeUpdate,
-	Column,
-	Entity,
-	ManyToOne,
-	OneToMany,
-	OneToOne,
-	PrimaryGeneratedColumn
-} from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { IsDate, } from 'class-validator';
-import { PollQuestion } from '@/poll-question/poll-question.entity';
-import { Poll } from '@/poll/poll.entity';
 import { PollOption } from '@/poll-option/poll-option.entity';
-import { PollCustomOption } from '@/poll_custom_option/poll_custom_option.entity';
 
 @Entity()
 export class PollVote {
 	@PrimaryGeneratedColumn()
 	id!: number;
 
-	@OneToMany(_ => Poll, poll => poll.pollVotes)
-	poll!: Poll;
-
-	@ManyToOne(_ => PollQuestion)
-	pollQuestion!: PollQuestion;
-
 	@ManyToOne(_ => PollOption, pollOption => pollOption.pollVotes)
 	pollOption!: PollOption;
-
-	@OneToOne(_ => PollCustomOption)
-	pollCustomOption!: PollCustomOption | null;
 
 	@Column({type: 'timestamp'})
 	@IsDate()

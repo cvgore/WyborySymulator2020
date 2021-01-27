@@ -23,6 +23,15 @@ export class PollOptionService {
 		});
 	}
 
+	async findById(pollQuestionId: number, id: number): Promise<PollOption> {
+		return await this.pollOptionRepository.findOneOrFail({
+			pollQuestion: {
+				id: pollQuestionId,
+			},
+			id,
+		});
+	}
+
 	async createOption(data: CreatePollOptionDto, pollQuestionId: number): Promise<PollOption> {
 		const pollQuestion = await this.pollQuestionRepository.findOneOrFail(pollQuestionId);
 

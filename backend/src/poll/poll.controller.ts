@@ -7,12 +7,14 @@ import { Poll } from '@/poll/poll.entity';
 import PollLinkDto from '@/poll/dto/poll-link.dto';
 import VotePollDto from '@/poll/dto/vote-poll.dto';
 import { Recaptcha } from '@/packages/recaptcha/src';
+import { PollVoteService } from '@/poll-vote/poll-vote.service';
 
 @Controller('poll')
 @UseGuards(JwtGuard)
 export class PollController {
 	constructor(
-		private readonly pollService: PollService
+		private readonly pollService: PollService,
+		private readonly pollVoteService: PollVoteService,
 	) {
 	}
 
@@ -67,7 +69,24 @@ export class PollController {
 	): Promise<void> {
 		await this.pollService.validateVotePoll(id, hash, votePoll);
 
+		const pollQuestions = await this.pollService.getPollQuestions(id);
 
+		for (const votePollKey in votePoll) {
+			if (!votePoll.hasOwnProperty(votePollKey)) {
+				continue;
+			}
+
+			const data = votePoll[votePollKey];
+			const pollQuestion = pollQuestions.find(q => q.id.toString(10) === votePollKey)!;
+
+			if (pollQuestion.type === 'enum') {
+				for (const datum of data) {
+					await this.pollVoteService.createVote(pollQuestion.id, <number>datum);
+				}
+			} else {
+				await this.pollVoteService.createVoteAndOption(pollQuestion.id, data[0]);
+			}
+		}
 	}
 }
 

@@ -153,6 +153,12 @@ export class PollService {
 		}
 
 		const validKeys = poll.pollQuestions.map(q => q.id.toString(10));
+		const requiredKeys = poll.pollQuestions.filter(q => q.required).map(q => q.id.toString(10));
+		const givenKeys = Object.keys(votePollDto);
+
+		if (requiredKeys.filter(x => givenKeys.includes(x)).length !== requiredKeys.length) {
+			throw new UnprocessableEntityException('missing required question answers');
+		}
 
 		for (const voteKey in votePollDto) {
 			if (!votePollDto.hasOwnProperty(voteKey)) {
@@ -233,5 +239,16 @@ export class PollService {
 					throw new Error(`Unknown question type "${question.type}", this should not happen`);
 			}
 		}
+	}
+
+	async getPollQuestions(pollId: number): Promise<PollQuestion[]> {
+		const poll = await this.pollRepository.findOneOrFail({
+			relations: ['pollQuestions'],
+			where: {
+				id: pollId
+			}
+		});
+
+		return poll.pollQuestions;
 	}
 }

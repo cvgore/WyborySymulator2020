@@ -1,3 +1,3 @@
-export default class VotePollDto {
-	[key: number]: (string | number)[]
+export default interface VotePollDto {
+	[key: string]: (string | number)[]
 }
