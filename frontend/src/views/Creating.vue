@@ -18,12 +18,13 @@
       />
       <div class="field is-grouped">
         <div class="control">
-          <button type="submit" class="button is-link">Zapisz</button>
+          <button type="submit" :class="{'is-loading':isSending}" class="button is-link">Zapisz</button>
         </div>
         <div class="control">
           <button class="button is-info" type="button" @click="addQuestion">Dodaj pytanie</button>
         </div>
       </div>
+      <p class="help is-danger" v-if="error">{{errorMessage}}</p>
     </form>
     <div class="box">
       <pre v-if="ua">
@@ -44,7 +45,9 @@ export default {
       pollName: '',
       questions: [],
       ua: null,
-      fullSend: false
+      isSending: false,
+      error: false,
+      errorMessage: null
     };
   },
   methods: {
@@ -58,21 +61,32 @@ export default {
       console.log(i);
       this.questions.splice(i, 1);
     },
-    save(){
+    async save(){
+      this.isSending = true;
       const obj = JSON.stringify({
         pollName: this.pollName,
         questions: this.questions
       },null,2);
       this.ua = obj;
       try {
-        axios.post('/poll',{
+        await axios.post('/poll',{
           name: this.pollName
-        })
-        axios.post('/')
+        });
+        for (const q of this.questions) {
+          await axios.post(`/poll/xXx/question`,{
+            name : q.question
+          })
+        }
+        for (const q of this.questions.answers) {
+          await axios.post(`/poll/xXx/question/xXx/option/1`,{
+            name : q.text
+          })
+        }
       } catch (e){
-
+        this.errorMessage = 'Coś sie odjebało';
+        this.error = true;
       } finally {
-
+        this.isSending = false;
       }
     }
   },

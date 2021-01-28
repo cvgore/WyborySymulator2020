@@ -18,7 +18,7 @@
         <div class="navbar-item">
           <div class="buttons">
             <router-link to="/forms/log-in" class="button is-primary">
-              Log in
+              Zaloguj się
             </router-link>
             <router-link to="/creator" class="button is-warning">
               Stwórz nową ankiete

@@ -20,8 +20,8 @@
 
 <script>
 import Navigation from '@/components/Navigation/Navigation';
-import Open from '@/components/PollViews/Open';
-import Closed from '@/components/PollViews/Closed';
+import Otwarte from '@/components/PollViews/Open';
+import Zamkniete from '@/components/PollViews/Closed';
 import Layout from '@/components/Layout';
 import {mapActions, mapState} from 'vuex';
 
@@ -30,13 +30,13 @@ export default {
   components: {
     Layout,
     Navigation,
-    Open,
-    Closed,
+    Otwarte,
+    Zamkniete,
   },
   data() {
     return {
-      currentTab: 'Open',
-      tabs: ['Open', 'Closed '],
+      currentTab: 'Otwarte',
+      tabs: ['Otwarte', 'Zamkniete'],
     };
   },
   methods: {
