@@ -1,16 +1,16 @@
 <template>
-  <div class="container is-flex is-flex-direction-column has-text-centered">
-    <table v-if="surveyType.length > 0" class="table is-hoverable ">
+  <div class="table-container is-flex is-flex-direction-column has-text-centered">
+    <table v-if="surveyType.length > 0" class="table is-striped">
       <thead>
-      <tr>
-        <th>Tytuł ankiety</th>
-        <th>Data utworzenia</th>
-        <th>Łącznie pytań</th>
-        <th>Czas zakończenia</th>
-      </tr>
+        <tr>
+          <th>Tytuł ankiety</th>
+          <th>Data utworzenia</th>
+          <th>Łącznie pytań</th>
+          <th>Czas zakończenia</th>
+        </tr>
       </thead>
       <tbody>
-      <PollItem v-for="poll in surveyType" :key="poll.id" :poll="poll"/>
+        <PollItem v-for="poll in surveyType" :key="poll.id" :poll="poll" />
       </tbody>
     </table>
     <section v-if="isLoading">
@@ -23,18 +23,26 @@
 </template>
 
 <script>
-import ErrorNotify from "@/components/ErrorsNotify/ErrorNotify";
-import PollItem from "@/components/PollViews/PollItem";
+import ErrorNotify from '@/components/ErrorsNotify/ErrorNotify';
+import PollItem from '@/components/PollViews/PollItem';
 export default {
-  name: "Tabelunia",
+  name: 'Tabelunia',
   components: {
     ErrorNotify,
-    PollItem
+    PollItem,
   },
-  props : {
+  props: {
     surveyType: Array,
     isLoading: Boolean,
-    isError: Object
+    isError: Object,
+  },
+};
+</script>
+<style lang="scss">
+.table-container {
+  font-size: 10px;
+  @media screen and (min-width: 560px){
+    font-size: 16px;
   }
 }
-</script>
+</style>

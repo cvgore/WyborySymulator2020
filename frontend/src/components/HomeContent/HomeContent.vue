@@ -8,7 +8,11 @@
         :class="{ 'is-active': currentTab === tab }"
       >
         <router-link to="/">
-          {{ tab }}
+          <span class="icon is-small">
+            <i v-if="tab==='Otwarte'" class="fas fa-comment-alt" aria-hidden="true"></i>
+            <i v-if="tab==='Zamkniete'" class="fas fa-lock" aria-hidden="true"></i>
+          </span>
+          <span>{{ tab }}</span>
         </router-link>
       </li>
     </ul>

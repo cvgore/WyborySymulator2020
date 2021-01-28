@@ -1,19 +1,26 @@
 <template>
-  <nav class="navbar has-shadow has-background-info" role="navigation" aria-label="main navigation">
+  <nav
+    class="navbar has-shadow has-background-info"
+    role="navigation"
+    aria-label="main navigation"
+  >
     <div class="navbar-brand is-mobile">
       <a
         role="button"
         class="navbar-burger"
+        :class="{'is-active':showMobileNavbar}"
         aria-label="menu"
         aria-expanded="false"
         data-target="navbarBasicExample"
+        @click="toggleMN"
       >
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
       </a>
     </div>
-    <div id="navbarBasicExample" class="navbar-menu">
+    <div id="navbarBasicExample" class="navbar-menu" :class="{'is-active':showMobileNavbar}"
+    >
       <div class="navbar-start has-text-weight-bold">
         <router-link to="/" class="navbar-item has-text-white" active-class="has-background-link">
           Lista ankiet
@@ -34,5 +41,15 @@
 <script>
 export default {
   name: 'Navigation',
+  data(){
+    return {
+      showMobileNavbar: false
+    }
+  },
+  methods: {
+    toggleMN(){
+      this.showMobileNavbar = !this.showMobileNavbar;
+    }
+  }
 };
 </script>
