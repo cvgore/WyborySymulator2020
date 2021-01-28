@@ -6,7 +6,6 @@
         <th>Tytuł ankiety</th>
         <th>Data utworzenia</th>
         <th>Łącznie pytań</th>
-        <th>Wypełniono</th>
         <th>Czas zakończenia</th>
       </tr>
       </thead>
