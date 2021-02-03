@@ -36,6 +36,7 @@
 
 <script>
 import Question from '@/components/Creator/Question';
+
 import axios from "@/axios";
 export default {
   name: 'Creating',
