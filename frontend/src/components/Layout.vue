@@ -5,12 +5,12 @@
       <slot/>
     </main>
     <footer class="footer">
-      <div class="content has-text-centered">
+      <div class="content has-text-centered ">
         <p>
-            <a>Created by: Kacper Palka, Adrian Pykacz, Dawid Zelinka</a>
+            <a>Created by: Kacper Palka, Adrian Pykacz, Dawid Zelinka </a>
         </p>
       </div>
-    </footer>     
+    </footer>
   </div>
 </template>
 <script>

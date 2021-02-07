@@ -4,7 +4,7 @@ import auth from './auth.module';
 
 const debug = process.env.NODE_ENV !== 'production';
 const plugins = debug ? [createLogger({})] : [];
-export default createStore({
+const store = createStore({
   modules: {
     'Polls': {
       namespaced: true,
@@ -18,4 +18,5 @@ export default createStore({
   strict: debug,
   plugins
 });
+export default store;
 

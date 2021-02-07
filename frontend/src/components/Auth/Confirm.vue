@@ -20,6 +20,7 @@
         <div class="control m-4">
           <button
             class="button is-link"
+            :class="{'is-loading':state.isSending}"
             type="submit"
           >
             Zatwierdź
@@ -37,28 +38,37 @@ import jwtDecode from "jwt-decode";
 import axios from "@/axios";
 
 export default {
-  name: "Register",
+  name: "Confirm",
   setup(){
     const state = reactive({
-      token: null
+      token: null,
+      isSending: false,
+      error: {
+        condition: false,
+        msg: ''
+      },
     })
     const store = useStore();
     const email = store.state.Auth.email;
     const verifyHandler = async () => {
-      const decode = jwtDecode(state.token);
+      state.isSending = true;
+      const objJsonB64 = atob(state.token);
+      const decode = JSON.parse(objJsonB64);
       const toSend = {
         email,
-        token: decode,
-        ts: decode
+        token: decode.token,
+        ts: decode.ts,
       }
       try {
         const res = await axios.post('/user/login/authorize', toSend);
         store.commit('Auth/insertToken',{
-          token: decode,
-          ts: decode
+          token: res.data.body.json.access_token,
         })
-      } catch {
-        console.log('ua')
+      } catch(e) {
+        state.error.condition = true;
+        state.error.msg = e.message;
+      } finally {
+        state.isSending = false;
       }
     }
     return {

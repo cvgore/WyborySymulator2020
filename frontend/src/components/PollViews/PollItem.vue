@@ -5,7 +5,6 @@
     </th>
     <td>{{ createdAt }}</td>
     <td>{{ questions }}</td>
-    <td>0</td>
     <td class="has-text-success">{{ validUntil }}</td>
   </tr>
 </template>

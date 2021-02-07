@@ -5,9 +5,6 @@
         <h1 class="title">
           {{pickedPoll.name}}
         </h1>
-        <h2 class="subtitle">
-          Może autor
-        </h2>
       </div>
     </div>
   </section>

@@ -10,7 +10,7 @@
 import {mapGetters, mapState} from "vuex";
 import Tabelunia from "@/components/PollViews/Tabelunia";
 export default {
-  name: "PollList",
+  name: "Open",
   components: {
     Tabelunia
   },
