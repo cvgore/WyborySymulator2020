@@ -27,8 +27,7 @@
           </button>
         </div>
         <div>
-          <pre v-if="state.response">{{ state.response }}</pre>
-          <p v-else-if="state.error.condition">Błąd serwera</p>
+          <p v-if="state.error.condition === false" class="is-danger">Błąd</p>
         </div>
       </div>
     </form>
@@ -40,19 +39,17 @@ import Layout from '@/components/Layout';
 import {reactive} from "vue";
 import axios from "@/axios";
 import { useRouter } from "vue-router";
-import { useReCaptcha } from 'vue-recaptcha-v3'
 import {useStore} from "vuex";
 export default {
   name: 'Login',
   components: { Layout },
   setup(){
-    const {executeRecaptcha,recaptchaLoaded} = useReCaptcha();
     const store = useStore();
     const state = reactive({
       email: '',
       isSending: false,
       error: {
-        condition: false,
+        condition: null,
         msg: ''
       },
       response: null
@@ -72,7 +69,7 @@ export default {
       } finally {
         state.isSending = false;
         store.commit('Auth/changeEmail',state.email);
-        router.replace('2fa');
+        await router.replace('2fa');
       }
     }
     return {

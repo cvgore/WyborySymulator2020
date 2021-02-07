@@ -3,7 +3,6 @@
     <form @submit.prevent="verifyHandler">
       <div class="field">
         <label class="label">Kod</label>
-        <!--     veevalidate  <p class="help is-danger">This email is invalid</p> -->
         <div class="control has-icons-left has-icons-right">
           <input
             class="input"
@@ -36,6 +35,7 @@ import { useStore } from "vuex";
 import { reactive } from "vue";
 import jwtDecode from "jwt-decode";
 import axios from "@/axios";
+import {useRouter} from "vue-router";
 
 export default {
   name: "Confirm",
@@ -49,6 +49,8 @@ export default {
       },
     })
     const store = useStore();
+    const router = useRouter();
+
     const email = store.state.Auth.email;
     const verifyHandler = async () => {
       state.isSending = true;
@@ -61,10 +63,13 @@ export default {
       }
       try {
         const res = await axios.post('/user/login/authorize', toSend);
-        console.log(res)
-        store.commit('Auth/insertToken',{
-          token: res.data.access_token,
-        })
+        if(res.status === 201) {
+          store.commit('Auth/insertToken',{
+            token: res.data.access_token,
+          });
+          store.commit('Auth/changeAuth',true);
+          await router.replace('/');
+        }
       } catch(e) {
         state.error.condition = true;
         state.error.msg = e.message;

@@ -11,14 +11,19 @@
         v-for="(q, index) in questions"
         :key="`quest-${index}`"
         :index="index"
-        :question.sync="q.question"
+        :question.sync="q.questionText"
         :parentAnswers.sync="q.answers"
-        @update="q.question = $event"
+        @update="q.questionText = $event"
         @delete="deleteQuestion(index)"
       />
       <div class="field is-grouped">
         <div class="control">
-          <button type="submit" :class="{'is-loading':isSending}" class="button is-link">Zapisz</button>
+          <button
+            type="submit"
+            :class="{'is-loading':isSending}"
+            class="button is-link">
+            Zapisz
+          </button>
         </div>
         <div class="control">
           <button class="button is-info" type="button" @click="addQuestion">Dodaj pytanie</button>
@@ -26,11 +31,7 @@
       </div>
       <p class="help is-danger" v-if="error">{{errorMessage}}</p>
     </form>
-    <div class="box">
-      <pre v-if="ua">
-      {{ ua }}
-    </pre>
-    </div>
+    <p class="title is-success" v-if="correctStatus">Zapisano ankiete</p>
   </div>
 </template>
 
@@ -45,16 +46,16 @@ export default {
     return {
       pollName: '',
       questions: [],
-      ua: null,
       isSending: false,
       error: false,
-      errorMessage: null
+      errorMessage: null,
+      correctStatus: false
     };
   },
   methods: {
     addQuestion() {
       this.questions.push({
-        question: '',
+        questionText: '',
         answers: [],
       });
     },
@@ -64,29 +65,28 @@ export default {
     },
     async save(){
       this.isSending = true;
-      const obj = JSON.stringify({
-        pollName: this.pollName,
-        questions: this.questions
-      },null,2);
-      this.ua = obj;
       try {
-        const {data} = await axios.post('/poll',{
+        const poll = await axios.post('/poll',{
           name: this.pollName
         });
+        this.correctStatus = poll.status === 201;
         for (const q of this.questions) {
-          await axios.post(`/poll/${data.id}/question`,{
-            name : q.question,
-            type: "text"
+          const question = await axios.post(`/poll/${poll.data.id}/question`,{
+            name : q.questionText,
+            type: "text",
+            required: true
           });
-
+          this.correctStatus = question.status === 201;
+          for (const answers of q.answers) {
+            const option = await axios.post(`/poll/${poll.data.id}/question/${question.data.id}/option`,{
+              name : answers.text,
+            })
+            this.correctStatus = option.status === 201;
+          }
         }
-        // for (const q of this.questions.answers) {
-        //   await axios.post(`/poll/${data.id}/question/${}/option`,{
-        //     name : q.text
-        //   })
-        // }
+
       } catch (e){
-        this.errorMessage = 'Coś sie odjebało';
+        this.errorMessage = 'Błąd';
         this.error = true;
       } finally {
         this.isSending = false;

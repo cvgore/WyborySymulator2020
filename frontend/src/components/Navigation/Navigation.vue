@@ -22,15 +22,16 @@
     <div id="navbarBasicExample" class="navbar-menu" :class="{'is-active':showMobileNavbar}"
     >
       <div class="navbar-start has-text-weight-bold">
-        <router-link to="/" class="navbar-item has-text-white" active-class="has-background-link">
+        <router-link to="/" class="navbar-item has-text-dark" active-class="has-background-link">
           Lista ankiet
         </router-link>
       </div>
       <div class="navbar-end">
         <div class="navbar-item">
+          <p v-if="isAuth" class="navbar-item has-text-white is-size-4">Witaj, {{email}} </p>
           <div class="buttons">
-            <router-link to="/forms/log-in" class="button is-primary" replace> Zaloguj się </router-link>
-            <router-link to="/creator" class="button is-warning" replace> Stwórz nową ankiete </router-link>
+            <router-link v-if="!isAuth" to="/forms/log-in" class="button is-primary" replace> Zaloguj się </router-link>
+            <router-link v-if="isAuth" to="/creator" class="button is-warning" replace> Stwórz nową ankiete </router-link>
           </div>
         </div>
       </div>
@@ -39,12 +40,17 @@
 </template>
 
 <script>
+import {mapState} from "vuex";
+
 export default {
   name: 'Navigation',
   data(){
     return {
       showMobileNavbar: false
     }
+  },
+  computed: {
+    ...mapState('Auth',['isAuth','email'])
   },
   methods: {
     toggleMN(){

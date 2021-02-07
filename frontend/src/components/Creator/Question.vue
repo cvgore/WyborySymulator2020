@@ -3,7 +3,6 @@
     <label class="label">Pytanie #{{ `${index + 1}` }}</label>
     <div class="control">
       <input
-      
         class="input"
         type="text"
         placeholder="Pytanie"
@@ -42,12 +41,8 @@
 </template>
 
 <script>
-import {Answer,label,field} from "@/components/Creator/Answer";
+import Answer from "@/components/Creator/Answer";
 export default {
-  components: {
-    label,
-  },
-
   name: 'Question',
   components: {Answer},
   props: {
@@ -57,23 +52,6 @@ export default {
     parentAnswers: Array
   },
   methods: {
-    onSubmit(values) {
-      alert(JSON.stringify(values, null, 2));
-    },
-     validateEmail(value) {
-      // if the field is empty
-      if (!value) {
-        return 'This field is required';
-      }
-      // if the field is not a valid email
-      if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
-        return 'This field must be a valid email';
-      }
-
-      // All is good
-      return true;
-    },
-
     addAnswer(){
       this.parentAnswers.push({
         text: ''
@@ -82,13 +60,8 @@ export default {
     deleteAnswer(i) {
       this.parentAnswers.splice(i, 1);
     },
-  },
-    
-
-
+  }
 };
-
-
 </script>
 
 <style scoped></style>
