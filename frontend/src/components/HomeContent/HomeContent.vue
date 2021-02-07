@@ -1,25 +1,11 @@
 <template>
-  <div v-if="!isError.errCondition" class="tabs is-centered is-boxed">
-    <ul>
-      <li
-        v-for="tab in tabs"
-        :key="tab"
-        @click="currentTab = tab"
-        :class="{ 'is-active': currentTab === tab }"
-      >
-        <router-link to="/">
-          <span class="icon is-small">
-            <i v-if="tab==='Otwarte'" class="fas fa-comment-alt" aria-hidden="true"></i>
-            <i v-if="tab==='Zamkniete'" class="fas fa-lock" aria-hidden="true"></i>
-          </span>
-          <span>{{ tab }}</span>
-        </router-link>
-      </li>
-    </ul>
+  <div v-if="!isAuth" class="boxx section is-flex is-flex-direction-column is-justify-content-center is-align-items-center">
+    <figure class="image is-128x128 my-5">
+      <img src="@/assets/man.png" alt="icon">
+    </figure>
+    <p class="title is-size-2  has-text-info">Nie jesteś zalogowany!</p>
+    <router-link to="/log-in" class="button is-link is-large">Zaloguj się</router-link>
   </div>
-  <keep-alive>
-    <component :is="currentTab"/>
-  </keep-alive>
 </template>
 
 <script>
@@ -35,20 +21,20 @@ export default {
     Layout,
     Navigation,
   },
-  data() {
-    return {
-      currentTab: 'Otwarte',
-      tabs: ['Otwarte', 'Zamkniete'],
-    };
-  },
   methods: {
-    ...mapActions('Polls',['fetchPolls'])
+    ...mapActions('Polls',['fetchPolls']),
   },
   computed: {
     ...mapState('Polls',['isError']),
+    ...mapState('Auth',['isAuth']),
   },
   async created() {
     await this.fetchPolls();
   },
 };
 </script>
+<style>
+.boxx {
+  height: 60vh;
+}
+</style>
