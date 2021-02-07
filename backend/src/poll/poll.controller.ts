@@ -8,9 +8,9 @@ import PollLinkDto from '@/poll/dto/poll-link.dto';
 import VotePollDto from '@/poll/dto/vote-poll.dto';
 import { Recaptcha } from '@/packages/recaptcha/src';
 import { PollVoteService } from '@/poll-vote/poll-vote.service';
+import { PollDataDto } from '@/poll/dto/poll-data.dto';
 
 @Controller('poll')
-@UseGuards(JwtGuard)
 export class PollController {
 	constructor(
 		private readonly pollService: PollService,
@@ -19,6 +19,7 @@ export class PollController {
 	}
 
 	@Get('/')
+	@UseGuards(JwtGuard)
 	async list(): Promise<Poll[]> {
 		return await this.pollService.getAll();
 	}
@@ -58,6 +59,15 @@ export class PollController {
 	@UseGuards(JwtGuard)
 	async link(@Param('id') id: number): Promise<PollLinkDto> {
 		return await this.pollService.getLink(id);
+	}
+
+	@Get(':id/:hash')
+	@Recaptcha()
+	async data(
+		@Param('id') id: number,
+		@Param('hash') hash: string,
+	): Promise<Poll> {
+		return await this.pollService.getPollData(id, hash);
 	}
 
 	@Post(':id/:hash/vote')

@@ -128,29 +128,7 @@ export class PollService {
 	}
 
 	async validateVotePoll(pollId: number, hash: string, votePollDto: VotePollDto): Promise<void> {
-		const poll = await this.pollRepository.findOneOrFail({
-			relations: ['pollQuestions', 'pollQuestions.pollOptions'],
-			where: [
-				{
-					id: pollId,
-					publishedAt: Not(IsNull()),
-					validUntil: IsNull(),
-					validFrom: LessThanOrEqual(new Date()),
-				},
-				{
-					id: pollId,
-					publishedAt: Not(IsNull()),
-					validUntil: MoreThanOrEqual(new Date()),
-					validFrom: LessThanOrEqual(new Date())
-				}
-			]
-		});
-
-		if (hash !== this.getLinkHash(poll)) {
-			throw new EntityNotFoundError(Poll, {
-				pollId, hash
-			});
-		}
+		const poll = await this.getPollData(pollId, hash);
 
 		const validKeys = poll.pollQuestions.map(q => q.id.toString(10));
 		const requiredKeys = poll.pollQuestions.filter(q => q.required).map(q => q.id.toString(10));
@@ -250,5 +228,33 @@ export class PollService {
 		});
 
 		return poll.pollQuestions;
+	}
+
+	async getPollData(pollId: number, hash: string): Promise<Poll> {
+		const poll = await this.pollRepository.findOneOrFail({
+			relations: ['pollQuestions', 'pollQuestions.pollOptions'],
+			where: [
+				{
+					id: pollId,
+					publishedAt: Not(IsNull()),
+					validUntil: IsNull(),
+					validFrom: LessThanOrEqual(new Date()),
+				},
+				{
+					id: pollId,
+					publishedAt: Not(IsNull()),
+					validUntil: MoreThanOrEqual(new Date()),
+					validFrom: LessThanOrEqual(new Date())
+				}
+			]
+		});
+
+		if (hash !== this.getLinkHash(poll)) {
+			throw new EntityNotFoundError(Poll, {
+				pollId, hash
+			});
+		}
+
+		return poll;
 	}
 }

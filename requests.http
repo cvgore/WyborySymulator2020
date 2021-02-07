@@ -124,7 +124,7 @@ Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 {
-	"name": "Sample question"
+	"name": "Sample option"
 }
 
 ### Edit poll question
@@ -132,6 +132,7 @@ PUT {{url}}/poll/8/question/1/option/1
 Accept: application/json
 Authorization: Bearer {{auth_token}}
 Content-Type: application/json
+
 {
 	"name": "Sample option"
 }
@@ -142,10 +143,13 @@ Accept: application/json
 Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
+### Get poll data
+GET {{url}}/poll/8/d6313ed3403f59d41a8c1c9bd478f6c5d3d44849
+Accept: application/json
+
 ### Vote poll
 POST {{url}}/poll/8/d6313ed3403f59d41a8c1c9bd478f6c5d3d44849/vote
 Accept: application/json
-Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 {

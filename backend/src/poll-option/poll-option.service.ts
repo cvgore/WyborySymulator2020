@@ -33,7 +33,12 @@ export class PollOptionService {
 	}
 
 	async createOption(data: CreatePollOptionDto, pollQuestionId: number): Promise<PollOption> {
-		const pollQuestion = await this.pollQuestionRepository.findOneOrFail(pollQuestionId);
+		const pollQuestion = await this.pollQuestionRepository.findOneOrFail({
+			relations: ['poll'],
+			where: {
+				id: pollQuestionId
+			}
+		});
 
 		if (pollQuestion.poll.publishedAt) {
 			throw new PollAlreadyPublishedError();
