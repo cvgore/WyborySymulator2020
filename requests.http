@@ -4,7 +4,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-	"email": "{{email}}"
+	"email": "dupa@gmail.com"
 }
 
 ### Complete 2fa authorization

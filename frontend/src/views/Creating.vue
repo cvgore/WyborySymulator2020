@@ -69,16 +69,17 @@ export default {
       },null,2);
       this.ua = obj;
       try {
-        await axios.post('/poll',{
+        const poll = await axios.post('/poll',{
           name: this.pollName
         });
+        console.log(poll);
         for (const q of this.questions) {
           await axios.post(`/poll/xXx/question`,{
             name : q.question
           })
         }
         for (const q of this.questions.answers) {
-          await axios.post(`/poll/xXx/question/xXx/option/1`,{
+          await axios.post(`/poll//question/xXx/option/1`,{
             name : q.text
           })
         }

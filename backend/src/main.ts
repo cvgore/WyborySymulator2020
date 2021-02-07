@@ -15,7 +15,7 @@ declare const module: any;
 // Creates an application and runs it asynchronously
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
-
+	app.enableCors();
 	app.useGlobalPipes(
 		new ValidationPipe({
 			transform: true,

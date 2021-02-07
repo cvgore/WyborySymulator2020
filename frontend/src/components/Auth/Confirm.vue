@@ -61,8 +61,9 @@ export default {
       }
       try {
         const res = await axios.post('/user/login/authorize', toSend);
+        console.log(res)
         store.commit('Auth/insertToken',{
-          token: res.data.body.json.access_token,
+          token: res.data.access_token,
         })
       } catch(e) {
         state.error.condition = true;

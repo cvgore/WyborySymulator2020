@@ -17,11 +17,6 @@
         </div>
       </div>
       <div class="field is-grouped is-flex is-align-items-center is-flex-direction-column">
-        <div class="control">
-          <button @click="recaptchaHandler" type="button">
-            Execute recaptcha
-          </button>
-        </div>
         <div class="control m-4">
           <button
             class="button is-link"
@@ -80,15 +75,9 @@ export default {
         router.replace('2fa');
       }
     }
-    async function recaptchaHandler(){
-      await recaptchaLoaded();
-      const token = await executeRecaptcha('login');
-      console.log(token);
-    }
     return {
       state,
       submitForm,
-      recaptchaHandler
     }
   }
 };
