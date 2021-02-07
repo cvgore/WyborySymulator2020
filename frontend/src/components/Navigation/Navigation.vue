@@ -40,7 +40,7 @@
             </div>
           </div>
           <div class="buttons">
-            <router-link v-if="!isAuth" to="/forms/log-in" class="button is-primary" replace> Zaloguj się </router-link>
+            <router-link v-if="!isAuth" to="/forms/log-in" class="button is-link" replace> Zaloguj się </router-link>
             <router-link v-if="isAuth" to="/creator" class="button is-warning" replace> Stwórz nową ankiete </router-link>
           </div>
         </div>

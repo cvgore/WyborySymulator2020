@@ -2,10 +2,10 @@
   <div class="field is-flex is-align-items-center is-flex-direction-column">
     <p>{{ question.name }}</p>
     <div v-if="state.pollOptions" class="control">
-        <label class="radio" v-for="opt in state.pollOptions">
-          <input type="radio" name="answer">
-          {{opt.name}}
-        </label>
+      <label class="radio" v-for="opt in state.pollOptions">
+        <input type="radio" name="answer">
+        {{opt.name}}
+      </label>
     </div>
     <span>{{state.pollOptions}}</span>
     <progress v-if="state.loading" class="progress is-small is-primary" max="100">50%</progress>
@@ -17,7 +17,6 @@
 import axios from '@/axios';
 import { reactive } from 'vue';
 import ErrorNotify from "@/components/ErrorsNotify/ErrorNotify";
-
 export default {
   name: 'QuestionItem',
   components: {ErrorNotify},
