@@ -48,7 +48,7 @@ export class UserService {
 
 	async sendLoginEmail(email: string, composite: CompositeToken, request: Request): Promise<void> {
 		const appName = this.config.get('app.name');
-		const appUrl = this.config.get('app.url');
+		const appUrl = this.config.get('app.frontUrl');
 
 		const exists = await this.existsByEmail(email);
 		const subject = exists

@@ -1,5 +1,6 @@
 <template>
-  <form id="survey-form" class="m-5">
+  <p v-if="state.isError" class="title">Ua niedobrze</p>
+  <form v-if="state.isLoading===false && currentAnswers"  id="survey-form" class="m-5">
     <div class="title is-flex is-justify-content-center">
       Question {{ state.currentQuestionIndexNumber }}/{{ state.amountOfQuestions }}
     </div>
@@ -13,7 +14,7 @@
           </div>
           <p class="subtitle">Poprzednie pytanie</p>
         </div>
-        <section v-if="state.isLoading===false" class="is-flex-grow-1">
+        <section class="is-flex-grow-1">
           <div class="container is-flex is-justify-content-center">
             <p class="subtitle is-size-3 is-dark">{{ currentQuestion.name }}</p>
           </div>
@@ -41,6 +42,7 @@
       </div>
     </div>
   </form>
+  <p v-else class="box">Error Message: Axios pomylił odwage z odważnikiem, ewentualnie brak pytań w ankiecie</p>
 </template>
 
 <script>
@@ -60,7 +62,7 @@ export default {
       currentQuestionIndexNumber: 1,
       currentQuestionNumber: null,
       answers: null,
-      isLoading: false,
+      isLoading: null,
       isError: false,
     });
 
@@ -78,27 +80,35 @@ export default {
 
     try {
       state.isLoading = true;
+
       const {data: questionsData} = await axios.get(`/pollQuestion?pollId=${route.params.id}`);
-      state.questions = questionsData;
-      state.amountOfQuestions = questionsData.length;
       const answers = [];
-      for (let i = 0; i < state.questions.length; i++) {
-        const {id} = state.questions[i];
-        const {data} = await axios.get(`/pollOptions?pollQuestion=${id}`);
-        answers.push({questionId: id,answers: data});
+      if(questionsData.length>1){
+        state.questions = questionsData;
+        state.amountOfQuestions = questionsData.length;
+        for (let i = 0; i < questionsData.length; i++) {
+          const {id} = state.questions[i];
+          console.log(id)
+          const {data} = await axios.get(`/pollOptions?pollQuestion=${id}`);
+          answers.push({questionId: id,answers: data});
+        }
+        state.answers = answers;
+        state.currentQuestionNumber = questionsData[0].id;
       }
-      state.answers = answers;
-      state.currentQuestionNumber = questionsData[0].id;
     } catch (e) {
       state.isError = true
     } finally {
       state.isLoading = false;
     }
     const currentQuestion = computed(() => {
-      return state.questions.find((q, index) => index === state.currentQuestionIndexNumber - 1);
+      if(state.questions){
+        return state.questions.find((q, index) => index === state.currentQuestionIndexNumber - 1);
+      }
     })
     const currentAnswers = computed(()=>{
-      return state.answers.find((q) => q.questionId === (state.currentQuestionIndexNumber ));
+      if(state.questions){
+        return state.answers.find((q) => q.questionId === (state.currentQuestionIndexNumber ));
+      }
     })
     return {
       state,
