@@ -34,8 +34,6 @@ export default {
   components: {
     Layout,
     Navigation,
-    Otwarte,
-    Zamkniete,
   },
   data() {
     return {
@@ -49,8 +47,8 @@ export default {
   computed: {
     ...mapState('Polls',['isError']),
   },
-  created() {
-    this.fetchPolls();
+  async created() {
+    await this.fetchPolls();
   },
 };
 </script>

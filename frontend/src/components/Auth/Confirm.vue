@@ -1,6 +1,6 @@
 <template>
   <section class="is-flex is-justify-content-center is-align-items-center is-full-height p-6">
-    <form @submit.prevent="verifyHandler">
+    <form @submit.prevent="submitForm">
       <div class="field">
         <label class="label">Kod</label>
         <div class="control has-icons-left has-icons-right">
@@ -19,12 +19,15 @@
         <div class="control m-4">
           <button
             class="button is-link"
-            :class="{'is-loading':state.isSending}"
+            :class="{'is-loading':state.apiData && state.apiData.isLoading}"
             type="submit"
           >
             Zatwierdź
           </button>
         </div>
+      </div>
+      <div class="section has-text-danger">
+        <p v-if="state.apiData && state.apiData.isError">Błąd: {{state.apiData.errorData.message}}</p>
       </div>
     </form>
   </section>
@@ -36,50 +39,37 @@ import { reactive } from "vue";
 import jwtDecode from "jwt-decode";
 import axios from "@/axios";
 import {useRouter} from "vue-router";
+import {usePost} from "../../../hooks/usePost";
 
 export default {
   name: "Confirm",
   setup(){
-    const state = reactive({
-      token: null,
-      isSending: false,
-      error: {
-        condition: false,
-        msg: ''
-      },
-    })
     const store = useStore();
     const router = useRouter();
-
-    const email = store.state.Auth.email;
-    const verifyHandler = async () => {
-      state.isSending = true;
+    const state = reactive({
+      token: null,
+      apiData: null
+    });
+    async function submitForm(){
       const objJsonB64 = atob(state.token);
       const decode = JSON.parse(objJsonB64);
-      const toSend = {
-        email,
+      const response = await usePost('/user/login/authorize', {
+        email: store.state.Auth.email,
         token: decode.token,
         ts: decode.ts,
-      }
-      try {
-        const res = await axios.post('/user/login/authorize', toSend);
-        if(res.status === 201) {
-          store.commit('Auth/insertToken',{
-            token: res.data.access_token,
-          });
-          store.commit('Auth/changeAuth',true);
-          await router.replace('/');
-        }
-      } catch(e) {
-        state.error.condition = true;
-        state.error.msg = e.message;
-      } finally {
-        state.isSending = false;
+      });
+      state.apiData = response;
+      if(response.statusCode === 201){
+        store.commit('Auth/insertToken',{
+          token: response.data.access_token
+        });
+        store.commit('Auth/changeAuth',true);
+        await router.replace('/');
       }
     }
     return {
       state,
-      verifyHandler
+      submitForm
     }
   }
 }
