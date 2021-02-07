@@ -1,3 +1,4 @@
+import axios from "@/axios";
 const state = {
   email: null,
   token: null,
@@ -9,6 +10,7 @@ const mutations = {
   },
   insertToken(state,payload){
     state.token = payload.token;
+    axios.defaults.headers.common['Authorization'] = `Bearer ${payload.token}`
   }
 };
 const getters = {
@@ -16,9 +18,7 @@ const getters = {
     return state.email
   },
   getToken: state => {
-    return {
-      token: state.token,
-    }
+    return state.token
   }
 }
 export default {

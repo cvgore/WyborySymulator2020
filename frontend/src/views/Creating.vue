@@ -69,20 +69,21 @@ export default {
       },null,2);
       this.ua = obj;
       try {
-        const poll = await axios.post('/poll',{
+        const {data} = await axios.post('/poll',{
           name: this.pollName
         });
-        console.log(poll);
         for (const q of this.questions) {
-          await axios.post(`/poll/xXx/question`,{
-            name : q.question
-          })
+          await axios.post(`/poll/${data.id}/question`,{
+            name : q.question,
+            type: "text"
+          });
+
         }
-        for (const q of this.questions.answers) {
-          await axios.post(`/poll//question/xXx/option/1`,{
-            name : q.text
-          })
-        }
+        // for (const q of this.questions.answers) {
+        //   await axios.post(`/poll/${data.id}/question/${}/option`,{
+        //     name : q.text
+        //   })
+        // }
       } catch (e){
         this.errorMessage = 'Coś sie odjebało';
         this.error = true;

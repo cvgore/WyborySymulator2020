@@ -84,7 +84,6 @@ export default {
       const answers = [];
       for (let i = 0; i < state.questions.length; i++) {
         const {id} = state.questions[i];
-        console.log(id)
         const {data} = await axios.get(`/pollOptions?pollQuestion=${id}`);
         answers.push({questionId: id,answers: data});
       }
