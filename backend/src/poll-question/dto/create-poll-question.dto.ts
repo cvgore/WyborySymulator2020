@@ -1,4 +1,4 @@
-import { IsBoolean, IsEnum, IsString, MaxLength, MinLength } from 'class-validator';
+import { IsBoolean, IsEnum, IsIn, IsString, MaxLength, MinLength } from 'class-validator';
 
 export default class CreatePollQuestionDto {
 	@IsString()
@@ -6,7 +6,7 @@ export default class CreatePollQuestionDto {
 	@MaxLength(120)
 	name!: string;
 
-	@IsEnum(['enum', 'text', 'number'])
+	@IsIn(['enum', 'text', 'number'])
 	type!: string;
 
 	@IsBoolean()
