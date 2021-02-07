@@ -28,7 +28,7 @@ Authorization: Bearer {{auth_token}}
 
 
 ### Get poll
-GET {{url}}/polls
+GET {{url}}/poll
 Accept: application/json
 Authorization: Bearer {{auth_token}}
 
@@ -48,7 +48,7 @@ Content-Type: application/json
 }
 
 ### Edit poll
-PUT {{url}}/poll/6
+PUT {{url}}/poll/8
 Accept: application/json
 Authorization: Bearer {{auth_token}}
 Content-Type: application/json
@@ -64,12 +64,22 @@ DELETE {{url}}/poll/6
 Accept: application/json
 Authorization: Bearer {{auth_token}}
 
+### Publish poll
+POST {{url}}/poll/8/publish
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+
+### Get link poll
+GET {{url}}/poll/8/link
+Accept: application/json
+Authorization: Bearer {{auth_token}}
+
 ### List poll questions
 GET {{url}}/poll/8/question
 Accept: application/json
 Authorization: Bearer {{auth_token}}
 
-###
+### Create poll question
 POST {{url}}/poll/8/question
 Accept: application/json
 Authorization: Bearer {{auth_token}}
@@ -87,7 +97,8 @@ Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 {
-	"name": "Sample question123"
+	"name": "Sample question123",
+	"required": true
 }
 
 ### Edit poll question
@@ -113,7 +124,7 @@ Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 {
-	"name": "Sample question"
+	"name": "Sample option"
 }
 
 ### Edit poll question
@@ -121,6 +132,7 @@ PUT {{url}}/poll/8/question/1/option/1
 Accept: application/json
 Authorization: Bearer {{auth_token}}
 Content-Type: application/json
+
 {
 	"name": "Sample option"
 }
@@ -130,3 +142,16 @@ DELETE {{url}}/poll/8/question/1/option/1
 Accept: application/json
 Authorization: Bearer {{auth_token}}
 Content-Type: application/json
+
+### Get poll data
+GET {{url}}/poll/8/d6313ed3403f59d41a8c1c9bd478f6c5d3d44849
+Accept: application/json
+
+### Vote poll
+POST {{url}}/poll/8/d6313ed3403f59d41a8c1c9bd478f6c5d3d44849/vote
+Accept: application/json
+Content-Type: application/json
+
+{
+	"1": ["Testowa"]
+}

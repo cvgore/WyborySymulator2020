@@ -4,16 +4,22 @@ import { JwtGuard } from '@/auth/guards/jwt.guard';
 import CreatePollDto from '@/poll/dto/create-poll.dto';
 import EditPollDto from '@/poll/dto/edit-poll.dto';
 import { Poll } from '@/poll/poll.entity';
+import PollLinkDto from '@/poll/dto/poll-link.dto';
+import VotePollDto from '@/poll/dto/vote-poll.dto';
+import { Recaptcha } from '@/packages/recaptcha/src';
+import { PollVoteService } from '@/poll-vote/poll-vote.service';
+import { PollDataDto } from '@/poll/dto/poll-data.dto';
 
 @Controller('poll')
-@UseGuards(JwtGuard)
 export class PollController {
 	constructor(
-		private readonly pollService: PollService
+		private readonly pollService: PollService,
+		private readonly pollVoteService: PollVoteService,
 	) {
 	}
 
 	@Get('/')
+	@UseGuards(JwtGuard)
 	async list(): Promise<Poll[]> {
 		return await this.pollService.getAll();
 	}
@@ -41,6 +47,56 @@ export class PollController {
 	@UseGuards(JwtGuard)
 	async delete(@Param('id') id: number): Promise<void> {
 		await this.pollService.deletePoll(id);
+	}
+
+	@Post(':id/publish')
+	@UseGuards(JwtGuard)
+	async publish(@Param('id') id: number): Promise<void> {
+		await this.pollService.publishPoll(id);
+	}
+
+	@Get(':id/link')
+	@UseGuards(JwtGuard)
+	async link(@Param('id') id: number): Promise<PollLinkDto> {
+		return await this.pollService.getLink(id);
+	}
+
+	@Get(':id/:hash')
+	@Recaptcha()
+	async data(
+		@Param('id') id: number,
+		@Param('hash') hash: string,
+	): Promise<Poll> {
+		return await this.pollService.getPollData(id, hash);
+	}
+
+	@Post(':id/:hash/vote')
+	@Recaptcha()
+	async vote(
+		@Param('id') id: number,
+		@Param('hash') hash: string,
+		@Body() votePoll: VotePollDto
+	): Promise<void> {
+		await this.pollService.validateVotePoll(id, hash, votePoll);
+
+		const pollQuestions = await this.pollService.getPollQuestions(id);
+
+		for (const votePollKey in votePoll) {
+			if (!votePoll.hasOwnProperty(votePollKey)) {
+				continue;
+			}
+
+			const data = votePoll[votePollKey];
+			const pollQuestion = pollQuestions.find(q => q.id.toString(10) === votePollKey)!;
+
+			if (pollQuestion.type === 'enum') {
+				for (const datum of data) {
+					await this.pollVoteService.createVote(pollQuestion.id, <number>datum);
+				}
+			} else {
+				await this.pollVoteService.createVoteAndOption(pollQuestion.id, data[0]);
+			}
+		}
 	}
 }
 

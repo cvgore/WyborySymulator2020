@@ -1,6 +1,5 @@
 import { BeforeInsert, BeforeUpdate, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { IsDate } from 'class-validator';
-import { PollCode } from '@/poll_code/poll_code.entity';
 import { PollOption } from '@/poll-option/poll-option.entity';
 import { Poll } from '@/poll/poll.entity';
 
@@ -15,10 +14,15 @@ export class PollQuestion {
 	@Column()
 	type!: string;
 
+	@Column({
+		default: false,
+	})
+	required!: boolean;
+
 	@ManyToOne(_ => Poll)
 	poll!: Poll;
 
-	@OneToMany(_ => PollCode, pollOption => pollOption.poll)
+	@OneToMany(_ => PollOption, pollOption => pollOption.pollQuestion)
 	pollOptions!: PollOption[];
 
 	@Column({type: 'timestamp'})

@@ -11,6 +11,7 @@ export default () => ({
 		trustProxy: !!process.env.TRUST_PROXIES,
 		name: process.env.APP_NAME || 'WyborySymulator2k20',
 		url: process.env.APP_URL,
+		frontUrl: process.env.FRONT_URL,
 	},
 
 	crypto: {

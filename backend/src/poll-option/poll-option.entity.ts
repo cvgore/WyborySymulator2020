@@ -11,7 +11,7 @@ import {
 } from 'typeorm';
 import { IsDate } from 'class-validator';
 import { PollCustomOption } from '@/poll_custom_option/poll_custom_option.entity';
-import { PollVote } from '@/poll_vote/poll_vote.entity';
+import { PollVote } from '@/poll-vote/poll-vote.entity';
 import { PollQuestion } from '@/poll-question/poll-question.entity';
 
 @Entity()
@@ -49,5 +49,9 @@ export class PollOption {
 	@BeforeUpdate()
 	setUpdatedAt() {
 		this.updatedAt = new Date();
+	}
+
+	get isSubmittedByUser(): boolean {
+		return this.pollCustomOption === null;
 	}
 }

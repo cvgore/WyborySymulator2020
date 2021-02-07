@@ -14,8 +14,8 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { AuthModule } from '@/auth/auth.module';
 import { PollModule } from '@/poll/poll.module';
 import { Poll } from '@/poll/poll.entity';
-import { PollCode } from '@/poll_code/poll_code.entity';
-import { PollVote } from '@/poll_vote/poll_vote.entity';
+import { PollCode } from '@/poll-code/poll-code.entity';
+import { PollVote } from '@/poll-vote/poll-vote.entity';
 import { PollQuestion } from '@/poll-question/poll-question.entity';
 import { PollOption } from '@/poll-option/poll-option.entity';
 import { PollCustomOption } from '@/poll_custom_option/poll_custom_option.entity';
@@ -24,6 +24,7 @@ import { ReceiverGroup } from '@/receiver_group/receiver_group.entity';
 import { Voter } from '@/voter/voter.entity';
 import { PollQuestionModule } from '@/poll-question/poll-question.module';
 import { PollOptionModule } from '@/poll-option/poll-option.module';
+import { PollVoteModule } from '@/poll-vote/poll-vote.module';
 
 type SupportedDatabaseType = Extract<DatabaseType, 'mysql' | 'postgres'>;
 
@@ -84,6 +85,7 @@ type SupportedDatabaseType = Extract<DatabaseType, 'mysql' | 'postgres'>;
 		PollModule,
 		PollQuestionModule,
 		PollOptionModule,
+		PollVoteModule,
 	],
 	controllers: [AppController],
 	providers: [AppService, ConfigService],

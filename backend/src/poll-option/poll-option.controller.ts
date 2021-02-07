@@ -1,9 +1,9 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { JwtGuard } from '@/auth/guards/jwt.guard';
 import { PollOptionService } from '@/poll-option/poll-option.service';
-import CreatePollQuestionDto from '@/poll-question/dto/create-poll-question.dto';
 import { PollOption } from '@/poll-option/poll-option.entity';
 import EditPollOptionDto from '@/poll-option/dto/edit-poll-option.dto';
+import CreatePollOptionDto from '@/poll-option/dto/create-poll-option.dto';
 
 @Controller('poll/:pollId/question/:questionId/option')
 @UseGuards(JwtGuard)
@@ -19,17 +19,16 @@ export class PollOptionController {
 	}
 
 	@Post('/')
-	async create(@Body() data: CreatePollQuestionDto, @Param('pollQuestionId') pollQuestionId: number): Promise<PollOption> {
+	async create(@Body() data: CreatePollOptionDto, @Param('questionId') pollQuestionId: number): Promise<PollOption> {
 		return await this.pollOptionService.createOption(data, pollQuestionId);
 	}
 
 	//
 	@Put(':id')
-	@UseGuards(JwtGuard)
 	async edit(
 		@Param('id') id: number,
 		@Body() data: EditPollOptionDto,
-		@Param('pollQuestionId') pollQuestionId: number
+		@Param('questionId') pollQuestionId: number
 	): Promise<void> {
 		await this.pollOptionService.editOption(id, pollQuestionId, data);
 	}
@@ -37,8 +36,7 @@ export class PollOptionController {
 
 	@Delete(':id')
 	@HttpCode(HttpStatus.NO_CONTENT)
-	@UseGuards(JwtGuard)
-	async delete(@Param('id') id: number, @Param('pollQuestionId') pollQuestionId: number): Promise<void> {
+	async delete(@Param('id') id: number, @Param('questionId') pollQuestionId: number): Promise<void> {
 		await this.pollOptionService.deleteOption(id, pollQuestionId);
 	}
 }
