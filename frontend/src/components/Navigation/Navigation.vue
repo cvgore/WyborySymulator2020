@@ -4,7 +4,10 @@
     role="navigation"
     aria-label="main navigation"
   >
-    <div class="navbar-brand is-mobile">
+    <div class="navbar-brand">
+      <router-link to="/" class="navbar-item">
+        <img src="@/assets/logo.svg" alt="logo" class="s">
+      </router-link>
       <a
         role="button"
         class="navbar-burger"
@@ -76,5 +79,9 @@ export default {
 <style>
 .d {
   cursor: pointer;
+}
+.s {
+  width: 100px;
+  transform: scale(1.5);
 }
 </style>
