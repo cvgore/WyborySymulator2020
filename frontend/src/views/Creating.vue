@@ -53,7 +53,7 @@
 
 <script>
 import Question from '@/components/Creator/Question';
-import {usePost} from "../../hooks/usePost";
+import {usePost} from "@/utils/usePost";
 import {reactive} from "vue";
 import { Form,Field,ErrorMessage } from 'vee-validate';
 import yup from '@/yup-settings';
@@ -84,7 +84,6 @@ export default {
     });
 
     async function submitForm() {
-      console.log("chop")
       const pollResponse = await usePost('/poll', {
         name: state.pollName
       });

@@ -49,7 +49,7 @@
 import { useStore } from "vuex";
 import { reactive } from "vue";
 import {useRouter} from "vue-router";
-import {usePost} from "../../../hooks/usePost";
+import {usePost} from "@/utils/usePost";
 import { Form,Field,ErrorMessage } from 'vee-validate';
 import yup from "@/yup-settings";
 
@@ -84,6 +84,7 @@ export default {
         ts: decode.ts,
       });
       state.apiData = response;
+      state.token = '';
       if(response.statusCode === 201){
         store.commit('Auth/insertToken',{
           token: response.data.access_token

@@ -16,7 +16,7 @@
       <div class="card">
         <header class="card-header">
           <p class="card-header-title">
-            {{p.poll.name}} {{i}}
+
           </p>
         </header>
         <div class="card-content">
@@ -41,6 +41,7 @@
 import {mapActions, mapState} from "vuex";
 import {reactive,computed} from 'vue';
 import axios from "@/axios";
+import generatePollObject from "@/utils/generatePollObject";
 export default {
   name: "ListPolls",
   computed: {
@@ -55,30 +56,9 @@ export default {
       polls: []
     })
     const polls = await axios.get('/poll');
-    const ss = await axios.get('/poll/28/question');
-    console.log(ss)
-    console.log(polls.data.length)
     if(polls.data.length > 0){
-      console.log("siema")
-      for (const poll of polls.data) {
-        const questions = await axios.get(`/poll/${poll.id}/question`);
-        if(questions.data.length > 0){
-          for(const question of questions.data){
-            const answers = await axios.get(`/poll${poll.id}/question/${question.id}/option`);
-            if(answers.data.length > 0){
-              state.polls.push({
-                ...poll,
-                questions: {
-                  ...question,
-                  answers
-                },
-              });
-            }
-          }
-        }
-      }
+      const fullPolls = await generatePollObject(polls.data);
     }
-
     return {
       state
     }

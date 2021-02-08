@@ -44,7 +44,7 @@ import Layout from '@/components/Layout';
 import {reactive} from "vue";
 import {useRouter} from "vue-router";
 import {useStore} from "vuex";
-import {usePost} from "../../../hooks/usePost";
+import {usePost} from "@/utils/usePost";
 import { Form,Field,ErrorMessage } from 'vee-validate';
 import yup from '@/yup-settings'
 export default {
