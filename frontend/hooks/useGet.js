@@ -20,5 +20,8 @@ async function useGet(endpoint) {
   } finally {
     state.isLoading = false;
   }
-  return toRefs(state)
+  return state
+}
+export {
+  useGet
 }

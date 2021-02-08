@@ -1,5 +1,5 @@
 <template>
-  <section class="boxx section is-flex is-flex-direction-column is-justify-content-center is-align-items-center">
+  <section class="section is-flex is-flex-direction-column is-justify-content-center is-align-items-center">
     <figure class="image is-128x128 my-5">
       <img src="@/assets/sheep.png" alt="icon">
     </figure>

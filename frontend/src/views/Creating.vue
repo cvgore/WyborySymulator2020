@@ -26,8 +26,9 @@
       </div>
       <Question
         v-for="(q, index) in state.createdQuestions"
-        :key="`quest-${index}`"
+        :key="`quest-${q.uuid}`"
         :index="index"
+        :name="`quest-${q.uuid}`"
         :question.sync="q.questionText"
         :parentAnswers.sync="q.answers"
         @update="q.questionText = $event"
@@ -55,7 +56,9 @@ import Question from '@/components/Creator/Question';
 import {usePost} from "../../hooks/usePost";
 import {reactive} from "vue";
 import { Form,Field,ErrorMessage } from 'vee-validate';
-import yup from '@/yup-settings'
+import yup from '@/yup-settings';
+import { v4 as uuidv4 } from 'uuid';
+
 export default {
   name: 'Creating',
   components: {Question,Form,Field,ErrorMessage},
@@ -64,6 +67,11 @@ export default {
       surveyNameRules: yup.string()
         .required('Pole jest wymagane')
         .min(6)
+    }
+  },
+  methods:{
+    randomNum(){
+      return uuidv4();
     }
   },
   setup() {
@@ -110,6 +118,7 @@ export default {
     }
     function addQuestion() {
       state.createdQuestions.push({
+        uuid: uuidv4(),
         questionText: '',
         answers: [],
       })

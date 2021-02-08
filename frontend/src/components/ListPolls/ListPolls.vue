@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!isAuth" class="boxx section is-flex is-flex-direction-column is-justify-content-center is-align-items-center container">
+  <div class="boxx section is-flex is-flex-direction-column is-justify-content-center is-align-items-center container">
     <figure class="image is-128x128 my-3">
       <img src="@/assets/happy-man.png" alt="icon hm">
     </figure>
@@ -9,26 +9,28 @@
       </div>
     </div>
     <p class="subtitle is-size-5 has-text-info">Oto twoje ankiety:</p>
-    <p>siezrobi</p>
+    <p class="is-bold is-danger">{{data}}</p>
   </div>
 </template>
 
 <script>
 import {mapActions, mapState} from "vuex";
+import {useGet} from "../../../hooks/useGet";
 
 export default {
   name: "ListPolls",
-  async created() {
-    await this.fetchPolls();
-  },
   computed: {
     ...mapState('Auth',['email']),
     onlyName(){
       return this.email.substring(0,this.email.indexOf('@'));
     }
   },
-  methods: {
-    ...mapActions('Polls',['fetchPolls']),
+  setup(){
+    const { data } = useGet('/poll');
+    console.log(data)
+    return {
+      data
+    }
   }
 }
 </script>

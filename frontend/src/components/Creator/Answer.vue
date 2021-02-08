@@ -3,7 +3,7 @@
     <div class="control has-icons-left">
       <Field
         :rules="answerRules"
-        name="answer"
+        :name="name"
         class="input is-success is-small"
         type="text"
         placeholder="Wprowadź odpowiedź"
@@ -19,7 +19,7 @@
           <i class="fas fa-times"></i>
         </span>
     </button>
-    <ErrorMessage name="answer" class="help is-danger is-size-7 px-3"/>
+    <ErrorMessage :name="name" class="help is-danger is-size-7 px-3"/>
   </div>
 </template>
 
@@ -32,6 +32,7 @@ export default {
   components: {Field,ErrorMessage},
   props: {
     value: String,
+    name:String
   },
   data(){
     return {

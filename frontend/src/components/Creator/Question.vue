@@ -4,7 +4,7 @@
     <div class="control">
       <Field
         :rules="questionRules"
-        name="question"
+        :name="name"
         class="input"
         type="text"
         placeholder="Pytanie"
@@ -12,10 +12,11 @@
         @keyup="changeQuestionValue"
       />
     </div>
-    <ErrorMessage name="question" class="help is-danger is-size-6"/>
+    <ErrorMessage :name="name" class="help is-danger is-size-6"/>
     <Answer
       v-for="(option,i) in parentAnswers"
-      key="index"
+      :key="`answer-${option.uuid}`"
+      :name="`answer-${option.uuid}`"
       :value.sync="option.text"
       @update="option.text = $event"
       @delete="deleteAnswer(i)"
@@ -47,6 +48,7 @@
 import Answer from "@/components/Creator/Answer";
 import {Field,ErrorMessage} from 'vee-validate'
 import yup from "@/yup-settings";
+import { v4 as uuidv4 } from 'uuid';
 export default {
   name: 'Question',
   components: {Answer,Field,ErrorMessage},
@@ -54,7 +56,8 @@ export default {
     question: String,
     num: Number,
     index: Number,
-    parentAnswers: Array
+    parentAnswers: Array,
+    name:String
   },
   data(){
     return {
@@ -63,9 +66,15 @@ export default {
         .min(3)
     }
   },
+  methods:{
+    randomNum(){
+      return uuidv4();
+    }
+  },
   setup(props,{emit}){
     function addAnswer(){
       props.parentAnswers.push({
+        uuid: uuidv4(),
         text: ''
       })
     }
