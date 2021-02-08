@@ -7,7 +7,17 @@
     <router-link to="/forms/log-in" class="button is-link is-large">Zaloguj się</router-link>
   </div>
   <div v-else>
-    <ListPolls />
+    <SuspenseWithError>
+      <template #default>
+        <ListPolls/>
+      </template>
+      <template #fallback>
+        <Spinner/>
+      </template>
+      <template #error>
+        <ErrorNotify/>
+      </template>
+    </SuspenseWithError>
   </div>
 </template>
 
@@ -16,10 +26,16 @@ import Navigation from '@/components/Navigation/Navigation';
 import Layout from '@/components/Layout';
 import {mapActions, mapState} from 'vuex';
 import ListPolls from "@/components/ListPolls/ListPolls";
+import SuspenseWithError from "@/components/SuspenseWithError/SuspenseWithError";
+import Spinner from "@/components/UI/Spinner";
+import ErrorNotify from "@/components/ErrorsNotify/ErrorNotify";
 
 export default {
   name: 'HomeContent',
   components: {
+    ErrorNotify,
+    Spinner,
+    SuspenseWithError,
     ListPolls,
     Layout,
     Navigation,
