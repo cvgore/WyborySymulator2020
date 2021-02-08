@@ -1,11 +1,15 @@
 <template>
-  <section class="is-flex is-justify-content-center is-align-items-center is-full-height p-6">
-    <form @submit.prevent="verifyHandler">
+  <section class="section is-flex is-flex-direction-column is-justify-content-center is-align-items-center">
+    <figure class="image is-128x128 my-5">
+      <img src="@/assets/sheep2.png" alt="icon">
+    </figure>
+    <Form @submit="submitForm">
       <div class="field">
         <label class="label">Kod</label>
-        <!--     veevalidate  <p class="help is-danger">This email is invalid</p> -->
         <div class="control has-icons-left has-icons-right">
-          <input
+          <Field
+            :rules="codeRules"
+            name="codex64"
             class="input"
             type="text"
             placeholder="Wpisz kod"
@@ -14,71 +18,87 @@
             <i class="fas fa-shield-alt"></i>
           </span>
         </div>
+        <ErrorMessage name="codex64" class="help is-danger is-size-6"/>
       </div>
 
       <div class="field is-grouped is-flex is-align-items-center is-flex-direction-column">
         <div class="control m-4">
           <button
             class="button is-link"
-            :class="{'is-loading':state.isSending}"
+            :class="{'is-loading':state.apiData && state.apiData.isLoading}"
             type="submit"
           >
             Zatwierdź
           </button>
         </div>
+        <div v-if="state.loginAttempts > 0" class="has-text-info">
+          <p class="is-bold">
+            Niepoprawny kod,
+            Pozostały ci <strong class="is-danger">{{3 - state.loginAttempts}} </strong> próby
+          </p>
+        </div>
       </div>
-    </form>
+      <div class="section has-text-danger">
+        <p v-if="state.apiData && state.apiData.isError">Błąd: {{state.apiData.errorData.message}}</p>
+      </div>
+    </Form>
   </section>
 </template>
 
 <script>
 import { useStore } from "vuex";
 import { reactive } from "vue";
-import jwtDecode from "jwt-decode";
-import axios from "@/axios";
+import {useRouter} from "vue-router";
+import {usePost} from "@/utils/usePost";
+import { Form,Field,ErrorMessage } from 'vee-validate';
+import yup from "@/yup-settings";
 
 export default {
   name: "Confirm",
+  components: { Form,Field,ErrorMessage },
+  data(){
+    return {
+      codeRules: yup.string()
+        .required('Pole jest wymagane').min(15)
+    }
+  },
   setup(){
-    const state = reactive({
-      token: null,
-      isSending: false,
-      error: {
-        condition: false,
-        msg: ''
-      },
-    })
     const store = useStore();
-    const email = store.state.Auth.email;
-    const verifyHandler = async () => {
-      state.isSending = true;
+    const router = useRouter();
+    const state = reactive({
+      token: '',
+      apiData: null,
+      loginAttempts: 0
+    });
+    async function submitForm(){
+      if(state.loginAttempts + 1 <= 3){
+        state.loginAttempts += 1;
+      } else {
+        await router.replace('/')
+      }
       const objJsonB64 = atob(state.token);
       const decode = JSON.parse(objJsonB64);
-      const toSend = {
-        email,
+      const response = await usePost('/user/login/authorize', {
+        email: store.state.Auth.email,
         token: decode.token,
         ts: decode.ts,
-      }
-      try {
-        const res = await axios.post('/user/login/authorize', toSend);
+      });
+      state.apiData = response;
+      state.token = '';
+      if(response.statusCode === 201){
         store.commit('Auth/insertToken',{
-          token: res.data.body.json.access_token,
-        })
-      } catch(e) {
-        state.error.condition = true;
-        state.error.msg = e.message;
-      } finally {
-        state.isSending = false;
+          token: response.data.access_token
+        });
+        store.commit('Auth/changeAuth',true);
+
+        await router.replace('/');
       }
     }
     return {
       state,
-      verifyHandler
+      submitForm
     }
   }
 }
 </script>
 
-<style scoped>
-
-</style>

@@ -29,12 +29,11 @@ export class UserModule implements NestModule {
 			max: 5,
 		});
 
-		consumer
-			.apply(limiter())
-			.forRoutes('user/login/request');
-
-		consumer
-			.apply(limiter())
-			.forRoutes('user/login/authorize');
+		// consumer
+		// 	// .apply(limiter())
+		//
+		// consumer
+		// 	// .apply(limiter())
+		// 	.forRoutes('user/login/authorize');
 	}
 }

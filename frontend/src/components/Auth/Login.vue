@@ -1,11 +1,15 @@
 <template>
-  <section class="is-flex is-justify-content-center is-align-items-center is-full-height p-6">
-    <form @submit.prevent="submitForm">
+  <section class="section is-flex is-flex-direction-column is-justify-content-center is-align-items-center">
+    <figure class="image is-128x128 my-5">
+      <img src="@/assets/sheep.png" alt="icon">
+    </figure>
+    <Form @submit="submitForm">
       <div class="field">
         <label class="label">Email</label>
-        <!--     veevalidate  <p class="help is-danger">This email is invalid</p> -->
         <div class="control has-icons-left has-icons-right">
-          <input
+          <Field
+            :rules="emailRules"
+            name="email"
             class="input"
             type="email"
             placeholder="Wpisz swój mail"
@@ -15,26 +19,21 @@
             <i class="fas fa-envelope"></i>
           </span>
         </div>
+        <ErrorMessage name="email" class="help is-danger is-size-6"/>
       </div>
       <div class="field is-grouped is-flex is-align-items-center is-flex-direction-column">
-        <div class="control">
-          <button @click="recaptchaHandler" type="button">
-            Execute recaptcha
-          </button>
-        </div>
         <div class="control m-4">
           <button
             class="button is-link"
-            :class="{'is-loading':state.isSending}"
+            :class="{'is-loading': state.apiData && state.apiData.isLoading}"
             type="submit"
           >
-            Zaloguj sie
+            Wyślij kod
           </button>
         </div>
-        <div>
-          <pre v-if="state.response">{{ state.response }}</pre>
-          <p v-else-if="state.error.condition">Błąd serwera</p>
-        </div>
+      </div>
+      <div class="section has-text-danger">
+        <p v-if="state.apiData && state.apiData.isError">Błąd: {{state.apiData.errorData.message}}</p>
       </div>
     </form>
   </section>
@@ -43,52 +42,41 @@
 <script>
 import Layout from '@/components/Layout';
 import {reactive} from "vue";
-import axios from "@/axios";
-import { useRouter } from "vue-router";
-import { useReCaptcha } from 'vue-recaptcha-v3'
+import {useRouter} from "vue-router";
 import {useStore} from "vuex";
+import {usePost} from "@/utils/usePost";
+import { Form,Field,ErrorMessage } from 'vee-validate';
+import yup from '@/yup-settings'
 export default {
   name: 'Login',
-  components: { Layout },
+  components: { Layout,Form,Field,ErrorMessage },
+  data(){
+    return {
+      emailRules: yup.string()
+        .required('Pole jest wymagane')
+        .email('Niepoprawny email')
+    }
+  },
   setup(){
-    const {executeRecaptcha,recaptchaLoaded} = useReCaptcha();
     const store = useStore();
+    const router = useRouter();
     const state = reactive({
       email: '',
-      isSending: false,
-      error: {
-        condition: false,
-        msg: ''
-      },
-      response: null
+      apiData: null
     });
-    const router = useRouter();
     async function submitForm(){
-      try {
-        state.isSending = true;
-        const toSend = {
-          email: state.email
-        }
-        const {data} = await axios.post('/user/login/request',toSend);
-        state.response = data;
-      } catch (e) {
-        state.error.condition = true;
-        state.error.msg = e.message;
-      } finally {
-        state.isSending = false;
+      const response = await usePost('/user/login/request', {
+        email: state.email
+      });
+      state.apiData = response;
+      if(response.statusCode === 201){
         store.commit('Auth/changeEmail',state.email);
-        router.replace('2fa');
+        await router.replace('2fa');
       }
-    }
-    async function recaptchaHandler(){
-      await recaptchaLoaded();
-      const token = await executeRecaptcha('login');
-      console.log(token);
     }
     return {
       state,
       submitForm,
-      recaptchaHandler
     }
   }
 };

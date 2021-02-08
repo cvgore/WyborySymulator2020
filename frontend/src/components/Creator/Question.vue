@@ -2,18 +2,21 @@
   <div class="field">
     <label class="label">Pytanie #{{ `${index + 1}` }}</label>
     <div class="control">
-      <input
-      
+      <Field
+        :rules="questionRules"
+        :name="name"
         class="input"
         type="text"
         placeholder="Pytanie"
         v-model="question"
-        @keyup="$emit('update', question)"
+        @keyup="changeQuestionValue"
       />
     </div>
+    <ErrorMessage :name="name" class="help is-danger is-size-6"/>
     <Answer
       v-for="(option,i) in parentAnswers"
-      key="index"
+      :key="`answer-${option.uuid}`"
+      :name="`answer-${option.uuid}`"
       :value.sync="option.text"
       @update="option.text = $event"
       @delete="deleteAnswer(i)"
@@ -30,7 +33,7 @@
         </button>
       </section>
       <section class="m-3">
-        <button @click="$emit('delete')" type="button" class="button is-small is-danger">
+        <button @click="deleteQuestion" type="button" class="button is-small is-danger">
           <span class="icon">
             <i class="fas fa-trash"></i>
           </span>
@@ -42,53 +45,54 @@
 </template>
 
 <script>
-import {Answer,label,field} from "@/components/Creator/Answer";
+import Answer from "@/components/Creator/Answer";
+import {Field,ErrorMessage} from 'vee-validate'
+import yup from "@/yup-settings";
+import { v4 as uuidv4 } from 'uuid';
 export default {
-  components: {
-    label,
-  },
-
   name: 'Question',
-  components: {Answer},
+  components: {Answer,Field,ErrorMessage},
   props: {
     question: String,
     num: Number,
     index: Number,
-    parentAnswers: Array
+    parentAnswers: Array,
+    name:String
   },
-  methods: {
-    onSubmit(values) {
-      alert(JSON.stringify(values, null, 2));
-    },
-     validateEmail(value) {
-      // if the field is empty
-      if (!value) {
-        return 'This field is required';
-      }
-      // if the field is not a valid email
-      if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
-        return 'This field must be a valid email';
-      }
-
-      // All is good
-      return true;
-    },
-
-    addAnswer(){
-      this.parentAnswers.push({
+  data(){
+    return {
+      questionRules: yup.string()
+        .required('Pole jest wymagane')
+        .min(3)
+    }
+  },
+  methods:{
+    randomNum(){
+      return uuidv4();
+    }
+  },
+  setup(props,{emit}){
+    function addAnswer(){
+      props.parentAnswers.push({
+        uuid: uuidv4(),
         text: ''
       })
-    },
-    deleteAnswer(i) {
-      this.parentAnswers.splice(i, 1);
-    },
+    }
+    function deleteAnswer(i) {
+      props.parentAnswers.splice(i, 1);
+    }
+    return {
+      addAnswer,
+      deleteAnswer,
+      changeQuestionValue(){
+        emit('update', props.question)
+      },
+      deleteQuestion(){
+        emit('delete')
+      }
+    }
   },
-    
-
-
 };
-
-
 </script>
 
 <style scoped></style>

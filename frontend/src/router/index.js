@@ -3,7 +3,7 @@ import Home from "@/views/Home";
 import Register from "@/components/Auth/Confirm";
 import Login from "@/components/Auth/Login";
 import Loginator from "@/views/Loginator";
-
+import store from '../store/index';
 const routes = [
   {
     path: '/',
@@ -22,7 +22,16 @@ const routes = [
       path: '2fa',
       name: '2fa',
       component: Register
-    }]
+    }],
+    beforeEnter(to, from, next) {
+      if (store.state.Auth.isAuth) {
+        next({
+          name: "index"
+        });
+      } else {
+        next()
+      }
+    }
   },
   {
     path: '/polls/:id',
@@ -32,7 +41,16 @@ const routes = [
   {
     path: '/creator',
     name: 'creatorsrator',
-    component: () => import('@/views/Creating')
+    component: () => import('@/views/Creating'),
+    beforeEnter(to, from, next) {
+      if (store.state.Auth.isAuth) {
+        next();
+      } else {
+        next({
+          name: 'log-in'
+        })
+      }
+    }
   }
 ];
 

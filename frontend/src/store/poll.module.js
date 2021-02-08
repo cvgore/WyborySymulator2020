@@ -1,5 +1,4 @@
 import axios from '../axios'
-import {DateTime} from "luxon";
 
 const state = {
   polls: [],
@@ -11,17 +10,10 @@ const state = {
 };
 
 const getters = {
-  openedPolls: state => {
-    return state.polls.filter(poll => DateTime.fromISO(poll.validUntil) >= DateTime.local())
-  },
-  closedPolls: state => {
-    return state.polls.filter(poll => DateTime.fromISO(poll.validUntil) <= DateTime.local())
-  },
   getPollById: state => id => {
     return state.polls.find(poll => poll.id === id);
   }
-}
-;
+};
 
 const mutations = {
   loadingChanger(state,payload){

@@ -1,94 +1,140 @@
 <template>
   <div class="is-flex is-flex-direction-column is-align-items-center fullH m-6">
-    <form class="form" @submit.prevent="save">
+    <div class="section is-size-2">Kreator ankiet</div>
+    <Form class="form" @submit="submitForm">
+      <div class="notification is-danger" v-if="state.isError===true">
+        <button @click="closeNotify" class="delete"/>
+        Wystąpił błąd podczas tworzenia ankiety
+      </div>
+      <div class="notification is-success" v-if="state.isFullCreated===true">
+        <button @click="closeNotify" class="delete"/>
+        Pomyślnie stworzono ankiete
+      </div>
       <div class="field">
         <label class="label">Nazwa ankiety</label>
         <div class="control">
-          <input class="input" type="text" placeholder="Nazwa ankiety" v-model="pollName" />
+          <Field
+            :rules="surveyNameRules"
+            name="surveyName"
+            class="input"
+            type="text"
+            placeholder="Nazwa ankiety"
+            v-model="state.pollName"
+          />
         </div>
+        <ErrorMessage name="surveyName" class="help is-danger is-size-6"/>
       </div>
       <Question
-        v-for="(q, index) in questions"
-        :key="`quest-${index}`"
+        v-for="(q, index) in state.createdQuestions"
+        :key="`quest-${q.uuid}`"
         :index="index"
-        :question.sync="q.question"
+        :name="`quest-${q.uuid}`"
+        :question.sync="q.questionText"
         :parentAnswers.sync="q.answers"
-        @update="q.question = $event"
+        @update="q.questionText = $event"
         @delete="deleteQuestion(index)"
       />
       <div class="field is-grouped">
         <div class="control">
-          <button type="submit" :class="{'is-loading':isSending}" class="button is-link">Zapisz</button>
+          <button
+            type="submit"
+            :class="{'is-loading':state.isLoading}"
+            class="button is-link">
+            Zapisz
+          </button>
         </div>
         <div class="control">
           <button class="button is-info" type="button" @click="addQuestion">Dodaj pytanie</button>
         </div>
       </div>
-      <p class="help is-danger" v-if="error">{{errorMessage}}</p>
-    </form>
-    <div class="box">
-      <pre v-if="ua">
-      {{ ua }}
-    </pre>
-    </div>
+    </Form>
   </div>
 </template>
 
 <script>
 import Question from '@/components/Creator/Question';
+import {usePost} from "@/utils/usePost";
+import {reactive} from "vue";
+import { Form,Field,ErrorMessage } from 'vee-validate';
+import yup from '@/yup-settings';
+import { v4 as uuidv4 } from 'uuid';
 
-import axios from "@/axios";
 export default {
   name: 'Creating',
-  components: { Question },
-  data() {
+  components: {Question,Form,Field,ErrorMessage},
+  data(){
     return {
-      pollName: '',
-      questions: [],
-      ua: null,
-      isSending: false,
-      error: false,
-      errorMessage: null
-    };
+      surveyNameRules: yup.string()
+        .required('Pole jest wymagane')
+        .min(6)
+    }
   },
-  methods: {
-    addQuestion() {
-      this.questions.push({
-        question: '',
-        answers: [],
+  methods:{
+    randomNum(){
+      return uuidv4();
+    }
+  },
+  setup() {
+    const state = reactive({
+      pollName: '',
+      createdQuestions: [],
+      isError: null,
+      isFullCreated: null,
+      isLoading: false
+    });
+
+    async function submitForm() {
+      const pollResponse = await usePost('/poll', {
+        name: state.pollName
       });
-    },
-    deleteQuestion(i) {
-      console.log(i);
-      this.questions.splice(i, 1);
-    },
-    async save(){
-      this.isSending = true;
-      const obj = JSON.stringify({
-        pollName: this.pollName,
-        questions: this.questions
-      },null,2);
-      this.ua = obj;
-      try {
-        await axios.post('/poll',{
-          name: this.pollName
-        });
-        for (const q of this.questions) {
-          await axios.post(`/poll/xXx/question`,{
-            name : q.question
-          })
+      state.isLoading = pollResponse.isLoading;
+      if (pollResponse.statusCode === 201) {
+        for (const question of state.createdQuestions) {
+          const questionResponse = await usePost(`/poll/${pollResponse.data.id}/question`, {
+            name: question.questionText,
+            type: "text",
+            required: true
+          });
+          state.isLoading = pollResponse.isLoading;
+          if (questionResponse.statusCode === 201) {
+            for (const answers of question.answers) {
+              const optionResponse = await usePost(`/poll/${pollResponse.data.id}/question/${questionResponse.data.id}/option`, {
+                name: answers.text,
+              });
+              state.isLoading = pollResponse.isLoading;
+              state.isFullCreated = optionResponse.statusCode === 201;
+              state.isError = optionResponse.isError;
+            }
+          } else {
+            state.isError = true
+          }
         }
-        for (const q of this.questions.answers) {
-          await axios.post(`/poll/xXx/question/xXx/option/1`,{
-            name : q.text
-          })
-        }
-      } catch (e){
-        this.errorMessage = 'Coś sie odjebało';
-        this.error = true;
-      } finally {
-        this.isSending = false;
+      } else {
+        state.isError = true;
       }
+      state.pollName = ''
+      state.createdQuestions = []
+    }
+    function addQuestion() {
+      state.createdQuestions.push({
+        uuid: uuidv4(),
+        questionText: '',
+        answers: [],
+      })
+    }
+    function deleteQuestion(i) {
+      state.createdQuestions.splice(i, 1);
+    }
+    function closeNotify() {
+      state.isError = null;
+      state.isFullCreated = null;
+    }
+    return {
+      state,
+      addQuestion,
+      deleteQuestion,
+      submitForm,
+      closeNotify,
     }
   },
 };
@@ -99,6 +145,7 @@ export default {
   width: 500px;
   min-height: 50vh;
 }
+
 .fullH {
   height: 100%;
 }

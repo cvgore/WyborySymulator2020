@@ -1,28 +1,40 @@
+import axios from '@/axios';
+
 const state = {
   email: null,
   token: null,
+  isAuth: false,
 };
 
 const mutations = {
-  changeEmail(state,payload){
+  changeEmail(state, payload) {
     state.email = payload;
   },
-  insertToken(state,payload){
+  changeAuth(state, payload) {
+    state.isAuth = payload;
+  },
+  insertToken(state, payload) {
     state.token = payload.token;
-  }
+    axios.defaults.headers.common['Authorization'] = `Bearer ${payload.token}`;
+  },
+  reset(state, payload) {
+    Object.assign(state, {
+      email: null,
+      token: null,
+      isAuth: false,
+    });
+  },
 };
 const getters = {
-  getEmail: state => {
-    return state.email
+  getEmail: (state) => {
+    return state.email;
   },
-  getToken: state => {
-    return {
-      token: state.token,
-    }
-  }
-}
+  getToken: (state) => {
+    return state.token;
+  },
+};
 export default {
   state,
   mutations,
-  getters
+  getters,
 };
