@@ -1,10 +1,15 @@
 <template>
-  <section class="is-flex is-justify-content-center is-align-items-center is-full-height p-6">
-    <form @submit.prevent="submitForm">
+  <section class="boxx section is-flex is-flex-direction-column is-justify-content-center is-align-items-center">
+    <figure class="image is-128x128 my-5">
+      <img src="@/assets/sheep.png" alt="icon">
+    </figure>
+    <Form @submit="submitForm">
       <div class="field">
         <label class="label">Email</label>
         <div class="control has-icons-left has-icons-right">
-          <input
+          <Field
+            :rules="emailRules"
+            name="email"
             class="input"
             type="email"
             placeholder="Wpisz swój mail"
@@ -14,6 +19,7 @@
             <i class="fas fa-envelope"></i>
           </span>
         </div>
+        <ErrorMessage name="email" class="help is-danger is-size-6"/>
       </div>
       <div class="field is-grouped is-flex is-align-items-center is-flex-direction-column">
         <div class="control m-4">
@@ -39,10 +45,18 @@ import {reactive} from "vue";
 import {useRouter} from "vue-router";
 import {useStore} from "vuex";
 import {usePost} from "../../../hooks/usePost";
-
+import { Form,Field,ErrorMessage } from 'vee-validate';
+import yup from '@/yup-settings'
 export default {
   name: 'Login',
-  components: { Layout },
+  components: { Layout,Form,Field,ErrorMessage },
+  data(){
+    return {
+      emailRules: yup.string()
+        .required('Pole jest wymagane')
+        .email('Niepoprawny email')
+    }
+  },
   setup(){
     const store = useStore();
     const router = useRouter();

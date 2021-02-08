@@ -1,7 +1,9 @@
 <template>
   <div class="field my-4 is-flex is-align-items-center">
     <div class="control has-icons-left">
-      <input
+      <Field
+        :rules="answerRules"
+        name="answer"
         class="input is-success is-small"
         type="text"
         placeholder="Wprowadź odpowiedź"
@@ -17,14 +19,26 @@
           <i class="fas fa-times"></i>
         </span>
     </button>
+    <ErrorMessage name="answer" class="help is-danger is-size-7 px-3"/>
   </div>
 </template>
 
 <script>
+import {Field,ErrorMessage} from 'vee-validate'
+import yup from "@/yup-settings";
+
 export default {
   name: 'Answer',
+  components: {Field,ErrorMessage},
   props: {
     value: String,
+  },
+  data(){
+    return {
+      answerRules: yup.string()
+        .required('Pole jest wymagane')
+        .min(3)
+    }
   },
   setup(props,{emit}){
     return {

@@ -2,7 +2,9 @@
   <div class="field">
     <label class="label">Pytanie #{{ `${index + 1}` }}</label>
     <div class="control">
-      <input
+      <Field
+        :rules="questionRules"
+        name="question"
         class="input"
         type="text"
         placeholder="Pytanie"
@@ -10,6 +12,7 @@
         @keyup="changeQuestionValue"
       />
     </div>
+    <ErrorMessage name="question" class="help is-danger is-size-6"/>
     <Answer
       v-for="(option,i) in parentAnswers"
       key="index"
@@ -42,14 +45,23 @@
 
 <script>
 import Answer from "@/components/Creator/Answer";
+import {Field,ErrorMessage} from 'vee-validate'
+import yup from "@/yup-settings";
 export default {
   name: 'Question',
-  components: {Answer},
+  components: {Answer,Field,ErrorMessage},
   props: {
     question: String,
     num: Number,
     index: Number,
     parentAnswers: Array
+  },
+  data(){
+    return {
+      questionRules: yup.string()
+        .required('Pole jest wymagane')
+        .min(3)
+    }
   },
   setup(props,{emit}){
     function addAnswer(){
