@@ -42,6 +42,15 @@ const routes = [
     path: '/creator',
     name: 'creatorsrator',
     component: () => import('@/views/Creating'),
+    beforeEnter(to, from, next) {
+      if (store.state.Auth.isAuth) {
+        next();
+      } else {
+        next({
+          name: 'log-in'
+        })
+      }
+    }
   }
 ];
 

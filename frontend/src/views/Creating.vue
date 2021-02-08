@@ -2,6 +2,14 @@
   <div class="is-flex is-flex-direction-column is-align-items-center fullH m-6">
     <div class="section is-size-2">Kreator ankiet</div>
     <form class="form" @submit.prevent="submitForm">
+      <div class="notification is-danger" v-if="state.isError===true">
+        <button @click="closeNotify" class="delete"/>
+        Wystąpił błąd podczas tworzenia ankiety
+      </div>
+      <div class="notification is-success" v-if="state.isFullCreated===true">
+        <button @click="closeNotify" class="delete"/>
+        Pomyślnie stworzono ankiete
+      </div>
       <div class="field">
         <label class="label">Nazwa ankiety</label>
         <div class="control">
@@ -30,9 +38,7 @@
           <button class="button is-info" type="button" @click="addQuestion">Dodaj pytanie</button>
         </div>
       </div>
-      <p class="help is-danger" v-if="state.isError===false">Wystąpił błąd podczas tworzenia ankiety</p>
     </form>
-    <p class="title is-success" v-if="state.isFullCreated===true">Zapisano ankiete</p>
   </div>
 </template>
 
@@ -70,7 +76,7 @@ export default {
             required: true
           });
           state.isLoading = pollResponse.isLoading;
-          if (questionResponse.statusCode=== 201) {
+          if (questionResponse.statusCode === 201) {
             for (const answers of question.answers) {
               const optionResponse = await usePost(`/poll/${pollResponse.data.id}/question/${questionResponse.data.id}/option`, {
                 name: answers.text,
@@ -86,21 +92,32 @@ export default {
       } else {
         state.isError = true;
       }
+      state.pollName = ''
+      state.createdQuestions = []
     }
-    function addQuestion(){
+
+    function addQuestion() {
       state.createdQuestions.push({
         questionText: '',
         answers: [],
       })
     }
-    function deleteQuestion(i){
+
+    function deleteQuestion(i) {
       state.createdQuestions.splice(i, 1);
     }
+
+    function closeNotify() {
+      state.isError = null;
+      state.isFullCreated = null;
+    }
+
     return {
       state,
       addQuestion,
       deleteQuestion,
-      submitForm
+      submitForm,
+      closeNotify
     }
   },
 };
