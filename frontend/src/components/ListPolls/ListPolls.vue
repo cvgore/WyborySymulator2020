@@ -7,7 +7,8 @@
       <div class="columns is-centered">
         <div class="column">
           <p class="title is-size-4 has-text-info">Ahoj, <strong class="is-bold has-text-warning-dark">{{onlyName}}</strong></p>
-          <p class="subtitle is-size-1">Masz {{countQuestions(state.polls)}} ankiety</p>
+          <p v-if="state.polls" class="subtitle is-size-1">Masz {{countQuestions(state.polls)}} ankiety</p>
+          <p v-else class="subtitle is-size-1">Masz 0 ankiet</p>
         </div>
       </div>
     </div>
