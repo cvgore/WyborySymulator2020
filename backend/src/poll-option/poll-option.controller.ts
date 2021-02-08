@@ -14,8 +14,10 @@ export class PollOptionController {
 	}
 
 	@Get('/')
-	async index(@Param('pollId') pollId: number): Promise<PollOption[]> {
-		return await this.pollOptionService.getAll(pollId);
+	async index(
+		@Param('questionId') pollQuestionId: number
+	): Promise<PollOption[]> {
+		return await this.pollOptionService.getAll(pollQuestionId);
 	}
 
 	@Post('/')
