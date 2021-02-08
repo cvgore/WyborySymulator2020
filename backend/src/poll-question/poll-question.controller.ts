@@ -14,7 +14,7 @@ export class PollQuestionController {
 	}
 
 	@Get('/')
-	async index(@Param('pollId') pollId: number): Promise<PollQuestion[]> {
+	async list(@Param('pollId') pollId: number): Promise<PollQuestion[]> {
 		return await this.pollQuestionService.getAll(pollId);
 	}
 
@@ -24,7 +24,6 @@ export class PollQuestionController {
 	}
 
 	@Put(':id')
-	@UseGuards(JwtGuard)
 	async edit(
 		@Param('id') id: number,
 		@Body() data: EditPollQuestionDto,
@@ -36,7 +35,6 @@ export class PollQuestionController {
 
 	@Delete(':id')
 	@HttpCode(HttpStatus.NO_CONTENT)
-	@UseGuards(JwtGuard)
 	async delete(@Param('id') id: number, @Param('pollId') pollId: number): Promise<void> {
 		await this.pollQuestionService.deleteQuestion(id, pollId);
 	}

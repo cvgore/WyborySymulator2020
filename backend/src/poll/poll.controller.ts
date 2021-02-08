@@ -8,7 +8,6 @@ import PollLinkDto from '@/poll/dto/poll-link.dto';
 import VotePollDto from '@/poll/dto/vote-poll.dto';
 import { Recaptcha } from '@/packages/recaptcha/src';
 import { PollVoteService } from '@/poll-vote/poll-vote.service';
-import { PollDataDto } from '@/poll/dto/poll-data.dto';
 
 @Controller('poll')
 export class PollController {
@@ -61,7 +60,7 @@ export class PollController {
 		return await this.pollService.getLink(id);
 	}
 
-	@Get(':id/:hash')
+	@Get(':id/:hash/data')
 	@Recaptcha()
 	async data(
 		@Param('id') id: number,
