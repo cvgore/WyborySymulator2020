@@ -22,7 +22,7 @@
     <div id="navbarBasicExample" class="navbar-menu" :class="{'is-active':showMobileNavbar}"
     >
       <div v-if="isAuth" class="navbar-start has-text-weight-bold">
-        <router-link to="/" class="navbar-item has-text-dark" active-class="has-background-warning">
+        <router-link to="/" class="navbar-item has-text-white" active-class="has-background-warning">
           Lista ankiet
         </router-link>
       </div>

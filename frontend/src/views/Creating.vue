@@ -1,14 +1,15 @@
 <template>
   <div class="is-flex is-flex-direction-column is-align-items-center fullH m-6">
-    <form class="form" @submit.prevent="save">
+    <div class="section is-size-2">Kreator ankiet</div>
+    <form class="form" @submit.prevent="submitForm">
       <div class="field">
         <label class="label">Nazwa ankiety</label>
         <div class="control">
-          <input class="input" type="text" placeholder="Nazwa ankiety" v-model="pollName" />
+          <input class="input" type="text" placeholder="Nazwa ankiety" v-model="state.pollName"/>
         </div>
       </div>
       <Question
-        v-for="(q, index) in questions"
+        v-for="(q, index) in state.createdQuestions"
         :key="`quest-${index}`"
         :index="index"
         :question.sync="q.questionText"
@@ -20,7 +21,7 @@
         <div class="control">
           <button
             type="submit"
-            :class="{'is-loading':isSending}"
+            :class="{'is-loading':state.isLoading}"
             class="button is-link">
             Zapisz
           </button>
@@ -29,9 +30,9 @@
           <button class="button is-info" type="button" @click="addQuestion">Dodaj pytanie</button>
         </div>
       </div>
-      <p class="help is-danger" v-if="error">{{errorMessage}}</p>
+      <p class="help is-danger" v-if="state.isError===false">Wystąpił błąd podczas tworzenia ankiety</p>
     </form>
-    <p class="title is-success" v-if="correctStatus">Zapisano ankiete</p>
+    <p class="title is-success" v-if="state.isFullCreated===true">Zapisano ankiete</p>
   </div>
 </template>
 
@@ -39,58 +40,67 @@
 import Question from '@/components/Creator/Question';
 
 import axios from "@/axios";
+import {usePost} from "../../hooks/usePost";
+import {useStore} from "vuex";
+import {useRouter} from "vue-router";
+import {reactive} from "vue";
+
 export default {
   name: 'Creating',
-  components: { Question },
-  data() {
-    return {
+  components: {Question},
+  setup() {
+    const state = reactive({
       pollName: '',
-      questions: [],
-      isSending: false,
-      error: false,
-      errorMessage: null,
-      correctStatus: false
-    };
-  },
-  methods: {
-    addQuestion() {
-      this.questions.push({
-        questionText: '',
-        answers: [],
+      createdQuestions: [],
+      isError: null,
+      isFullCreated: null,
+      isLoading: false
+    });
+
+    async function submitForm() {
+      const pollResponse = await usePost('/poll', {
+        name: state.pollName
       });
-    },
-    deleteQuestion(i) {
-      console.log(i);
-      this.questions.splice(i, 1);
-    },
-    async save(){
-      this.isSending = true;
-      try {
-        const poll = await axios.post('/poll',{
-          name: this.pollName
-        });
-        this.correctStatus = poll.status === 201;
-        for (const q of this.questions) {
-          const question = await axios.post(`/poll/${poll.data.id}/question`,{
-            name : q.questionText,
+      state.isLoading = pollResponse.isLoading;
+      if (pollResponse.statusCode === 201) {
+        for (const question of state.createdQuestions) {
+          const questionResponse = await usePost(`/poll/${pollResponse.data.id}/question`, {
+            name: question.questionText,
             type: "text",
             required: true
           });
-          this.correctStatus = question.status === 201;
-          for (const answers of q.answers) {
-            const option = await axios.post(`/poll/${poll.data.id}/question/${question.data.id}/option`,{
-              name : answers.text,
-            })
-            this.correctStatus = option.status === 201;
+          state.isLoading = pollResponse.isLoading;
+          if (questionResponse.statusCode=== 201) {
+            for (const answers of question.answers) {
+              const optionResponse = await usePost(`/poll/${pollResponse.data.id}/question/${questionResponse.data.id}/option`, {
+                name: answers.text,
+              });
+              state.isLoading = pollResponse.isLoading;
+              state.isFullCreated = optionResponse.statusCode === 201;
+              state.isError = optionResponse.isError;
+            }
+          } else {
+            state.isError = true
           }
         }
-
-      } catch (e){
-        this.errorMessage = 'Błąd';
-        this.error = true;
-      } finally {
-        this.isSending = false;
+      } else {
+        state.isError = true;
       }
+    }
+    function addQuestion(){
+      state.createdQuestions.push({
+        questionText: '',
+        answers: [],
+      })
+    }
+    function deleteQuestion(i){
+      state.createdQuestions.splice(i, 1);
+    }
+    return {
+      state,
+      addQuestion,
+      deleteQuestion,
+      submitForm
     }
   },
 };
@@ -101,6 +111,7 @@ export default {
   width: 500px;
   min-height: 50vh;
 }
+
 .fullH {
   height: 100%;
 }

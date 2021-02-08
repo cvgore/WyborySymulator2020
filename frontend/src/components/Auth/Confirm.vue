@@ -64,6 +64,7 @@ export default {
           token: response.data.access_token
         });
         store.commit('Auth/changeAuth',true);
+
         await router.replace('/');
       }
     }

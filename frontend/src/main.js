@@ -4,7 +4,7 @@ import router from './router';
 import store from './store/index';
 import '@/./styles.css';
 import {VueReCaptcha} from "vue-recaptcha-v3";
-
+import '../src/assets/main.scss';
 createApp(App)
   .use(store)
   .use(router)

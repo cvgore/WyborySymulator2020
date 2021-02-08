@@ -7,7 +7,7 @@
         type="text"
         placeholder="Pytanie"
         v-model="question"
-        @keyup="$emit('update', question)"
+        @keyup="changeQuestionValue"
       />
     </div>
     <Answer
@@ -29,7 +29,7 @@
         </button>
       </section>
       <section class="m-3">
-        <button @click="$emit('delete')" type="button" class="button is-small is-danger">
+        <button @click="deleteQuestion" type="button" class="button is-small is-danger">
           <span class="icon">
             <i class="fas fa-trash"></i>
           </span>
@@ -51,16 +51,26 @@ export default {
     index: Number,
     parentAnswers: Array
   },
-  methods: {
-    addAnswer(){
-      this.parentAnswers.push({
+  setup(props,{emit}){
+    function addAnswer(){
+      props.parentAnswers.push({
         text: ''
       })
-    },
-    deleteAnswer(i) {
-      this.parentAnswers.splice(i, 1);
-    },
-  }
+    }
+    function deleteAnswer(i) {
+      props.parentAnswers.splice(i, 1);
+    }
+    return {
+      addAnswer,
+      deleteAnswer,
+      changeQuestionValue(){
+        emit('update', props.question)
+      },
+      deleteQuestion(){
+        emit('delete')
+      }
+    }
+  },
 };
 </script>
 

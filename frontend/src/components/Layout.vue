@@ -5,9 +5,9 @@
       <slot/>
     </main>
     <footer class="footer">
-      <div class="content has-text-centered ">
+      <div class="content has-shadow has-text-white has-text-centered">
         <p>
-            <a>Created by: Kacper Palka, Adrian Pykacz, Dawid Zelinka </a>
+          Projekt stworzyli Kacper Palka, Adrian Pykacz, Dawid Zelinka, Piotr Waliczek
         </p>
       </div>
     </footer>

@@ -6,13 +6,13 @@
         type="text"
         placeholder="Wprowadź odpowiedź"
         v-model="value"
-        @keyup="$emit('update', value)"
+        @keyup="changeAnswerValue"
       />
       <span class="icon is-small is-left">
         <i class="far fa-arrow-alt-circle-right"></i>
       </span>
     </div>
-    <button @click="$emit('delete')" type="button" class="button is-small is-danger">
+    <button @click="deleteAnswer" type="button" class="button is-small is-danger">
         <span class="icon">
           <i class="fas fa-times"></i>
         </span>
@@ -25,6 +25,16 @@ export default {
   name: 'Answer',
   props: {
     value: String,
+  },
+  setup(props,{emit}){
+    return {
+      changeAnswerValue(){
+        emit('update', props.value)
+      },
+      deleteAnswer(){
+        emit('delete')
+      }
+    }
   },
 };
 </script>
