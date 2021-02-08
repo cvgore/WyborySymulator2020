@@ -7,41 +7,45 @@
       <div class="columns is-centered">
         <div class="column">
           <p class="title is-size-4 has-text-info">Ahoj, <strong class="is-bold has-text-warning-dark">{{onlyName}}</strong></p>
+          <p class="subtitle is-size-1">Masz {{countQuestions(state.polls)}} ankiety</p>
         </div>
       </div>
-      <p class="is-bold is-danger">{{state}}</p>
     </div>
-    <section class="section">
-      <h1 class="title">title</h1>
-      <div class="card">
-        <header class="card-header">
-          <p class="card-header-title">
 
-          </p>
-        </header>
-        <div class="card-content">
-          <div class="content">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
-            <a href="#">@bulmaio</a>. <a href="#">#css</a> <a href="#">#responsive</a>
-            <br>
-            <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+    <div v-if="state.polls" class="container wrapperr">
+      <div v-for="(p) in state.polls" class="item">
+        <section class="section">
+          <div class="card">
+            <header class="card-header">
+              <p class="card-header-title">
+                {{p.name}}
+              </p>
+            </header>
+            <div class="card-content">
+              <div class="content">
+                Pytań: <strong>{{countQuestions(p.questions)}}</strong>
+                <br>
+                <time datetime="2016-1-1">Utworzono: <strong>{{parseDate(p.createdAt)}}</strong></time>
+              </div>
+            </div>
+            <footer class="card-footer">
+              <router-link :to="{ path: `/polls/${p.id}` }" exact class="card-footer-item has-background-warning">Wypełnij</router-link>
+              <a href="#" class="card-footer-item has-background-warning-light">Edit</a>
+              <a href="#" class="card-footer-item has-background-warning-light">Delete</a>
+            </footer>
           </div>
-        </div>
-        <footer class="card-footer">
-          <a href="#" class="card-footer-item">Save</a>
-          <a href="#" class="card-footer-item">Edit</a>
-          <a href="#" class="card-footer-item">Delete</a>
-        </footer>
+        </section>
       </div>
-    </section>
+    </div>
   </section>
 </template>
 
 <script>
-import {mapActions, mapState} from "vuex";
-import {reactive,computed} from 'vue';
+import {mapState, useStore} from "vuex";
+import {reactive} from 'vue';
 import axios from "@/axios";
 import generatePollObject from "@/utils/generatePollObject";
+import parseDate from "@/utils/parseDate";
 export default {
   name: "ListPolls",
   computed: {
@@ -50,14 +54,22 @@ export default {
       return this.email.substring(0,this.email.indexOf('@'));
     }
   },
+  methods:{
+    parseDate,
+    countQuestions(data){
+      return data.length
+    }
+  },
   async setup(){
+    const store = useStore();
     const state = reactive({
-      apiData: null,
-      polls: []
+      polls: null
     })
     const polls = await axios.get('/poll');
     if(polls.data.length > 0){
-      const fullPolls = await generatePollObject(polls.data);
+      const response = await generatePollObject(polls.data);
+      state.polls = response;
+      store.commit('Polls/storePolls',response);
     }
     return {
       state
@@ -67,13 +79,13 @@ export default {
 </script>
 
 <style scoped>
-
-</style>
-<!--{ "apiData": [ { "id": 27, "name": "Ankieta 2", "type": "anonymous", "colorSchema": 0,
-"validFrom": "2021-02-08T15:25:32.972Z", "validUntil": null, "publishedAt": null, "createdAt":
-"2021-02-08T15:25:32.972Z", "updatedAt": "2021-02-08T15:25:32.972Z" } ] }-->
-<!--
-{
-
+.wrapperr {
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  grid-auto-rows: auto;
 }
--->
+.item {
+  width: 300px;
+}
+</style>

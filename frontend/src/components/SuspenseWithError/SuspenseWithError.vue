@@ -1,5 +1,8 @@
 <template>
-  <slot v-if="error" name="error"/>
+  <div v-if="error" >
+    <slot name="error"/>
+    {{error}}
+  </div>
   <Suspense v-else>
     <template #default>
       <slot name="default"/>

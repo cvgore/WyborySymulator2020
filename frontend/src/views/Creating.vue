@@ -22,7 +22,7 @@
             v-model="state.pollName"
           />
         </div>
-        <ErrorMessage name="surveyName" class="help is-danger is-size-6"/>
+        <ErrorMessage name="surveyName" class="help is-danger is-size-7"/>
       </div>
       <Question
         v-for="(q, index) in state.createdQuestions"
@@ -77,7 +77,14 @@ export default {
   setup() {
     const state = reactive({
       pollName: '',
-      createdQuestions: [],
+      createdQuestions: [{
+        uuid: uuidv4(),
+        questionText: '',
+        answers: [{
+          uuid: uuidv4(),
+          text: ''
+        }],
+      }],
       isError: null,
       isFullCreated: null,
       isLoading: false
@@ -101,6 +108,7 @@ export default {
               const optionResponse = await usePost(`/poll/${pollResponse.data.id}/question/${questionResponse.data.id}/option`, {
                 name: answers.text,
               });
+              console.log("tworzenie odpowiedzi",optionResponse)
               state.isLoading = pollResponse.isLoading;
               state.isFullCreated = optionResponse.statusCode === 201;
               state.isError = optionResponse.isError;
@@ -112,8 +120,15 @@ export default {
       } else {
         state.isError = true;
       }
+      state.createdQuestions = [{
+        uuid: uuidv4(),
+        questionText: '',
+        answers: [{
+          uuid: uuidv4(),
+          text: ''
+        }],
+      }]
       state.pollName = ''
-      state.createdQuestions = []
     }
     function addQuestion() {
       state.createdQuestions.push({

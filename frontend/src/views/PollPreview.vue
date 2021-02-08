@@ -1,45 +1,39 @@
 <template>
-  <section class="hero is-info">
+  <section class="hero is-warning">
     <div class="hero-body">
       <div class="container">
         <h1 class="title">
-          {{pickedPoll.name}}
+          {{state.pickedPoll.name}}
         </h1>
       </div>
     </div>
   </section>
-  <SuspenseWithError>
-    <template #default>
-      <QuestionList />
-    </template>
-    <template #fallback>
-      <progress class="progress is-small is-primary" max="100">50%</progress>
-    </template>
-    <template #error>
-      <ErrorNotify />
-    </template>
-  </SuspenseWithError>
-  <QuestionList />
+  <QuestionList :picked-poll-data="state.pickedPoll"/>
 </template>
 <script>
-import {mapGetters} from "vuex";
+
 import QuestionList from "@/components/QuestionList/QuestionList";
 import SuspenseWithError from "@/components/SuspenseWithError/SuspenseWithError";
 import ErrorNotify from "@/components/ErrorsNotify/ErrorNotify";
+import {useRoute} from 'vue-router';
+import {useStore} from 'vuex';
+import {reactive,watch} from "vue";
 export default {
   name: "PollPreview",
   components: {SuspenseWithError, QuestionList, ErrorNotify},
-  data(){
+  setup(){
+    const route = useRoute();
+    const store = useStore();
+    const state = reactive({
+      pickedPoll:null,
+      id: null
+    });
+    state.id = +route.params.id;
+    const getPoll = store.getters['Polls/getPollById'];
+    state.pickedPoll = getPoll(state.id);
     return {
-      pickedPoll: null
+      state,
     }
-  },
-  computed: {
-    ...mapGetters('Polls',['getPollById']),
-  },
-  created() {
-    const {params} = this.$route;
-    this.pickedPoll = this.getPollById(parseInt(params.id))
   }
 }
 </script>

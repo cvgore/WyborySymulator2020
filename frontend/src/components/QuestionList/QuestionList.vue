@@ -1,12 +1,11 @@
 <template>
-  <p v-if="state.isError" class="title">Ua niedobrze</p>
-  <form v-if="state.isLoading===false && currentAnswers"  id="survey-form" class="m-5">
+  <form id="survey-form" class="m-5">
     <div class="title is-flex is-justify-content-center">
       Question {{ state.currentQuestionIndexNumber }}/{{ state.amountOfQuestions }}
     </div>
     <div class="container is-max-desktop">
-      <div class="is-flex is-primary notification  is-align-items-center">
-        <div @click="decrease" class="ua">
+      <div class="is-flex is-warning notification  is-align-items-center">
+        <div v-if="state.currentQuestionIndexNumber > 1" @click="decrease" class="ua">
           <div class="is-flex box is-justify-content-center">
             <span class="icon is-dark">
               <i class="fas fa-chevron-left"></i>
@@ -18,15 +17,15 @@
           <div class="container is-flex is-justify-content-center">
             <p class="subtitle is-size-3 is-dark">{{ currentQuestion.name }}</p>
           </div>
-          <div class="box is-flex is-justify-content-center m-2">
-            <p v-if="currentAnswers.answers.length <= 0">
-              Pytanko ni mo odpowiedzi
-            </p>
-            <label v-else v-for="answer in currentAnswers.answers" class="radio">
-              <input type="radio" :name="answer.name">
-              {{answer.name}}
-            </label>
-          </div>
+          <section class="is-flex is-flex-direction-column is-align-items-center my-5">
+            <div v-for="option in currentQuestion.options" class="field">
+              <div class="control is-flex is-align-items-center">
+                <label :for="option.name" class="radio my-5"/>
+                <input type="radio" :name="option.name" class="is-size-6 mx-2">
+                {{option.name}}
+              </div>
+            </div>
+          </section>
         </section>
         <div v-if="state.currentQuestionIndexNumber < state.amountOfQuestions" @click="increase" class="ua">
           <div class="is-flex box is-justify-content-center">
@@ -42,80 +41,47 @@
       </div>
     </div>
   </form>
-  <p v-else class="box">Error Message: Axios pomylił odwage z odważnikiem, ewentualnie brak pytań w ankiecie</p>
 </template>
 
 <script>
-import axios from '@/axios';
-import {useRoute} from 'vue-router';
 import {computed, reactive} from 'vue';
 import QuestionItem from '@/components/QuestionList/QuestionItem';
+import {useStore} from "vuex";
 
 export default {
   name: 'QuestionList',
   components: {QuestionItem},
-  async setup() {
-    const route = useRoute();
+  props: {
+    pickedPollData: Object
+  },
+  setup(props) {
+    const store = useStore();
     const state = reactive({
-      questions: null,
-      amountOfQuestions: 0,
+      amountOfQuestions: null,
       currentQuestionIndexNumber: 1,
       currentQuestionNumber: null,
-      answers: null,
-      isLoading: null,
-      isError: false,
     });
-
+    if(props.pickedPollData){
+      state.amountOfQuestions = props.pickedPollData.questions.length
+    }
     function increase() {
       if (state.currentQuestionIndexNumber + 1 <= state.amountOfQuestions) {
         state.currentQuestionIndexNumber += 1;
       }
     }
-
     function decrease() {
       if (state.currentQuestionIndexNumber > 1) {
         state.currentQuestionIndexNumber -= 1;
       }
     }
-
-    try {
-      state.isLoading = true;
-
-      const {data: questionsData} = await axios.get(`/pollQuestion?pollId=${route.params.id}`);
-      const answers = [];
-      if(questionsData.length>1){
-        state.questions = questionsData;
-        state.amountOfQuestions = questionsData.length;
-        for (let i = 0; i < questionsData.length; i++) {
-          const {id} = state.questions[i];
-          console.log(id)
-          const {data} = await axios.get(`/pollOptions?pollQuestion=${id}`);
-          answers.push({questionId: id,answers: data});
-        }
-        state.answers = answers;
-        state.currentQuestionNumber = questionsData[0].id;
-      }
-    } catch (e) {
-      state.isError = true
-    } finally {
-      state.isLoading = false;
-    }
     const currentQuestion = computed(() => {
-      if(state.questions){
-        return state.questions.find((q, index) => index === state.currentQuestionIndexNumber - 1);
-      }
-    })
-    const currentAnswers = computed(()=>{
-      if(state.questions){
-        return state.answers.find((q) => q.questionId === (state.currentQuestionIndexNumber ));
-      }
-    })
+      return props.pickedPollData.questions.find((q,index) => index === state.currentQuestionIndexNumber - 1)
+    });
     return {
       state,
       increase,
       decrease,
       currentQuestion,
-      currentAnswers
     };
   },
 };

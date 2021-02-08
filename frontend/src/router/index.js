@@ -3,6 +3,8 @@ import Home from "@/views/Home";
 import Register from "@/components/Auth/Confirm";
 import Login from "@/components/Auth/Login";
 import Loginator from "@/views/Loginator";
+import PollPreview from "@/views/PollPreview";
+import Creating from "@/views/Creating";
 import store from '../store/index';
 const routes = [
   {
@@ -36,12 +38,12 @@ const routes = [
   {
     path: '/polls/:id',
     name: 'pickedPoll',
-    component: () => import('@/views/PollPreview')
+    component: PollPreview
   },
   {
     path: '/creator',
     name: 'creatorsrator',
-    component: () => import('@/views/Creating'),
+    component: Creating,
     beforeEnter(to, from, next) {
       if (store.state.Auth.isAuth) {
         next();

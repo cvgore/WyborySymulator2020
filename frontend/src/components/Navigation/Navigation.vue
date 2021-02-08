@@ -5,7 +5,7 @@
     aria-label="main navigation"
   >
     <div class="navbar-brand">
-      <router-link to="/" class="navbar-item">
+      <router-link to="/" exact class="navbar-item">
         <img src="@/assets/logo.svg" alt="logo" class="s">
       </router-link>
       <a
@@ -25,7 +25,7 @@
     <div id="navbarBasicExample" class="navbar-menu" :class="{'is-active':showMobileNavbar}"
     >
       <div v-if="isAuth" class="navbar-start has-text-weight-bold">
-        <router-link to="/" class="navbar-item has-text-white" active-class="has-background-warning has-text-dark">
+        <router-link to="/" exact class="navbar-item has-text-white" active-class="has-background-warning has-text-dark">
           Lista ankiet
         </router-link>
       </div>
@@ -43,8 +43,8 @@
             </div>
           </div>
           <div class="buttons">
-            <router-link v-if="!isAuth" to="/forms/log-in" class="button is-link" replace> Zaloguj się </router-link>
-            <router-link v-if="isAuth" to="/creator" class="button is-warning" replace> Stwórz nową ankiete </router-link>
+            <router-link v-if="!isAuth" to="/forms/log-in" exact class="button is-link" replace> Zaloguj się </router-link>
+            <router-link v-if="isAuth" to="/creator" exact class="button is-warning" replace> Stwórz nową ankiete </router-link>
           </div>
         </div>
       </div>

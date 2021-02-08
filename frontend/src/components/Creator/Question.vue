@@ -11,8 +11,8 @@
         v-model="question"
         @keyup="changeQuestionValue"
       />
+      <ErrorMessage :name="name" class="help is-danger is-size-7"/>
     </div>
-    <ErrorMessage :name="name" class="help is-danger is-size-6"/>
     <Answer
       v-for="(option,i) in parentAnswers"
       :key="`answer-${option.uuid}`"
