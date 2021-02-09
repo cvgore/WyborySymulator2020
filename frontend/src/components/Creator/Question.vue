@@ -15,10 +15,10 @@
     </div>
     <Answer
       v-for="(option,i) in parentAnswers"
-      :key="`answer-${option.uuid}`"
-      :name="`answer-${option.uuid}`"
-      :value.sync="option.text"
-      @update="option.text = $event"
+      :key="`answer-${option.id}`"
+      :name="`answer-${option.id}`"
+      :value.sync="option.name"
+      @update="option.name = $event"
       @delete="deleteAnswer(i)"
     />
     <div class="is-flex">
@@ -74,8 +74,8 @@ export default {
   setup(props,{emit}){
     function addAnswer(){
       props.parentAnswers.push({
-        uuid: uuidv4(),
-        text: ''
+        id: uuidv4(),
+        name: ''
       })
     }
     function deleteAnswer(i) {

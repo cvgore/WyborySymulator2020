@@ -32,7 +32,11 @@
             </div>
             <footer class="card-footer">
               <router-link :to="{ path: `/polls/${p.id}` }" exact class="card-footer-item has-background-warning">Wypełnij</router-link>
-              <a href="#" class="card-footer-item has-background-warning-light">Edit</a>
+              <div class="card-footer-item has-background-warning-light vc"
+              @click="passEditData(p)"
+              >
+                Edit
+              </div>
               <div
                 class="card-footer-item has-background-warning-light vc"
                 @click="deletePoll(p.id)"
@@ -53,6 +57,7 @@ import {reactive,computed} from 'vue';
 import axios from "@/axios";
 import generatePollObject from "@/utils/generatePollObject";
 import parseDate from "@/utils/parseDate";
+import {useRouter} from "vue-router";
 export default {
   name: "ListPolls",
   computed: {
@@ -69,6 +74,7 @@ export default {
   },
   async setup(){
     const store = useStore();
+    const router = useRouter();
     const state = reactive({
       polls: null
     })
@@ -97,10 +103,14 @@ export default {
         console.log(e)
       }
     }
+    function passEditData(data){
+      store.commit('Polls/editData',data);
+      router.push('/creator');
+    }
     return {
       state,
       countPolls,
-      deletePoll
+      passEditData
     }
   }
 }
@@ -121,5 +131,8 @@ export default {
 }
 .vc {
   cursor: pointer;
+  &:hover {
+    color:darkgoldenrod;
+  }
 }
 </style>

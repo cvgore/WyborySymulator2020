@@ -1,6 +1,6 @@
 <template>
   <div class="is-flex is-flex-direction-column is-align-items-center fullH m-6">
-    <div class="section is-size-2">Kreator ankiet</div>
+    <div class="section is-size-2">Kreator/edytor ankiet</div>
     <Form class="form" @submit="submitForm">
       <div class="notification is-danger" v-if="state.isError===true">
         <button @click="closeNotify" class="delete"/>
@@ -26,21 +26,29 @@
       </div>
       <Question
         v-for="(q, index) in state.createdQuestions"
-        :key="`quest-${q.uuid}`"
+        :key="`quest-${q.id}`"
         :index="index"
-        :name="`quest-${q.uuid}`"
-        :question.sync="q.questionText"
-        :parentAnswers.sync="q.answers"
-        @update="q.questionText = $event"
+        :name="`quest-${q.id}`"
+        :question.sync="q.name"
+        :parentAnswers.sync="q.options"
+        @update="q.name = $event"
         @delete="deleteQuestion(index)"
       />
       <div class="field is-grouped">
         <div class="control">
           <button
+            v-if="!state.editMode"
             type="submit"
             :class="{'is-loading':state.isLoading}"
             class="button is-link">
             Zapisz
+          </button>
+          <button
+            v-else
+            type="submit"
+            :class="{'is-loading':state.isLoading}"
+            class="button is-link">
+            Zapisz zmiany(#lepiejniklikaj)
           </button>
         </div>
         <div class="control">
@@ -48,16 +56,18 @@
         </div>
       </div>
     </Form>
+    <pre>{{JSON.stringify(state,null,2)}}</pre>
   </div>
 </template>
 
 <script>
 import Question from '@/components/Creator/Question';
 import {usePost} from "@/utils/usePost";
-import {reactive} from "vue";
+import {onUnmounted, reactive} from "vue";
 import { Form,Field,ErrorMessage } from 'vee-validate';
 import yup from '@/yup-settings';
 import { v4 as uuidv4 } from 'uuid';
+import {useStore} from "vuex";
 
 export default {
   name: 'Creating',
@@ -75,21 +85,27 @@ export default {
     }
   },
   setup() {
+    const store = useStore();
     const state = reactive({
+      editMode: false,
       pollName: '',
       createdQuestions: [{
-        uuid: uuidv4(),
-        questionText: '',
-        answers: [{
-          uuid: uuidv4(),
-          text: ''
+        id: uuidv4(),
+        name: '',
+        options: [{
+          id: uuidv4(),
+          name: ''
         }],
       }],
       isError: null,
       isFullCreated: null,
       isLoading: false
     });
-
+    if(store.state.Polls.editData){
+      state.editMode = true;
+      state.createdQuestions = store.state.Polls.editData.questions;
+      state.pollName = store.state.Polls.editData.name;
+    }
     async function submitForm() {
       const pollResponse = await usePost('/poll', {
         name: state.pollName
@@ -98,15 +114,15 @@ export default {
       if (pollResponse.statusCode === 201) {
         for (const question of state.createdQuestions) {
           const questionResponse = await usePost(`/poll/${pollResponse.data.id}/question`, {
-            name: question.questionText,
+            name: question.name,
             type: "text",
             required: true
           });
           state.isLoading = pollResponse.isLoading;
           if (questionResponse.statusCode === 201) {
-            for (const answers of question.answers) {
+            for (const answers of question.options) {
               const optionResponse = await usePost(`/poll/${pollResponse.data.id}/question/${questionResponse.data.id}/option`, {
-                name: answers.text,
+                name: answers.name,
               });
               console.log("tworzenie odpowiedzi",optionResponse)
               state.isLoading = pollResponse.isLoading;
@@ -121,20 +137,20 @@ export default {
         state.isError = true;
       }
       state.createdQuestions = [{
-        uuid: uuidv4(),
-        questionText: '',
+        id: uuidv4(),
+        name: '',
         answers: [{
-          uuid: uuidv4(),
-          text: ''
+          id: uuidv4(),
+          name: ''
         }],
       }]
       state.pollName = ''
     }
     function addQuestion() {
       state.createdQuestions.push({
-        uuid: uuidv4(),
-        questionText: '',
-        answers: [],
+        id: uuidv4(),
+        name: '',
+        options: [],
       })
     }
     function deleteQuestion(i) {
@@ -144,6 +160,19 @@ export default {
       state.isError = null;
       state.isFullCreated = null;
     }
+    onUnmounted(() => {
+      store.editMode = false;
+      store.commit('Polls/resetEditData',null);
+      state.createdQuestions = [{
+        id: uuidv4(),
+        name: '',
+        answers: [{
+          id: uuidv4(),
+          name: ''
+        }],
+      }]
+      state.pollName = ''
+    })
     return {
       state,
       addQuestion,

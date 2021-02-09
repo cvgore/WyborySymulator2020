@@ -1,5 +1,6 @@
 const state = {
   polls: [],
+  editData: null
 };
 
 const getters = {
@@ -12,6 +13,12 @@ const mutations = {
   storePolls(state,payload){
     state.polls = payload
   },
+  editData(state,payload){
+    state.editData = payload
+  },
+  resetEditData(state,payload){
+    state.editData = null;
+  }
 };
 
 
