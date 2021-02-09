@@ -53,64 +53,75 @@
 
 <script>
 import {mapState, useStore} from "vuex";
-import {reactive,computed} from 'vue';
+import {reactive, computed, onUpdated, onMounted} from 'vue';
 import axios from "@/axios";
 import generatePollObject from "@/utils/generatePollObject";
 import parseDate from "@/utils/parseDate";
 import {useRouter} from "vue-router";
+
 export default {
   name: "ListPolls",
   computed: {
-    ...mapState('Auth',['email']),
-    onlyName(){
-      return this.email.substring(0,this.email.indexOf('@'));
+    ...mapState('Auth', ['email']),
+    onlyName() {
+      return this.email.substring(0, this.email.indexOf('@'));
     }
   },
-  methods:{
+  methods: {
     parseDate,
-    countQuestions(data){
+    countQuestions(data) {
       return data.length
-    }
+    },
   },
-  async setup(){
+  updated() {
+    console.log("update")
+  },
+  async setup() {
     const store = useStore();
     const router = useRouter();
     const state = reactive({
       polls: null
     })
-    const countPolls = computed(()=>{
-      if(state.polls){
+    const countPolls = computed(() => {
+      if (state.polls) {
         const num = state.polls.length
         return num === 1 ? `${num} ankietę` : `${num} ankiety`
       } else {
         return '0 ankiet'
       }
-    })
-    const polls = await axios.get('/poll');
-    if(polls.data.length > 0){
-      const response = await generatePollObject(polls.data);
-      state.polls = response;
-      store.commit('Polls/storePolls',response);
+    });
+    async function fetchAll() {
+      console.log("f")
+      const polls = await axios.get('/poll');
+      if (polls.data.length > 0) {
+        const response = await generatePollObject(polls.data);
+        state.polls = response;
+        store.commit('Polls/storePolls', response);
+      } else {
+        state.polls = null;
+      }
     }
-    async function deletePoll(id){
+    async function deletePoll(id) {
       try {
-        const response = await axios.delete(`/delete/${id}`);
-        console.log(response);
-        if(response){
-          this.$forceUpdate();
+        const response = await axios.delete(`/poll/${id}`);
+        if (response.status === 204) {
+          await fetchAll();
         }
       } catch (e) {
         console.log(e)
       }
     }
-    function passEditData(data){
-      store.commit('Polls/editData',data);
+    function passEditData(data) {
+      store.commit('Polls/editData', data);
       router.push('/creator');
     }
+    await fetchAll();
+
     return {
       state,
       countPolls,
-      passEditData
+      passEditData,
+      deletePoll,
     }
   }
 }
