@@ -1,13 +1,13 @@
 <template>
-<section class="hero is-medium is-primary is-bold">
-  <div class="hero-body">
-    <div class="container">
-      <h1 class="title">
-        Nie jesteś zalogowany lub wystąpił błąd nw czemu
-      </h1>
-    </div>
+  <div class="boxx section is-flex is-flex-direction-column is-justify-content-center is-align-items-center">
+    <figure class="image is-128x128 my-5">
+      <img src="@/assets/man.png" alt="icon">
+    </figure>
+    <p class="title is-size-2  has-text-info">Wystąpił błąd</p>
+    <p class="subtitle is-size-5">
+      <slot/>
+    </p>
   </div>
-</section>
 </template>
 
 <script>

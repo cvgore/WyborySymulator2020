@@ -14,8 +14,6 @@
         </div>
       </div>
     </div>
-    <pre>{{JSON.stringify(state.polls,null,2)}}</pre>
-
     <div v-if="state.polls" class="container wrapperr">
       <div v-for="(p) in state.polls" class="item">
         <section class="section">
@@ -35,7 +33,12 @@
             <footer class="card-footer">
               <router-link :to="{ path: `/polls/${p.id}` }" exact class="card-footer-item has-background-warning">Wypełnij</router-link>
               <a href="#" class="card-footer-item has-background-warning-light">Edit</a>
-              <a href="#" class="card-footer-item has-background-warning-light">Delete</a>
+              <div
+                class="card-footer-item has-background-warning-light vc"
+                @click="deletePoll(p.id)"
+              >
+                Usuń (#nidziala)
+              </div>
             </footer>
           </div>
         </section>
@@ -83,9 +86,21 @@ export default {
       state.polls = response;
       store.commit('Polls/storePolls',response);
     }
+    async function deletePoll(id){
+      try {
+        const response = await axios.delete(`/delete/${id}`);
+        console.log(response);
+        if(response){
+          this.$forceUpdate();
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    }
     return {
       state,
-      countPolls
+      countPolls,
+      deletePoll
     }
   }
 }
@@ -103,5 +118,8 @@ export default {
 }
 .item {
   width: 300px;
+}
+.vc {
+  cursor: pointer;
 }
 </style>
