@@ -19,13 +19,19 @@ export class PollOption {
 	@PrimaryGeneratedColumn()
 	id!: number;
 
-	@ManyToOne(_ => PollQuestion, poll => poll.pollOptions)
+	@ManyToOne(_ => PollQuestion, poll => poll.pollOptions, {
+		onDelete: 'CASCADE',
+	})
 	pollQuestion!: PollQuestion;
 
-	@OneToOne(_ => PollCustomOption)
+	@OneToOne(_ => PollCustomOption, {
+		onDelete: 'CASCADE',
+	})
 	pollCustomOption!: PollCustomOption | null;
 
-	@OneToMany(_ => PollVote, pollVote => pollVote.pollOption)
+	@OneToMany(_ => PollVote, pollVote => pollVote.pollOption, {
+		onDelete: 'CASCADE',
+	})
 	pollVotes!: PollVote[];
 
 	@Column()

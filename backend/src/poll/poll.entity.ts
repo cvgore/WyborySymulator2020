@@ -13,7 +13,9 @@ export class Poll {
 	@Column()
 	name!: string;
 
-	@ManyToOne(_ => User)
+	@ManyToOne(_ => User, {
+		onDelete: 'CASCADE',
+	})
 	user!: User;
 
 	@Column()
@@ -22,7 +24,9 @@ export class Poll {
 	@Column()
 	colorSchema!: number;
 
-	@OneToMany(_ => PollQuestion, pollQuestion => pollQuestion.poll)
+	@OneToMany(_ => PollQuestion, pollQuestion => pollQuestion.poll, {
+		onDelete: 'CASCADE',
+	})
 	pollQuestions!: PollQuestion[];
 
 	@OneToMany(_ => PollCode, pollCode => pollCode.poll)

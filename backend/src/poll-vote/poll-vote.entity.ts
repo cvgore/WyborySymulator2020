@@ -7,7 +7,9 @@ export class PollVote {
 	@PrimaryGeneratedColumn()
 	id!: number;
 
-	@ManyToOne(_ => PollOption, pollOption => pollOption.pollVotes)
+	@ManyToOne(_ => PollOption, pollOption => pollOption.pollVotes, {
+		onDelete: 'CASCADE',
+	})
 	pollOption!: PollOption;
 
 	@Column({type: 'timestamp'})

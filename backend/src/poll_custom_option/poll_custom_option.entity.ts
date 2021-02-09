@@ -7,7 +7,9 @@ export class PollCustomOption {
 	@PrimaryGeneratedColumn()
 	id!: number;
 
-	@OneToMany(_ => PollOption, pollOption => pollOption.pollCustomOption)
+	@OneToMany(_ => PollOption, pollOption => pollOption.pollCustomOption, {
+		onDelete: 'CASCADE',
+	})
 	pollOption!: PollOption;
 
 	@ManyToOne(_ => Voter)

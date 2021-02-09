@@ -44,7 +44,7 @@ Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 {
-	"name": "Sample poll"
+	"name": "Sample poll 132"
 }
 
 ### Edit poll
@@ -60,7 +60,7 @@ Content-Type: application/json
 }
 
 ### Remove poll
-DELETE {{url}}/poll/6
+DELETE {{url}}/poll/13
 Accept: application/json
 Authorization: Bearer {{auth_token}}
 

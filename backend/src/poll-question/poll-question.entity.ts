@@ -19,10 +19,14 @@ export class PollQuestion {
 	})
 	required!: boolean;
 
-	@ManyToOne(_ => Poll)
+	@ManyToOne(_ => Poll, {
+		onDelete: 'CASCADE',
+	})
 	poll!: Poll;
 
-	@OneToMany(_ => PollOption, pollOption => pollOption.pollQuestion)
+	@OneToMany(_ => PollOption, pollOption => pollOption.pollQuestion, {
+		onDelete: 'CASCADE',
+	})
 	pollOptions!: PollOption[];
 
 	@Column({type: 'timestamp'})
