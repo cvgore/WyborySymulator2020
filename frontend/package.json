@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "yarn exec vue-cli-service serve",
+    "serve": "eval $(egrep -v '^#' .env | xargs) yarn exec vue-cli-service serve",
     "build": "yarn exec vue-cli-service build",
     "test:unit": "yarn exec vue-cli-service test:unit",
     "test:e2e": "yarn exec vue-cli-service test:e2e",
