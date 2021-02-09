@@ -1,6 +1,8 @@
 <template>
   <div class="is-flex is-flex-direction-column is-align-items-center fullH m-6">
-    <div class="section is-size-2">Kreator/edytor ankiet</div>
+    <div class="section is-size-2">
+      {{state.editMode ? 'Edytor' : 'Kreator'}} ankiet
+    </div>
     <Form class="form" @submit="submitForm">
       <div class="notification is-danger" v-if="state.isError===true">
         <button @click="closeNotify" class="delete"/>
