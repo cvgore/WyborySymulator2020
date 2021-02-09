@@ -1,25 +1,26 @@
-import axios from "@/axios";
+import axios from '@/axios';
 
 export default async function generatePollObject(allPolls) {
-  let obj = [];
+  let obj = []
   for (const poll of allPolls) {
-    const questions = await axios.get(`/poll/${poll.id}/question`);
+    const { data } = await axios.get(`/poll/${poll.id}/question`);
+    const answersOfSinglePoll = await generateAnswers(data, poll.id);
     obj.push({
       ...poll,
-      questions: []
+      questions: [...answersOfSinglePoll]
     })
-    for (const question of questions.data) {
-      const { data } = await axios.get(`poll/${poll.id}/question/${question.id}/option`);
-      for (let i=0;i < obj.length;i++){
-        obj[i].questions.push({
-          ...question,
-          options: []
-        });
-        for (let j=0;j < obj[i].questions.length;j++){
-          obj[i].questions[j].options.push(...data)
-        }
-      }
-    }
+  }
+  return obj;
+}
+
+async function generateAnswers(questions, pollID) {
+  let obj = [];
+  for (const q of questions) {
+    const { data } = await axios.get(`poll/${pollID}/question/${q.id}/option`);
+    obj.push({
+      ...q,
+      options: [...data]
+    });
   }
   return obj;
 }

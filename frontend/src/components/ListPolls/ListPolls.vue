@@ -7,11 +7,14 @@
       <div class="columns is-centered">
         <div class="column">
           <p class="title is-size-4 has-text-info">Ahoj, <strong class="is-bold has-text-warning-dark">{{onlyName}}</strong></p>
-          <p v-if="state.polls" class="subtitle is-size-1">Masz {{countQuestions(state.polls)}} ankiety</p>
+          <p v-if="state.polls" class="subtitle is-size-1">
+            Masz {{countPolls}}
+          </p>
           <p v-else class="subtitle is-size-1">Masz 0 ankiet</p>
         </div>
       </div>
     </div>
+    <pre>{{JSON.stringify(state.polls,null,2)}}</pre>
 
     <div v-if="state.polls" class="container wrapperr">
       <div v-for="(p) in state.polls" class="item">
@@ -43,7 +46,7 @@
 
 <script>
 import {mapState, useStore} from "vuex";
-import {reactive} from 'vue';
+import {reactive,computed} from 'vue';
 import axios from "@/axios";
 import generatePollObject from "@/utils/generatePollObject";
 import parseDate from "@/utils/parseDate";
@@ -66,6 +69,14 @@ export default {
     const state = reactive({
       polls: null
     })
+    const countPolls = computed(()=>{
+      if(state.polls){
+        const num = state.polls.length
+        return num === 1 ? `${num} ankietę` : `${num} ankiety`
+      } else {
+        return '0 ankiet'
+      }
+    })
     const polls = await axios.get('/poll');
     if(polls.data.length > 0){
       const response = await generatePollObject(polls.data);
@@ -73,18 +84,22 @@ export default {
       store.commit('Polls/storePolls',response);
     }
     return {
-      state
+      state,
+      countPolls
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .wrapperr {
   height: 100%;
   display: grid;
-  grid-template-columns: repeat(3,1fr);
+  grid-auto-columns: 240px;
   grid-auto-rows: auto;
+  @media screen and (min-width: 520px){
+    grid-template-columns: repeat(3,1fr);
+  }
 }
 .item {
   width: 300px;

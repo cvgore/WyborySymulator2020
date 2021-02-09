@@ -40,6 +40,9 @@
         <button v-if="state.currentQuestionIndexNumber === state.amountOfQuestions" class="button is-success">Wyślij</button>
       </div>
     </div>
+    <pre>
+      {{JSON.stringify(pickedPollData,null,2)}}
+    </pre>
   </form>
 </template>
 
