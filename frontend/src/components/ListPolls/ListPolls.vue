@@ -6,34 +6,46 @@
       </figure>
       <div class="columns is-centered">
         <div class="column">
-          <p class="title is-size-4 has-text-info">Ahoj, <strong class="is-bold has-text-warning-dark">{{onlyName}}</strong></p>
+          <p class="title is-size-4 has-text-info">Ahoj, <strong
+            class="is-bold has-text-warning-dark">{{ onlyName }}</strong></p>
           <p v-if="state.polls" class="subtitle is-size-1">
-            Masz {{countPolls}}
+            Masz {{ countPolls }}
           </p>
           <p v-else class="subtitle is-size-1">Masz 0 ankiet</p>
         </div>
       </div>
     </div>
+    <section v-if="state.someError">
+      <div v-if="state.someError.cond" class="notification is-danger">
+        <button class="delete" @click="closeNotify"/>
+        Błąd podczas usuwania ankiety
+        <p class="is-size-6">
+          {{state.someError.message}}
+        </p>
+      </div>
+    </section>
     <div v-if="state.polls" class="container wrapperr">
       <div v-for="(p) in state.polls" class="item">
         <section class="section">
           <div class="card">
             <header class="card-header">
               <p class="card-header-title">
-                {{p.name}}
+                {{ p.name }}
               </p>
             </header>
             <div class="card-content">
               <div class="content">
-                Pytań: <strong>{{countQuestions(p.questions)}}</strong>
+                Pytań: <strong>{{ countQuestions(p.questions) }}</strong>
                 <br>
-                <time datetime="2016-1-1">Utworzono: <strong>{{parseDate(p.createdAt)}}</strong></time>
+                <time datetime="2016-1-1">Utworzono: <strong>{{ parseDate(p.createdAt) }}</strong></time>
               </div>
             </div>
             <footer class="card-footer">
-              <router-link :to="{ path: `/polls/${p.id}` }" exact class="card-footer-item has-background-warning">Wypełnij</router-link>
+              <router-link :to="{ path: `/polls/${p.id}` }" exact class="card-footer-item has-background-warning">
+                Wypełnij
+              </router-link>
               <div class="card-footer-item has-background-warning-light vc"
-              @click="passEditData(p)"
+                   @click="passEditData(p)"
               >
                 Edit
               </div>
@@ -41,7 +53,7 @@
                 class="card-footer-item has-background-warning-light vc"
                 @click="deletePoll(p.id)"
               >
-                Usuń (#nidziala)
+                Usuń
               </div>
             </footer>
           </div>
@@ -58,7 +70,6 @@ import axios from "@/axios";
 import generatePollObject from "@/utils/generatePollObject";
 import parseDate from "@/utils/parseDate";
 import {useRouter} from "vue-router";
-
 export default {
   name: "ListPolls",
   computed: {
@@ -80,7 +91,8 @@ export default {
     const store = useStore();
     const router = useRouter();
     const state = reactive({
-      polls: null
+      polls: null,
+      someError: null
     })
     const countPolls = computed(() => {
       if (state.polls) {
@@ -91,7 +103,6 @@ export default {
       }
     });
     async function fetchAll() {
-      console.log("f")
       const polls = await axios.get('/poll');
       if (polls.data.length > 0) {
         const response = await generatePollObject(polls.data);
@@ -108,7 +119,10 @@ export default {
           await fetchAll();
         }
       } catch (e) {
-        console.log(e)
+        state.someError = {
+          cond: true,
+          mess: e.message
+        }
       }
     }
     function passEditData(data) {
@@ -116,12 +130,15 @@ export default {
       router.push('/creator');
     }
     await fetchAll();
-
+    function closeNotify() {
+      state.someError = null;
+    }
     return {
       state,
       countPolls,
       passEditData,
       deletePoll,
+      closeNotify
     }
   }
 }
@@ -133,8 +150,8 @@ export default {
   display: grid;
   grid-auto-columns: 240px;
   grid-auto-rows: auto;
-  @media screen and (min-width: 520px){
-    grid-template-columns: repeat(3,1fr);
+  @media screen and (min-width: 520px) {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 .item {
@@ -143,7 +160,7 @@ export default {
 .vc {
   cursor: pointer;
   &:hover {
-    color:darkgoldenrod;
+    color: darkgoldenrod;
   }
 }
 </style>
