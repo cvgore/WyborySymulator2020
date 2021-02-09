@@ -117,7 +117,7 @@ export default {
   }
 }
 .item {
-  width: 300px;
+  width: 100%;
 }
 .vc {
   cursor: pointer;
