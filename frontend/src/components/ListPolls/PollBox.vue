@@ -103,7 +103,8 @@ export default {
     async publishPoll(id) {
       try {
         const response = await axios.post(`/poll/${id}/publish`);
-        if (response.status === 204) {
+        console.log(response)
+        if (response.status === 201) {
           await this.fetchAllHandler();
         }
       } catch (e) {
