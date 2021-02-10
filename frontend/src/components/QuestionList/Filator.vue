@@ -9,7 +9,11 @@
         </div>
       </div>
     </section>
-    <QuestionList :picked-poll-data="state.pickedPoll"/>
+    <QuestionList
+      :picked-poll-data="state.pickedPoll"
+      :id="state.id"
+      :str="state.str"
+    />
   </div>
 </template>
 
