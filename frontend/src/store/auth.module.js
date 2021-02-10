@@ -1,40 +1,29 @@
 import axios from '@/axios';
 
 const state = {
-  email: null,
-  token: null,
-  isAuth: false,
+  isAuth: !!window.localStorage.getItem('status')
 };
 
 const mutations = {
-  changeEmail(state, payload) {
-    state.email = payload;
-  },
   changeAuth(state, payload) {
     state.isAuth = payload;
   },
-  insertToken(state, payload) {
-    state.token = payload.token;
-    axios.defaults.headers.common['Authorization'] = `Bearer ${payload.token}`;
-  },
-  reset(state, payload) {
-    Object.assign(state, {
-      email: null,
-      token: null,
-      isAuth: false,
-    });
+  reset(state) {
+    window.localStorage.clear();
+    state.isAuth = false
   },
 };
-const getters = {
-  getEmail: (state) => {
-    return state.email;
-  },
-  getToken: (state) => {
-    return state.token;
-  },
-};
+const actions = {
+  checkAuth(context){
+    if(window.localStorage.getItem('email') && window.localStorage.getItem('token')){
+      context.commit('changeAuth',true);
+    } else {
+      context.commit('changeAuth',false);
+    }
+  }
+}
 export default {
+  actions,
   state,
   mutations,
-  getters,
 };
