@@ -27,7 +27,6 @@ services:
             - ./frontend/:/usr/src/app/
         dns: 1.1.1.1
         command: ./start.sh
-
     db:
         image: postgres:alpine
         environment:
