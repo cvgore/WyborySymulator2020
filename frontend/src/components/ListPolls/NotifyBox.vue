@@ -18,6 +18,15 @@
         </p>
       </div>
     </section>
+    <section v-if="errors.fill">
+      <div v-if="errors.fill.status" class="notification is-danger">
+        <button class="delete" @click="closeNotify"/>
+        Błąd podczas ładowania ankiety
+        <p class="is-size-6">
+          {{ state.errors.fill.message }}
+        </p>
+      </div>
+    </section>
   </div>
 </template>
 
