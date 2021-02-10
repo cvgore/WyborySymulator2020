@@ -122,9 +122,8 @@ export default {
       }
     }
     async function vote() {
-      for (const voteQuestion in state.givenAnswers) {
-        console.log(voteQuestion)
-        const res = await axios.post(`/poll/${props.id}/${props.str}/vote`, voteQuestion)
+      for (const voteQuestion of state.givenAnswers) {
+        const res = await axios.post(`/poll/${props.id}/${props.str}/vote`, voteQuestion[0])
         console.log(res)
       }
     }
