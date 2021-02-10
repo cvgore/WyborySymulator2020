@@ -24,12 +24,11 @@
 <script>
 import Navigation from '@/components/Navigation/Navigation';
 import Layout from '@/components/Layout';
-import {mapActions, mapState} from 'vuex';
+import { mapState } from 'vuex';
 import ListPolls from "@/components/ListPolls/ListPolls";
 import SuspenseWithError from "@/components/SuspenseWithError/SuspenseWithError";
 import Spinner from "@/components/UI/Spinner";
 import ErrorNotify from "@/components/ErrorsNotify/ErrorNotify";
-
 export default {
   name: 'HomeContent',
   components: {
