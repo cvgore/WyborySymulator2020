@@ -36,7 +36,7 @@ const routes = [
     }
   },
   {
-    path: '/polls/:id',
+    path: '/vote/:id/:str',
     name: 'pickedPoll',
     component: PollPreview
   },

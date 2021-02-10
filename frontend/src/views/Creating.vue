@@ -141,7 +141,7 @@ export default {
       state.createdQuestions = [{
         id: uuidv4(),
         name: '',
-        answers: [{
+        options: [{
           id: uuidv4(),
           name: ''
         }],

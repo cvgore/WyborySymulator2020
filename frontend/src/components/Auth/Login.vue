@@ -58,7 +58,6 @@ export default {
     }
   },
   setup(){
-    const store = useStore();
     const router = useRouter();
     const state = reactive({
       email: '',
@@ -70,7 +69,7 @@ export default {
       });
       state.apiData = response;
       if(response.statusCode === 201){
-        store.commit('Auth/changeEmail',state.email);
+        window.localStorage.setItem('email', state.email);
         await router.replace('2fa');
       }
     }

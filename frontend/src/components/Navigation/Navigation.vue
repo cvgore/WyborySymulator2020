@@ -59,11 +59,12 @@ export default {
   name: 'Navigation',
   data(){
     return {
-      showMobileNavbar: false
+      showMobileNavbar: false,
+      email : window.localStorage.getItem('email')
     }
   },
   computed: {
-    ...mapState('Auth',['isAuth','email']),
+    ...mapState('Auth',['isAuth']),
   },
   methods: {
     toggleMN(){
