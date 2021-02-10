@@ -19,9 +19,9 @@
             <p class="subtitle is-size-3 is-dark">{{ currentQuestion.name }}</p>
           </div>
           <section class="is-flex is-flex-direction-column is-align-items-center m-5">
-            <div v-for="option in currentQuestion.options" class="field">
+            <div v-for="option in currentQuestion.pollOptions" class="field">
               <div class="control is-flex is-align-items-center">
-                <label class="radio czacza" :class="pickedField">
+                <label class="radio czacza">
                   <Field
                     type="radio"
                     name="option"
@@ -62,7 +62,6 @@ import QuestionItem from '@/components/QuestionList/QuestionItem';
 import {useStore} from "vuex";
 import {Form,Field,ErrorMessage} from 'vee-validate'
 import yup from "@/yup-settings";
-
 export default {
   name: 'QuestionList',
   components: {QuestionItem,Form,Field,ErrorMessage},
@@ -88,7 +87,7 @@ export default {
       currentQuestionIndexNumber: 1,
     });
     if(props.pickedPollData){
-      state.amountOfQuestions = props.pickedPollData.questions.length
+      state.amountOfQuestions = props.pickedPollData.pollQuestions.length
     }
     function increase() {
       if (state.currentQuestionIndexNumber + 1 <= state.amountOfQuestions) {
@@ -101,7 +100,7 @@ export default {
       }
     }
     const currentQuestion = computed(() => {
-      return props.pickedPollData.questions.find((q,index) => index === state.currentQuestionIndexNumber - 1)
+      return props.pickedPollData.pollQuestions.find((q,index) => index === state.currentQuestionIndexNumber - 1)
     });
     function onSubmit(){
       if(state.currentQuestionIndexNumber < state.amountOfQuestions){
@@ -125,7 +124,6 @@ export default {
   border:0;
 }
 .bo {
-
 }
 .field {
   width: 100%;
