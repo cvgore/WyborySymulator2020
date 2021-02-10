@@ -19,25 +19,18 @@
             <p class="subtitle is-size-3 is-dark">{{ currentQuestion.name }}</p>
           </div>
           <section class="is-flex is-flex-direction-column is-align-items-center m-5">
-            <div v-for="option in currentQuestion.pollOptions" class="field">
-              <div class="control is-flex is-align-items-center">
-                <label class="radio czacza">
-                  <Field
-                    type="radio"
-                    name="option"
-                    class="is-size-6 mx-2 bo"
-                    :value="option.name"
-                  />
-                  {{option.name}}
-                </label>
-              </div>
-            </div>
+              <FormQuestionField
+                v-for="option in currentQuestion.pollOptions"
+                :key="option.id"
+                :option="option"
+                :model="state.options"
+                :passAnswer="passAnswer"
+              />
           </section>
         </section>
         <button
           class="ua  button is-warning"
           type="submit"
-          @submit="onSubmit"
         >
           <div class="is-flex box is-justify-content-center">
             <p class="subtitle">Następne pytanie</p>
@@ -48,27 +41,33 @@
         <button
           v-if="state.currentQuestionIndexNumber === state.amountOfQuestions"
           class="button is-success"
+          type="button"
+          @click="vote"
         >
-          nie licz na to
+          Wyślij
         </button>
       </div>
     </div>
+    {{state}}
   </Form>
 </template>
 
 <script>
 import {computed, reactive} from 'vue';
 import QuestionItem from '@/components/QuestionList/QuestionItem';
-import {useStore} from "vuex";
-import {Form,Field,ErrorMessage} from 'vee-validate'
-import yup from "@/yup-settings";
+import {Form, ErrorMessage} from 'vee-validate'
+import FormQuestionField from "@/components/QuestionList/FormQuestionField";
+import {usePost} from "@/utils/usePost";
+import axios from "@/axios";
 export default {
   name: 'QuestionList',
-  components: {QuestionItem,Form,Field,ErrorMessage},
+  components: {FormQuestionField, QuestionItem, Form, ErrorMessage},
   props: {
-    pickedPollData: Object
+    pickedPollData: Object,
+    id: Number,
+    str: String
   },
-  data(){
+  data() {
     return {
       schema: {
         option: (value) => {
@@ -80,13 +79,13 @@ export default {
       },
     }
   },
-  setup(props) {
-    const store = useStore();
+  setup: function (props) {
     const state = reactive({
       amountOfQuestions: null,
       currentQuestionIndexNumber: 1,
+      givenAnswers: [],
     });
-    if(props.pickedPollData){
+    if (props.pickedPollData) {
       state.amountOfQuestions = props.pickedPollData.pollQuestions.length
     }
     function increase() {
@@ -100,11 +99,33 @@ export default {
       }
     }
     const currentQuestion = computed(() => {
-      return props.pickedPollData.pollQuestions.find((q,index) => index === state.currentQuestionIndexNumber - 1)
+      return props.pickedPollData.pollQuestions.find((q, index) => index === state.currentQuestionIndexNumber - 1)
     });
-    function onSubmit(){
-      if(state.currentQuestionIndexNumber < state.amountOfQuestions){
+    function passAnswer(answer) {
+      const myQuestionIndex = state.givenAnswers.findIndex(q => {
+        const f = Object.keys(q);
+        return +f[0] === currentQuestion.value.id
+      });
+      if (myQuestionIndex === -1) {
+        state.givenAnswers.push({
+          [currentQuestion.value.id]: [answer]
+        })
+      } else {
+        state.givenAnswers[myQuestionIndex] = {
+          [currentQuestion.value.id]: [answer]
+        };
+      }
+    }
+    function onSubmit() {
+      if (state.currentQuestionIndexNumber < state.amountOfQuestions && state.givenAnswers.length > 0) {
         increase()
+      }
+    }
+    async function vote() {
+      for (const voteQuestion in state.givenAnswers) {
+        console.log(voteQuestion)
+        const res = await axios.post(`/poll/${props.id}/${props.str}/vote`, voteQuestion)
+        console.log(res)
       }
     }
     return {
@@ -112,7 +133,9 @@ export default {
       increase,
       decrease,
       currentQuestion,
-      onSubmit
+      onSubmit,
+      passAnswer,
+      vote
     };
   },
 };
@@ -121,9 +144,7 @@ export default {
 <style lang="scss" scoped>
 .ua {
   cursor: pointer;
-  border:0;
-}
-.bo {
+  border: 0;
 }
 .field {
   width: 100%;
