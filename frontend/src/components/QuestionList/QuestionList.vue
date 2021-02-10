@@ -41,6 +41,7 @@
         <button
           v-if="state.currentQuestionIndexNumber === state.amountOfQuestions"
           class="button is-success"
+          :class="{isLoading:state.isLoading}"
           type="button"
           @click="vote"
         >
@@ -48,7 +49,20 @@
         </button>
       </div>
     </div>
-    {{state}}
+    <section class="my-5">
+      <div v-if="state.isError" class="notification is-danger">
+        <button
+          @click="closeNotify"
+          class="delete"/>
+        Wystąpił błąd w trakcie przesyłu ankiety
+      </div>
+      <div v-if="state.isSuccess" class="notification is-danger">
+        <button
+          @click="closeNotify"
+          class="delete"/>
+        Pomyślnie zagłosowano!
+      </div>
+    </section>
   </Form>
 </template>
 
@@ -84,8 +98,11 @@ export default {
     const state = reactive({
       amountOfQuestions: null,
       currentQuestionIndexNumber: 1,
-      givenAnswers: [],
+      isError: false,
+      isSuccess: false,
+      isLoading: false
     });
+    const givenAnswers = []
     if (props.pickedPollData) {
       state.amountOfQuestions = props.pickedPollData.pollQuestions.length
     }
@@ -107,31 +124,42 @@ export default {
     });
 
     function passAnswer(answer) {
-      const myQuestionIndex = state.givenAnswers.findIndex(q => {
+      const myQuestionIndex = givenAnswers.findIndex(q => {
         const f = Object.keys(q);
         return +f[0] === currentQuestion.value.id
       });
       if (myQuestionIndex === -1) {
-        state.givenAnswers.push({
+        givenAnswers.push({
           [currentQuestion.value.id]: [answer]
         })
       } else {
-        state.givenAnswers[myQuestionIndex] = {
+        givenAnswers[myQuestionIndex] = {
           [currentQuestion.value.id]: [answer]
         };
       }
     }
 
     function onSubmit() {
-      if (state.currentQuestionIndexNumber < state.amountOfQuestions && state.givenAnswers.length > 0) {
+      if (state.currentQuestionIndexNumber < state.amountOfQuestions && givenAnswers.length > 0) {
         increase()
       }
     }
-
+    function closeNotify() {
+      state.isError = false;
+      state.isSuccess = false;
+    }
     async function vote() {
-      for (const voteQuestion of state.givenAnswers) {
-        const res = await axios.post(`/poll/${props.id}/${props.str}/vote`, voteQuestion[0])
-        console.log(res)
+      try {
+        state.isLoading = true;
+        for (const ans of givenAnswers) {
+          const [res] = await Promise.all([axios.post(`/poll/${props.id}/${props.str}/vote`, ans)]).then(d => {
+            state.isSuccess = true;
+          })
+        }
+      } catch {
+        state.isError = true;
+      } finally {
+        state.isLoading = false
       }
     }
 
@@ -140,6 +168,7 @@ export default {
       increase,
       decrease,
       currentQuestion,
+      closeNotify,
       onSubmit,
       passAnswer,
       vote
