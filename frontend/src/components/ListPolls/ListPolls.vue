@@ -6,19 +6,19 @@
       </figure>
       <div class="columns is-centered">
         <div class="column">
-          <p class="title is-size-4 has-text-info">Ahoj, <strong
+          <p class="title is-size-4 has-text-info ">Ahoj, <strong
             class="is-bold has-text-warning-dark">{{ onlyName }}</strong></p>
           <p v-if="state.polls" class="subtitle is-size-1">
-            Masz {{ countPolls }}
+            Mosz {{ countPolls }}
           </p>
-          <p v-else class="subtitle is-size-1">Masz 0 ankiet</p>
+          <p v-else class="subtitle is-size-1">Mosz 0 anket</p>
         </div>
       </div>
     </div>
     <section v-if="state.someError">
       <div v-if="state.someError.cond" class="notification is-danger">
         <button class="delete" @click="closeNotify"/>
-        Błąd podczas usuwania ankiety
+        Błąd podczas usuwania ankety
         <p class="is-size-6">
           {{state.someError.message}}
         </p>
@@ -34,7 +34,7 @@
               </p>
             </header>
             <div class="card-content">
-              <div class="content">
+              <div class="content ">
                 Pytań: <strong>{{ countQuestions(p.questions) }}</strong>
                 <br>
                 <time datetime="2016-1-1">Utworzono: <strong>{{ parseDate(p.createdAt) }}</strong></time>
@@ -162,5 +162,7 @@ export default {
   &:hover {
     color: darkgoldenrod;
   }
+  
 }
+
 </style>
