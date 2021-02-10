@@ -70,7 +70,6 @@ import { Form,Field,ErrorMessage } from 'vee-validate';
 import yup from '@/yup-settings';
 import { v4 as uuidv4 } from 'uuid';
 import {useStore} from "vuex";
-
 export default {
   name: 'Creating',
   components: {Question,Form,Field,ErrorMessage},
@@ -141,7 +140,7 @@ export default {
       state.createdQuestions = [{
         id: uuidv4(),
         name: '',
-        answers: [{
+        options: [{
           id: uuidv4(),
           name: ''
         }],
@@ -191,7 +190,6 @@ export default {
   width: 500px;
   min-height: 50vh;
 }
-
 .fullH {
   height: 100%;
 }
