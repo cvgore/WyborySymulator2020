@@ -21,17 +21,10 @@
             >
               Wypełnij
             </div>
-<!--            <router-link-->
-<!--              v-else-->
-<!--              :to="{ path: `/polls/${poll.id}` }"-->
-<!--              exact class="card-footer-item has-background-warning"-->
-<!--            >-->
-<!--              Wypełnij-->
-<!--            </router-link>-->
             <div
               v-else
-              class="card-footer-item has-background-warning-light vc"
-              @click="check(poll.id)"
+              class="card-footer-item has-background-warning vc"
+              @click="fillPoll(poll.id)"
             >
               Wypełnij
             </div>
@@ -83,10 +76,17 @@ export default {
     countQuestions(data) {
       return data.length
     },
-    async check(id){
-      const res = await axios.get(`/poll/${id}/link`);
-      const s = new URL(res.data.url);
-      console.log(res.data)
+    async fillPoll(id){
+      try {
+        const res = await axios.get(`/poll/${id}/link`);
+        const { pollId,pollHash } = res.data;
+        await this.$router.push({name: 'pickedPoll', params: {id: pollId, str: pollHash}})
+      } catch (e) {
+        this.errors.fill = {
+          status: true,
+          message: e.message
+        }
+      }
     },
     async deletePoll(id) {
       try {
