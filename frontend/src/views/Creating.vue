@@ -58,7 +58,6 @@
         </div>
       </div>
     </Form>
-    <pre>{{JSON.stringify(state,null,2)}}</pre>
   </div>
 </template>
 
