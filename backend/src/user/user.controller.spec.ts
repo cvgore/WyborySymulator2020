@@ -2,11 +2,11 @@ import { UserController } from './user.controller';
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserService } from '@/user/user.service';
 import { LoginService } from '@/user/login.service';
-import { CACHE_MANAGER, HttpService } from '@nestjs/common';
+import { CACHE_MANAGER, CacheModule, HttpService } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { User } from '@/user/user.entity';
-import { ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MailerService } from '@nestjs-modules/mailer';
 import { GoogleRecaptchaValidator } from '@/packages/recaptcha/src/services/google-recaptcha.validator';
 import { RECAPTCHA_OPTIONS } from '@/packages/recaptcha/src/provider.declarations';
@@ -14,6 +14,10 @@ import { AXIOS_INSTANCE_TOKEN } from '@nestjs/common/http/http.constants';
 import { AuthService } from '@/auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { JWT_MODULE_OPTIONS } from '@nestjs/jwt/dist/jwt.constants';
+import config from '@/core/config';
+import { CacheConfigService } from '@/cache/cache-config.service';
+
+process.env.REDIS_HOST = 'localhost';
 
 describe('UserController', () => {
 	let userController: UserController;
@@ -24,6 +28,16 @@ describe('UserController', () => {
 	beforeEach(async () => {
 		const app: TestingModule = await Test.createTestingModule({
 			controllers: [UserController],
+			imports: [
+				ConfigModule.forRoot({
+					isGlobal: true,
+					cache: process.env.NODE_ENV === 'production',
+					load: [config]
+				}),
+				CacheModule.registerAsync({
+					useClass: CacheConfigService
+				}),
+			],
 			providers: [
 				UserService,
 				LoginService,
@@ -34,13 +48,6 @@ describe('UserController', () => {
 						sendMail: () => {
 						},
 					}
-				},
-				{
-					provide: CACHE_MANAGER,
-					useValue: {
-						set: () => {
-						},
-					},
 				},
 				{
 					provide: getRepositoryToken(User),
@@ -86,6 +93,7 @@ describe('UserController', () => {
 	describe('root', () => {
 		it('should insert login data into db', () => {
 			jest.spyOn(loginService, 'cacheKey').mockImplementation(() => 'test');
+
 			const loginDto = {email: 'test@localhost'};
 			const requestMockup = {
 				ip: '127.0.0.1',
@@ -95,6 +103,35 @@ describe('UserController', () => {
 			};
 
 			expect(userController.requestLogin(loginDto, requestMockup)).resolves.toBeUndefined();
+		});
+
+		it('authorization works if composite token is valid and returns correct token', async () => {
+			const loginDto = {email: 'test@localhost'};
+			const requestMockup = {
+				ip: '127.0.0.1',
+				headers: {
+					'user-agent': 'jest',
+				}
+			};
+
+			const ct = await loginService.generateLoginCompositeToken(loginDto.email);
+			const data: any = await userController.authorize({...loginDto, ...ct});
+
+			expect(data).toHaveProperty('access_token');
+
+			const jwtData = data.access_token.split('.')[1];
+
+			const jsonData = JSON.parse(
+				Buffer
+					.from(
+						jwtData,
+						'base64'
+					)
+					.toString('utf8')
+			);
+
+			expect(jsonData).toHaveProperty('username');
+			expect(jsonData.username).toEqual(loginDto.email);
 		});
 	});
 });
