@@ -128,13 +128,13 @@ Content-Type: application/json
 }
 
 ### Edit poll question
-PUT {{url}}/poll/8/question/1/option/1
+PUT {{url}}/poll/8/question/9/option/6
 Accept: application/json
 Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 {
-	"name": "Sample option"
+	"name": "Sample option 23"
 }
 
 ### Edit poll question
