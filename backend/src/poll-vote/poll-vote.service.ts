@@ -19,9 +19,11 @@ export class PollVoteService {
 	async createVote(pollQuestionId: number, optionId: number): Promise<void> {
 		const pollOption = await this.pollOptionService.findById(pollQuestionId, optionId);
 
-		await this.pollVoteRepository.insert({
+		const vote = await this.pollVoteRepository.create({
 			pollOption,
 		});
+
+		await this.pollVoteRepository.insert(vote);
 	}
 
 	async createVoteAndOption(pollQuestionId: number, name: any): Promise<void> {
