@@ -6,7 +6,7 @@
     <Form class="form" @submit="submitForm">
       <div class="notification is-danger" v-if="state.isError===true">
         <button @click="closeNotify" class="delete"/>
-        Wystąpił błąd podczas tworzenia ankiety
+        Wystąpił błąd {{state.errMsg}}
       </div>
       <div class="notification is-success" v-if="state.isFullCreated===true">
         <button @click="closeNotify" class="delete"/>
@@ -69,6 +69,9 @@ import { Form,Field,ErrorMessage } from 'vee-validate';
 import yup from '@/yup-settings';
 import { v4 as uuidv4 } from 'uuid';
 import {useStore} from "vuex";
+import {usePut} from "@/utils/usePut";
+import {DateTime} from 'luxon'
+import {cloneDeep} from 'lodash'
 export default {
   name: 'Creating',
   components: {Question,Form,Field,ErrorMessage},
@@ -99,14 +102,15 @@ export default {
       }],
       isError: null,
       isFullCreated: null,
-      isLoading: false
+      isLoading: false,
+      errMsg: null
     });
     if(store.state.Polls.editData){
       state.editMode = true;
-      state.createdQuestions = store.state.Polls.editData.questions;
+      state.createdQuestions = cloneDeep(store.state.Polls.editData.questions);
       state.pollName = store.state.Polls.editData.name;
     }
-    async function submitForm() {
+    async function create(){
       const pollResponse = await usePost('/poll', {
         name: state.pollName
       });
@@ -135,6 +139,48 @@ export default {
         }
       } else {
         state.isError = true;
+      }
+    }
+    async function edit(){
+      const pollResponse = await usePut(`/poll/${store.state.Polls.editData.id}`, {
+        name: state.pollName,
+        validUntil: DateTime.local(),
+        validFrom: DateTime.local()
+      });
+      if(pollResponse.isError) state.errMsg = pollResponse.errorData.message
+      state.isLoading = pollResponse.isLoading;
+      console.log(pollResponse)
+      if (pollResponse.statusCode === 200) {
+        for (const question of state.createdQuestions) {
+          const questionResponse = await usePut(`/poll/${store.state.Polls.editData.id}/question/${question.id}`, {
+            name: question.name,
+            required: true
+          });
+          if(questionResponse.isError) state.errMsg = questionResponse.errorData.message
+          state.isLoading = pollResponse.isLoading;
+          if (questionResponse.statusCode === 200) {
+            for (const answer of question.options) {
+              const optionResponse = await usePut(`/poll/${store.state.Polls.editData.id}/question/${question.id}/option/${answer.id}`, {
+                name: answer.name,
+              });
+              if(optionResponse.isError) state.errMsg = optionResponse.errorData.message
+              state.isLoading = pollResponse.isLoading;
+              state.isFullCreated = optionResponse.statusCode === 200;
+              state.isError = optionResponse.isError;
+            }
+          } else {
+            state.isError = true
+          }
+        }
+      } else {
+        state.isError = true;
+      }
+    }
+    async function submitForm() {
+      if(state.editMode){
+        await edit();
+      } else {
+        await create();
       }
       state.createdQuestions = [{
         id: uuidv4(),
