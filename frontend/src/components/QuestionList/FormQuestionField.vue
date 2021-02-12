@@ -6,7 +6,7 @@
           type="radio"
           name="option"
           class="is-size-6 mx-2"
-          :value="option.name"
+          :value="option.id"
           v-model="pickedAnswer"
         />
         {{ option.name }}

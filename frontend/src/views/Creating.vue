@@ -11,12 +11,12 @@
         <button @click="closeNotify" class="delete"/>
         Wystąpił błąd {{state.errMsg}}
       </div>
-      <div class="notification is-success" v-if="state.isFullCreated===true">
-        <div v-if="!(state.editMode)">
+      <div v-if="state.isFullCreated===true">
+        <div v-if="!(state.editMode)" class="notification is-success">
           <button @click="closeNotify" class="delete"/>
           Pomyślnie stworzono ankiete
         </div>
-        <div v-if="(state.editMode)">
+        <div v-if="(state.editMode)" class="notification is-success">
           <button @click="closeNotify" class="delete"/>
           Edycja przebiegła pomyślnie
         </div>
@@ -135,7 +135,7 @@ export default {
         for (const question of state.createdQuestions) {
           const questionResponse = await usePost(`/poll/${pollResponse.data.id}/question`, {
             name: question.name,
-            type: "text",
+            type: "enum",
             required: true
           });
           state.isLoading = pollResponse.isLoading;

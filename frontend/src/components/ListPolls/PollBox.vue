@@ -29,11 +29,29 @@
               Wypełnij
             </div>
           </section>
-          <div class="card-footer-item has-background-warning-light vc"
-               @click="passEditData(poll)"
-          >
-            Edytuj
-          </div>
+          <section>
+            <div
+              class="card-footer-item has-background-light has-text-grey-light"
+              @click="getResults(poll.id)"
+            >
+              Zoba
+            </div>
+          </section>
+          <section>
+            <div
+              v-if="poll.publishedAt === null"
+              class="card-footer-item has-background-warning-light vc"
+                 @click="passEditData(poll)"
+            >
+              Edytuj
+            </div>
+            <div
+              v-else
+              class="card-footer-item has-background-light has-text-grey-light vcc"
+            >
+              Edytuj
+            </div>
+          </section>
           <div
             class="card-footer-item has-background-warning-light vc"
             @click="deletePoll(poll.id)"
@@ -113,6 +131,14 @@ export default {
           status: true,
           message: e.message
         }
+      }
+    },
+    async getResults(id){
+      try {
+        const res = await axios.get(`/poll/${id}/votes`)
+        console.log(res)
+      } catch {
+
       }
     },
     passEditData(data) {

@@ -1,5 +1,19 @@
 <template>
   <Form class="m-5" :validation-schema="schema" @submit="onSubmit">
+    <section class="my-5">
+      <div v-if="state.isError" class="notification is-danger">
+        <button
+          @click="closeNotify"
+          class="delete"/>
+        Wystąpił błąd kurdebela
+      </div>
+      <div v-if="state.isSuccess" class="notification is-success">
+        <button
+          @click="closeNotify"
+          class="delete"/>
+        Pomyślnie zagłosowano!
+      </div>
+    </section>
     <div class="title is-flex is-justify-content-center">
       Pytanie {{ state.currentQuestionIndexNumber }}/{{ state.amountOfQuestions }}
     </div>
@@ -49,20 +63,6 @@
         </button>
       </div>
     </div>
-    <section class="my-5">
-      <div v-if="state.isError" class="notification is-danger">
-        <button
-          @click="closeNotify"
-          class="delete"/>
-        Wystąpił błąd w trakcie przesyłu ankiety
-      </div>
-      <div v-if="state.isSuccess" class="notification is-danger">
-        <button
-          @click="closeNotify"
-          class="delete"/>
-        Pomyślnie zagłosowano!
-      </div>
-    </section>
   </Form>
 </template>
 
@@ -102,7 +102,7 @@ export default {
       isSuccess: false,
       isLoading: false
     });
-    const givenAnswers = []
+    const givenAnswers = {}
     if (props.pickedPollData) {
       state.amountOfQuestions = props.pickedPollData.pollQuestions.length
     }
@@ -124,23 +124,11 @@ export default {
     });
 
     function passAnswer(answer) {
-      const myQuestionIndex = givenAnswers.findIndex(q => {
-        const f = Object.keys(q);
-        return +f[0] === currentQuestion.value.id
-      });
-      if (myQuestionIndex === -1) {
-        givenAnswers.push({
-          [currentQuestion.value.id]: [answer]
-        })
-      } else {
-        givenAnswers[myQuestionIndex] = {
-          [currentQuestion.value.id]: [answer]
-        };
-      }
+      givenAnswers[currentQuestion.value.id] = [answer];
     }
 
     function onSubmit() {
-      if (state.currentQuestionIndexNumber < state.amountOfQuestions && givenAnswers.length > 0) {
+      if (state.currentQuestionIndexNumber < state.amountOfQuestions) {
         increase()
       }
     }
@@ -152,6 +140,11 @@ export default {
       try {
         state.isLoading = true;
         const res = await axios.post(`/poll/${props.id}/${props.str}/vote`, givenAnswers);
+        if(res.status === 201){
+          state.isSuccess = true;
+        } else {
+          state.isError = true;
+        }
       } catch {
         state.isError = true;
       } finally {
