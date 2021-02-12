@@ -51,4 +51,8 @@ export class Poll {
 	@Column({type: 'timestamp'})
 	@IsDate()
 	updatedAt!: Date;
+	
+	constructor(poll: Partial<Poll>) {
+		Object.assign(this, poll);
+	  }
 }
