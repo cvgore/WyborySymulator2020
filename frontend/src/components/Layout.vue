@@ -15,7 +15,6 @@
 </template>
 <script>
 import Navigation from "@/components/Navigation/Navigation";
-
 export default {
   name: 'Layout',
   components: {
@@ -23,16 +22,20 @@ export default {
   }
 };
 </script>
-<style>
-  .Container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+<style lang="scss" scoped>
+.Container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.Content {
+  flex: 1 0 auto;
+}
+.footer {
+  font-size: 2.7vmin;
+  @media screen and (min-width: 860px){
+    font-size: 17px;
   }
-  .Content {
-    flex: 1 0 auto;
-  }
-  .Footer {
-    flex-shrink: 0;
-  }
+  flex-shrink: 0;
+}
 </style>
