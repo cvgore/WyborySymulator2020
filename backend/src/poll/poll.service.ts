@@ -92,7 +92,7 @@ export class PollService {
 		await this.pollRepository.update({
 			id,
 			user: this.userId,
-			publishedAt: Not(IsNull()),
+			publishedAt: IsNull(),
 		}, <Poll>data);
 	}
 
