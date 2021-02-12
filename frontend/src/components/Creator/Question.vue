@@ -1,26 +1,28 @@
 <template>
   <div class="field">
     <label class="label">Pytanie #{{ `${index + 1}` }}</label>
-    <div class="control">
-      <Field
-        :rules="questionRules"
-        :name="name"
-        class="input"
-        type="text"
-        placeholder="Pytanie"
-        v-model="question"
-        @keyup="changeQuestionValue"
+      <div class="control">
+        <Field
+          :rules="questionRules"
+          :name="name"
+          class="input"
+          type="text"
+          placeholder="Wprowadź pytanie"
+          v-model="question"
+          @keyup="changeQuestionValue"
+        />
+        <ErrorMessage :name="name" class="help is-danger is-size-7"/>
+      </div>
+    <div class="ans-container">
+      <Answer
+        v-for="(option,i) in parentAnswers"
+        :key="`answer-${option.id}`"
+        :name="`answer-${option.id}`"
+        :value.sync="option.name"
+        @update="option.name = $event"
+        @delete="deleteAnswer(i)"
       />
-      <ErrorMessage :name="name" class="help is-danger is-size-7"/>
     </div>
-    <Answer
-      v-for="(option,i) in parentAnswers"
-      :key="`answer-${option.id}`"
-      :name="`answer-${option.id}`"
-      :value.sync="option.name"
-      @update="option.name = $event"
-      @delete="deleteAnswer(i)"
-    />
     <div class="is-flex">
       <section class="my-3">
         <button
@@ -95,4 +97,4 @@ export default {
 };
 </script>
 
-<style scoped></style>
+

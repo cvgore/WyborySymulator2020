@@ -1,6 +1,6 @@
 <template>
-    <section class="section">
-      <div class="card">
+    <section>
+      <div class="card m-5">
         <header class="card-header">
           <p class="card-header-title">
             {{ poll.name }}
@@ -13,7 +13,7 @@
             <time datetime="2016-1-1">Utworzono: <strong>{{ parseDate(poll.createdAt) }}</strong></time>
           </div>
         </div>
-        <footer class="card-footer">
+        <footer class="card-footer text">
           <section>
             <div
               v-if="poll.publishedAt === null"
@@ -123,7 +123,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .vc {
   cursor: pointer;
 
@@ -131,7 +131,16 @@ export default {
     color: darkgoldenrod;
   }
 }
+.text {
+  font-size: 12px;
+  @media screen and (min-width: 860px){
+    font-size: 17px;
+  }
+}
 .vcc {
   user-select: none;
+}
+.card {
+  box-shadow: 0 1px 5px rgb(206, 206, 204);
 }
 </style>

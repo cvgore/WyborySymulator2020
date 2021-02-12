@@ -1,6 +1,6 @@
 <template>
   <Layout>
-    <router-view />
+      <router-view />
   </Layout>
 </template>
 
@@ -11,7 +11,3 @@ export default {
   components: { Layout },
 };
 </script>
-
-<style>
-
-</style>

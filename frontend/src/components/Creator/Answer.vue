@@ -1,10 +1,10 @@
 <template>
-  <div class="field my-4 is-flex is-align-items-center">
-    <div class="control has-icons-left">
+  <div class="my-4">
+    <div class="control has-icons-left  is-flex is-align-items-center">
       <Field
         :rules="answerRules"
         :name="name"
-        class="input is-success is-small"
+        class="input is-small"
         type="text"
         placeholder="Wprowadź odpowiedź"
         v-model="value"
@@ -13,13 +13,13 @@
       <span class="icon is-small is-left">
         <i class="far fa-arrow-alt-circle-right"></i>
       </span>
-    </div>
-    <button @click="deleteAnswer" type="button" class="button is-small is-danger">
+      <button @click="deleteAnswer" type="button" class="button is-small is-danger">
         <span class="icon">
           <i class="fas fa-times"></i>
         </span>
-    </button>
-    <ErrorMessage :name="name" class="help is-danger is-size-7 px-3"/>
+      </button>
+    </div>
+    <ErrorMessage :name="name" class="help is-danger is-size-7 ml-6-tablet"/>
   </div>
 </template>
 
@@ -54,4 +54,3 @@ export default {
 };
 </script>
 
-<style scoped></style>

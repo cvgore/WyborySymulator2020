@@ -3,8 +3,8 @@
     <figure class="image is-128x128 my-5">
       <img src="@/assets/man.png" alt="icon">
     </figure>
-    <p class="title is-size-2  has-text-info">Nie jesteś zalogowany!</p>
-    <router-link to="/forms/log-in" class="button is-link is-large">Zaloguj się</router-link>
+    <p class="title is-size-4-mobile is-size-2-desktop has-text-centered has-text-info">Nie jesteś zalogowany!</p>
+    <router-link to="/user/mail" class="button is-link is-medium-mobile is-large-desktop is-rounded">Zaloguj się</router-link>
   </div>
   <div v-else>
     <SuspenseWithError>

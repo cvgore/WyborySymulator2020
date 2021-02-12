@@ -43,7 +43,7 @@
             </div>
           </div>
           <div class="buttons">
-            <router-link v-if="!isAuth" to="/forms/log-in" exact class="button is-link" replace> Zaloguj się </router-link>
+            <router-link v-if="!isAuth" to="/user/mail" exact class="button is-link" replace> Zaloguj się </router-link>
             <router-link v-if="isAuth" to="/creator" exact class="button is-warning" replace> Stwórz nową ankiete </router-link>
           </div>
         </div>
@@ -77,12 +77,15 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 .d {
   cursor: pointer;
 }
 .s {
   width: 100px;
-  transform: scale(1.5);
+  transform: scale(1.3);
+}
+.mobile-n {
+  background: black;
 }
 </style>

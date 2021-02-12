@@ -70,7 +70,7 @@ export default {
       state.apiData = response;
       if(response.statusCode === 201){
         window.localStorage.setItem('email', state.email);
-        await router.replace('2fa');
+        await router.replace('login');
       }
     }
     return {

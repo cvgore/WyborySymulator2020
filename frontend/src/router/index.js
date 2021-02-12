@@ -13,15 +13,15 @@ const routes = [
     component: Home
   },
   {
-    path: '/forms',
+    path: '/user',
     name: 'forms',
     component: Loginator,
     children: [{
-      path: 'log-in',
+      path: 'mail',
       name: 'log-in',
       component: Login
     },{
-      path: '2fa',
+      path: 'login',
       name: '2fa',
       component: Register
     }],
@@ -57,6 +57,7 @@ const routes = [
 ];
 
 const router = createRouter({
+  mode: 'history',
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
