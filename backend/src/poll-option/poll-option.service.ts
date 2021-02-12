@@ -32,7 +32,7 @@ export class PollOptionService {
 		});
 	}
 
-	async createOption(data: CreatePollOptionDto, pollQuestionId: number): Promise<PollOption> {
+	async createOption(data: CreatePollOptionDto, pollQuestionId: number, force: boolean = false): Promise<PollOption> {
 		const pollQuestion = await this.pollQuestionRepository.findOneOrFail({
 			relations: ['poll'],
 			where: {
@@ -40,7 +40,7 @@ export class PollOptionService {
 			}
 		});
 
-		if (pollQuestion.poll.publishedAt) {
+		if (!force && pollQuestion.poll.publishedAt) {
 			throw new PollAlreadyPublishedError();
 		}
 

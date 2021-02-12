@@ -27,7 +27,7 @@ export class PollVoteService {
 	async createVoteAndOption(pollQuestionId: number, name: any): Promise<void> {
 		const pollOption = await this.pollOptionService.createOption({
 			name,
-		}, pollQuestionId);
+		}, pollQuestionId, true);
 
 		await this.createVote(pollQuestionId, pollOption.id);
 	}
