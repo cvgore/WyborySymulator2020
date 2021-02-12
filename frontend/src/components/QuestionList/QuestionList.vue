@@ -151,12 +151,7 @@ export default {
     async function vote() {
       try {
         state.isLoading = true;
-        for (const ans of givenAnswers) {
-          const [res] = await Promise.all([axios.post(`/poll/${props.id}/${props.str}/vote`, ans)]).then(d => {
-            state.isSuccess = true;
-          })
-          console.log(res)
-        }
+        const res = await axios.post(`/poll/${props.id}/${props.str}/vote`, givenAnswers);
       } catch {
         state.isError = true;
       } finally {

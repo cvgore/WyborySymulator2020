@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import {mapState, useStore} from "vuex";
+import { useStore } from "vuex";
 import {reactive, computed } from 'vue';
 import axios from "@/axios";
 import generatePollObject from "@/utils/generatePollObject";
