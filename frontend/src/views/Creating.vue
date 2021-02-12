@@ -1,16 +1,25 @@
 <template>
-  <div class="is-flex is-flex-direction-column is-align-items-center fullH m-6">
-    <div class="section is-size-2">
+  <div class="is-flex is-flex-direction-column is-align-items-center fullH">
+    <figure class="image is-128x128">
+      <img src="@/assets/images/fl.svg" alt="icon">
+    </figure>
+    <div class="section is-size-5-mobile is-size-2-desktop p-0">
       {{state.editMode ? 'Edytor' : 'Kreator'}} ankiet
     </div>
-    <Form class="form" @submit="submitForm">
+    <Form class="form p-5" @submit="submitForm">
       <div class="notification is-danger" v-if="state.isError===true">
         <button @click="closeNotify" class="delete"/>
         Wystąpił błąd {{state.errMsg}}
       </div>
       <div class="notification is-success" v-if="state.isFullCreated===true">
-        <button @click="closeNotify" class="delete"/>
-        Pomyślnie stworzono ankiete
+        <div v-if="!(state.editMode)">
+          <button @click="closeNotify" class="delete"/>
+          Pomyślnie stworzono ankiete
+        </div>
+        <div v-if="(state.editMode)">
+          <button @click="closeNotify" class="delete"/>
+          Edycja przebiegła pomyślnie
+        </div>
       </div>
       <div class="field">
         <label class="label">Nazwa ankiety</label>
@@ -18,7 +27,7 @@
           <Field
             :rules="surveyNameRules"
             name="surveyName"
-            class="input"
+            class="input is-large"
             type="text"
             placeholder="Nazwa ankiety"
             v-model="state.pollName"
@@ -26,17 +35,23 @@
         </div>
         <ErrorMessage name="surveyName" class="help is-danger is-size-7"/>
       </div>
-      <Question
-        v-for="(q, index) in state.createdQuestions"
-        :key="`quest-${q.id}`"
-        :index="index"
-        :name="`quest-${q.id}`"
-        :question.sync="q.name"
-        :parentAnswers.sync="q.options"
-        @update="q.name = $event"
-        @delete="deleteQuestion(index)"
-      />
-      <div class="field is-grouped">
+        <Question
+          v-for="(q, index) in state.createdQuestions"
+          :key="`quest-${q.id}`"
+          :id="`quest-${q.id}`"
+          :index="index"
+          :name="`quest-${q.id}`"
+          :question.sync="q.name"
+          :parentAnswers.sync="q.options"
+          @update="q.name = $event"
+          @delete="deleteQuestion(index)"
+        />
+      <div class="field is-grouped is-grouped-left">
+        <div class="control">
+          <button class="button is-info" type="button" @click="addQuestion">Dodaj pytanie</button>
+        </div>
+      </div>
+      <div class="field is-grouped is-grouped-right">
         <div class="control">
           <button
             v-if="!state.editMode"
@@ -53,25 +68,25 @@
             Zapisz zmiany(#lepiejniklikaj)
           </button>
         </div>
-        <div class="control">
-          <button class="button is-info" type="button" @click="addQuestion">Dodaj pytanie</button>
-        </div>
       </div>
     </Form>
+<!--    <pre>{{state}}</pre>-->
   </div>
 </template>
 
 <script>
 import Question from '@/components/Creator/Question';
 import {usePost} from "@/utils/usePost";
-import {onUnmounted, reactive} from "vue";
+import {onMounted, onUnmounted, reactive} from "vue";
 import { Form,Field,ErrorMessage } from 'vee-validate';
 import yup from '@/yup-settings';
 import { v4 as uuidv4 } from 'uuid';
 import {useStore} from "vuex";
 import {usePut} from "@/utils/usePut";
 import {DateTime} from 'luxon'
-import {cloneDeep} from 'lodash'
+import {cloneDeep} from 'lodash';
+import { gsap } from 'gsap';
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 export default {
   name: 'Creating',
   components: {Question,Form,Field,ErrorMessage},
@@ -149,7 +164,6 @@ export default {
       });
       if(pollResponse.isError) state.errMsg = pollResponse.errorData.message
       state.isLoading = pollResponse.isLoading;
-      console.log(pollResponse)
       if (pollResponse.statusCode === 200) {
         for (const question of state.createdQuestions) {
           const questionResponse = await usePut(`/poll/${store.state.Polls.editData.id}/question/${question.id}`, {
@@ -193,11 +207,17 @@ export default {
       state.pollName = ''
     }
     function addQuestion() {
+      const uuid = uuidv4()
       state.createdQuestions.push({
-        id: uuidv4(),
+        id: uuid,
         name: '',
-        options: [],
-      })
+        options: [{
+          id: uuidv4(),
+          name: ''
+        }],
+      });
+      gsap.registerPlugin(ScrollToPlugin);
+      gsap.to(window,{duration:0.8,scrollTo:`#quest-${uuid}`})
     }
     function deleteQuestion(i) {
       state.createdQuestions.splice(i, 1);
@@ -230,12 +250,11 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .form {
-  width: 500px;
-  min-height: 50vh;
-}
-.fullH {
-  height: 100%;
+  width: 100%;
+  @media screen and (min-width: 760px){
+    width: 700px;
+  }
 }
 </style>
