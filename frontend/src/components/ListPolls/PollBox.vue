@@ -1,135 +1,91 @@
 <template>
-    <section class="section">
-      <div class="card">
-        <header class="card-header">
-          <p class="card-header-title">
-            {{ poll.name }}
+  <section>
+    <div class="section is-flex is-flex-direction-column is-justify-content-center is-align-items-center container">
+      <figure class="image is-128x128 my-3">
+        <img src="@/assets/happy-man.png" alt="icon hm">
+      </figure>
+      <div class="columns is-centered">
+        <div class="column">
+          <p class="title is-size-4 has-text-info">Ahoj, <strong
+            class="is-bold has-text-warning-dark">{{ onlyName }}</strong></p>
+          <p v-if="state.polls" class="subtitle
+          is-size-3-mobile
+          is-size-1-tablet">
+            Masz {{ countPolls }}
           </p>
-        </header>
-        <div class="card-content">
-          <div class="content">
-            Pytań: <strong>{{ countQuestions(poll.questions) }}</strong>
-            <br>
-            <time datetime="2016-1-1">Utworzono: <strong>{{ parseDate(poll.createdAt) }}</strong></time>
-          </div>
+          <p v-else class="subtitle is-size-1">Masz 0 ankiet</p>
         </div>
-        <footer class="card-footer">
-          <section>
-            <div
-              v-if="poll.publishedAt === null"
-              class="card-footer-item has-background-light has-text-grey-light"
-            >
-              Wypełnij
-            </div>
-            <div
-              v-else
-              class="card-footer-item has-background-warning vc"
-              @click="fillPoll(poll.id)"
-            >
-              Wypełnij
-            </div>
-          </section>
-          <div class="card-footer-item has-background-warning-light vc"
-               @click="passEditData(poll)"
-          >
-            Edytuj
-          </div>
-          <div
-            class="card-footer-item has-background-warning-light vc"
-            @click="deletePoll(poll.id)"
-          >
-            Usuń
-          </div>
-          <section>
-            <div
-              v-if="poll.publishedAt === null"
-              class="card-footer-item has-background-info-light vc"
-              @click="publishPoll(poll.id)"
-            >
-              Publikuj
-            </div>
-            <div
-              v-else
-              class="card-footer-item has-background-light has-text-grey-light vcc"
-            >
-              Publikuj
-            </div>
-          </section>
-        </footer>
       </div>
-    </section>
+    </div>
+    <NotifyBox :errors="state.errors"/>
+    <div v-if="state.polls" class="container polls-wrapper mb-6">
+      <PollBox
+        :key="poll.id"
+        v-for="poll in state.polls"
+        :fetch-all-handler="fetchAll"
+        :poll="poll"
+        :errors="state.errors"
+      />
+    </div>
+  </section>
 </template>
 
 <script>
-import parseDate from "@/utils/parseDate";
+import {mapState, useStore} from "vuex";
+import {reactive, computed } from 'vue';
 import axios from "@/axios";
+import generatePollObject from "@/utils/generatePollObject";
+import PollBox from "@/components/ListPolls/PollBox";
+import NotifyBox from "@/components/ListPolls/NotifyBox";
 export default {
-  name: "PollBox",
-  props: {
-    poll: Object,
-    fetchAllHandler: Function,
-    errors: Object
+  name: "ListPolls",
+  components: {NotifyBox, PollBox},
+  computed: {
+    onlyName() {
+      return window.localStorage.getItem('email').substring(0, window.localStorage.getItem('email').indexOf('@'));
+    }
   },
-  methods: {
-    parseDate,
-    countQuestions(data) {
-      return data.length
-    },
-    async fillPoll(id){
-      try {
-        const res = await axios.get(`/poll/${id}/link`);
-        const { pollId,pollHash } = res.data;
-        await this.$router.push({name: 'pickedPoll', params: {id: pollId, str: pollHash}})
-      } catch (e) {
-        this.errors.fill = {
-          status: true,
-          message: e.message
-        }
+  async setup() {
+    const store = useStore();
+    const state = reactive({
+      polls: null,
+      errors: {
+        publish: null,
+        delete: null
       }
-    },
-    async deletePoll(id) {
-      try {
-        const response = await axios.delete(`/poll/${id}`);
-        if (response.status === 204) {
-          await this.fetchAllHandler();
-        }
-      } catch (e) {
-        this.errors.delete = {
-          status: true,
-          message: e.message
-        }
+    })
+    const countPolls = computed(() => {
+      if (state.polls) {
+        const num = state.polls.length
+        return num === 1 ? `${num} ankietę` : `${num} ankiety`
+      } else {
+        return '0 ankiet'
       }
-    },
-    async publishPoll(id) {
-      try {
-        const response = await axios.post(`/poll/${id}/publish`);
-        console.log(response)
-        if (response.status === 201) {
-          await this.fetchAllHandler();
-        }
-      } catch (e) {
-        this.errors.publish = {
-          status: true,
-          message: e.message
-        }
+    });
+    async function fetchAll() {
+      const polls = await axios.get('/poll');
+      if (polls.data.length > 0) {
+        const response = await generatePollObject(polls.data);
+        state.polls = response;
+        store.commit('Polls/storePolls', response);
+      } else {
+        state.polls = null;
       }
-    },
-    passEditData(data) {
-      this.$store.commit('Polls/editData', data);
-      this.$router.push('/creator');
-    },
-  },
+    }
+    await fetchAll();
+    return {
+      state,
+      countPolls,
+      fetchAll
+    }
+  }
 }
 </script>
 
-<style scoped>
-.vc {
-  cursor: pointer;
-  &:hover {
-    color: darkgoldenrod;
-  }
-}
-.vcc {
-  user-select: none;
+<style lang="scss" scoped>
+.polls-wrapper {
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
 }
 </style>
