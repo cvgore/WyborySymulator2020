@@ -38,9 +38,9 @@
           </p>
         </div>
       </div>
-      <div class="section has-text-danger">
-        <p v-if="state.apiData && state.apiData.isError">Błąd: {{state.apiData.errorData.message}}</p>
-      </div>
+<!--      <div class="section has-text-danger">-->
+<!--        <p v-if="state.apiData && state.apiData.isError">Błąd: {{state.apiData.errorData.message}}</p>-->
+<!--      </div>-->
     </Form>
   </section>
 </template>
@@ -71,11 +71,6 @@ export default {
       loginAttempts: 0
     });
     async function submitForm(){
-      if(state.loginAttempts + 1 <= 3){
-        state.loginAttempts += 1;
-      } else {
-        await router.replace('/')
-      }
       const objJsonB64 = atob(state.token);
       const decode = JSON.parse(objJsonB64);
       const response = await usePost('/user/login/authorize', {
@@ -91,6 +86,12 @@ export default {
         axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.getItem('token')}`;
         await store.dispatch('Auth/checkAuth');
         await router.replace('/');
+      } else {
+        if(state.loginAttempts + 1 <= 3){
+          state.loginAttempts += 1;
+        } else {
+          await router.replace('/')
+        }
       }
     }
     return {
