@@ -15,11 +15,13 @@ import { EntityNotFoundError } from 'typeorm/error/EntityNotFoundError';
 import { PollQuestion } from '@/poll-question/poll-question.entity';
 import { isString, maxLength } from 'class-validator';
 import { PollMissingRequiredQuestionError } from '@/poll/errors/poll-missing-required-question.error';
+import { PollVote } from '@/poll-vote/poll-vote.entity';
 
 @Injectable()
 export class PollService {
 	constructor(
 		@InjectRepository(Poll) private readonly pollRepository: Repository<Poll>,
+		@InjectRepository(PollVote) private readonly pollVoteRepository: Repository<PollVote>,
 		private readonly configService: ConfigService,
 		@Inject(REQUEST) private readonly ctx: any,
 	) {
@@ -41,6 +43,25 @@ export class PollService {
 		return await this.pollRepository.findOneOrFail({
 			id,
 			user: this.userId,
+		});
+	}
+
+	async getVotes(id: number): Promise<PollVote[]> {
+		await this.pollRepository.findOneOrFail({
+			id
+		});
+
+		return await this.pollVoteRepository.find({
+			relations: ['pollOption'],
+			where: {
+				pollOption: {
+					pollQuestion: {
+						poll: {
+							id
+						}
+					}
+				}
+			}
 		});
 	}
 

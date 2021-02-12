@@ -155,3 +155,7 @@ Content-Type: application/json
 {
 	"1": ["Testowa"]
 }
+
+### Get all votes
+GET {{url}}/poll/8/votes
+Accept: application/json

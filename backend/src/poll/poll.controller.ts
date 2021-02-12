@@ -97,5 +97,21 @@ export class PollController {
 			}
 		}
 	}
+
+	@Get(':id/votes')
+	@UseGuards(JwtGuard)
+	async votes(@Param('id') id: number): Promise<any> {
+		const votes = await this.pollService.getVotes(id);
+
+		return votes.map(v => v.pollOption.name).reduce((acc: { [key: string]: number }, val) => {
+			if (typeof acc[val] === 'undefined') {
+				acc[val] = -1;
+			}
+
+			acc[val]++;
+
+			return acc;
+		}, {});
+	}
 }
 
