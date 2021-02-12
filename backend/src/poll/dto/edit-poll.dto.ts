@@ -7,9 +7,9 @@ export default class EditPollDto {
 	name!: string;
 
 	@IsDateString()
-	validFrom!: Date | null;
+	validFrom!: Date | undefined;
 
 	@IsDateString()
 	@IsDateAfterProp('validFrom')
-	validUntil!: Date | null;
+	validUntil!: Date | undefined;
 }
