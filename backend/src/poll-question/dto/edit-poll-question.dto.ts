@@ -4,8 +4,8 @@ export default class EditPollQuestionDto {
 	@IsString()
 	@MinLength(3)
 	@MaxLength(120)
-	name!: string;
+	name!: string | undefined;
 
 	@IsBoolean()
-	required!: boolean;
+	required!: boolean | undefined;
 }
