@@ -8,7 +8,9 @@
         <div class="column">
           <p class="title is-size-4 has-text-info">Ahoj, <strong
             class="is-bold has-text-warning-dark">{{ onlyName }}</strong></p>
-          <p v-if="state.polls" class="subtitle is-size-1">
+          <p v-if="state.polls" class="subtitle
+          is-size-3-mobile
+          is-size-1-tablet">
             Masz {{ countPolls }}
           </p>
           <p v-else class="subtitle is-size-1">Masz 0 ankiet</p>
@@ -16,8 +18,9 @@
       </div>
     </div>
     <NotifyBox :errors="state.errors"/>
-    <div v-if="state.polls" class="container polls-wrapper">
+    <div v-if="state.polls" class="container polls-wrapper mb-6">
       <PollBox
+        :key="poll.id"
         v-for="poll in state.polls"
         :fetch-all-handler="fetchAll"
         :poll="poll"
@@ -81,16 +84,8 @@ export default {
 
 <style lang="scss" scoped>
 .polls-wrapper {
-  height: 100%;
-  display: grid;
-  grid-auto-columns: 240px;
-  grid-auto-rows: min-content;
-  @media screen and (min-width: 520px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.item {
-  width: 100%;
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
 }
 </style>
