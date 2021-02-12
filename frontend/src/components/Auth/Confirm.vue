@@ -48,7 +48,7 @@
 <script>
 import { useStore } from "vuex";
 import { reactive } from "vue";
-import {useRouter} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import {usePost} from "@/utils/usePost";
 import { Form,Field,ErrorMessage } from 'vee-validate';
 import yup from "@/yup-settings";
@@ -65,11 +65,15 @@ export default {
   setup(){
     const store = useStore();
     const router = useRouter();
+    const route = useRoute();
     const state = reactive({
       token: '',
       apiData: null,
-      loginAttempts: 0
+      loginAttempts: 0,
     });
+    if(route.hash){
+      state.token = route.hash.replace('#','');
+    }
     async function submitForm(){
       const objJsonB64 = atob(state.token);
       const decode = JSON.parse(objJsonB64);
@@ -96,7 +100,7 @@ export default {
     }
     return {
       state,
-      submitForm
+      submitForm,
     }
   }
 }
