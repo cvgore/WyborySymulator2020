@@ -120,10 +120,10 @@ export class PollService {
 		}
 
 		const link = this.getLinkHash(poll);
-		const appUrl = this.configService.get<string>('app.frontUrl')!;
 
 		return {
-			url: `${appUrl}/vote/${id}/${link}`,
+			pollId: id,
+			pollHash: link,
 		};
 	}
 

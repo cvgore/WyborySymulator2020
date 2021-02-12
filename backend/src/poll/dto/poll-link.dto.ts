@@ -1,3 +1,4 @@
 export default class PollLinkDto {
-	url!: string;
+	pollId!: number;
+	pollHash!: string;
 }
