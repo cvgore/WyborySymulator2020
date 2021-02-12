@@ -149,6 +149,7 @@ export default {
           const [res] = await Promise.all([axios.post(`/poll/${props.id}/${props.str}/vote`, ans)]).then(d => {
             state.isSuccess = true;
           })
+          console.log(res)
         }
       } catch {
         state.isError = true;
