@@ -56,7 +56,12 @@ export class PollOptionService {
 	}
 
 	async editOption(id: number, pollQuestionId: number, data: EditPollOptionDto): Promise<void> {
-		const pollQuestion = await this.pollQuestionRepository.findOneOrFail(pollQuestionId);
+		const pollQuestion = await this.pollQuestionRepository.findOneOrFail({
+			relations: ['poll'],
+			where: {
+				id: pollQuestionId
+			}
+		});
 
 		if (pollQuestion.poll.publishedAt) {
 			throw new PollAlreadyPublishedError();
@@ -71,7 +76,12 @@ export class PollOptionService {
 	}
 
 	async deleteOption(id: number, pollQuestionId: number): Promise<void> {
-		const pollQuestion = await this.pollQuestionRepository.findOneOrFail(pollQuestionId);
+		const pollQuestion = await this.pollQuestionRepository.findOneOrFail({
+			relations: ['poll'],
+			where: {
+				id: pollQuestionId
+			}
+		});
 
 		if (pollQuestion.poll.publishedAt) {
 			throw new PollAlreadyPublishedError();
