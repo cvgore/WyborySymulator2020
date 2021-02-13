@@ -49,7 +49,10 @@ export class PollService {
 	async getVotes(id: number): Promise<any> {
 		const poll = await this.pollRepository.findOneOrFail({
 			where: {
-				id
+				id,
+				user: {
+					id: this.userId,
+				}
 			}
 		});
 
