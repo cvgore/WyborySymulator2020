@@ -57,8 +57,14 @@ export default {
     })
     const countPolls = computed(() => {
       if (state.polls) {
-        const num = state.polls.length
-        return num === 1 ? `${num} ankietę` : `${num} ankiety`
+        const num = state.polls.length;
+        if(num >= 5 ) {
+          return `${num} ankiet`
+        } else if(num > 1) {
+          return `${num} ankiety`
+        } else if(num === 1){
+          return `${num} ankietę`
+        }
       } else {
         return '0 ankiet'
       }

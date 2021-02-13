@@ -6,6 +6,7 @@ import Loginator from "@/views/Loginator";
 import PollPreview from "@/views/PollPreview";
 import Creating from "@/views/Creating";
 import store from '../store/index';
+import Results from "@/views/Results";
 const routes = [
   {
     path: '/',
@@ -39,6 +40,11 @@ const routes = [
     path: '/vote/:id/:str',
     name: 'pickedPoll',
     component: PollPreview
+  },
+  {
+    path: `/results/:id`,
+    name: 'results',
+    component: Results
   },
   {
     path: '/creator',

@@ -31,7 +31,6 @@ export default {
     });
     try {
       state.loading = true;
-      console.log(props.question.id)
       const { data: OptionsPoll } = await axios.get(
         `/pollOptions?pollQuestion=${props.question.id}`
       );

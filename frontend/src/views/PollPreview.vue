@@ -4,7 +4,9 @@
       <Filator />
     </template>
     <template #fallback>
-      <Spinner/>
+      <div class="center">
+        <Spinner/>
+      </div>
     </template>
     <template #error>
       <ErrorNotify/>
@@ -21,3 +23,11 @@ export default {
   components: {Filator, Spinner, SuspenseWithError, ErrorNotify},
 }
 </script>
+<style scoped>
+.center {
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>

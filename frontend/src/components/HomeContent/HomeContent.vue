@@ -12,7 +12,9 @@
         <ListPolls/>
       </template>
       <template #fallback>
-        <Spinner/>
+        <div class="center">
+          <Spinner/>
+        </div>
       </template>
       <template #error>
         <ErrorNotify/>
@@ -45,8 +47,14 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .boxx {
   height: 60vh;
+}
+.center {
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

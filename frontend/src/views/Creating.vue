@@ -56,28 +56,29 @@
           <button
             v-if="!state.editMode"
             type="submit"
+            class="button is-link"
             :class="{'is-loading':state.isLoading}"
-            class="button is-link">
+          >
             Zapisz
           </button>
           <button
             v-else
             type="submit"
+            class="button is-link"
             :class="{'is-loading':state.isLoading}"
-            class="button is-link">
-            Zapisz zmiany(#lepiejniklikaj)
+          >
+            Zapisz zmiany
           </button>
         </div>
       </div>
     </Form>
-<!--    <pre>{{state}}</pre>-->
   </div>
 </template>
 
 <script>
 import Question from '@/components/Creator/Question';
 import {usePost} from "@/utils/usePost";
-import {onMounted, onUnmounted, reactive} from "vue";
+import {onUnmounted, reactive} from "vue";
 import { Form,Field,ErrorMessage } from 'vee-validate';
 import yup from '@/yup-settings';
 import { v4 as uuidv4 } from 'uuid';
@@ -121,16 +122,16 @@ export default {
       isLoading: false,
       errMsg: null
     });
-    if(store.state.Polls.editData){
+    if(store.state.Polls.edit){
       state.editMode = true;
-      state.createdQuestions = cloneDeep(store.state.Polls.editData.questions);
-      state.pollName = store.state.Polls.editData.name;
+      state.createdQuestions = cloneDeep(store.state.Polls.edit.questions);
+      state.pollName = store.state.Polls.edit.name;
     }
     async function create(){
+      state.isLoading = true;
       const pollResponse = await usePost('/poll', {
         name: state.pollName
       });
-      state.isLoading = pollResponse.isLoading;
       if (pollResponse.statusCode === 201) {
         for (const question of state.createdQuestions) {
           const questionResponse = await usePost(`/poll/${pollResponse.data.id}/question`, {
@@ -138,14 +139,11 @@ export default {
             type: "enum",
             required: true
           });
-          state.isLoading = pollResponse.isLoading;
           if (questionResponse.statusCode === 201) {
             for (const answers of question.options) {
               const optionResponse = await usePost(`/poll/${pollResponse.data.id}/question/${questionResponse.data.id}/option`, {
                 name: answers.name,
               });
-              console.log("tworzenie odpowiedzi",optionResponse)
-              state.isLoading = pollResponse.isLoading;
               state.isFullCreated = optionResponse.statusCode === 201;
               state.isError = optionResponse.isError;
             }
@@ -156,9 +154,10 @@ export default {
       } else {
         state.isError = true;
       }
+      state.isLoading = false;
     }
     async function edit(){
-      const pollResponse = await usePut(`/poll/${store.state.Polls.editData.id}`, {
+      const pollResponse = await usePut(`/poll/${store.state.Polls.edit.id}`, {
         name: state.pollName,
         validUntil: DateTime.local(),
         validFrom: DateTime.local()
@@ -167,7 +166,7 @@ export default {
       state.isLoading = pollResponse.isLoading;
       if (pollResponse.statusCode === 200) {
         for (const question of state.createdQuestions) {
-          const questionResponse = await usePut(`/poll/${store.state.Polls.editData.id}/question/${question.id}`, {
+          const questionResponse = await usePut(`/poll/${store.state.Polls.edit.id}/question/${question.id}`, {
             name: question.name,
             required: true
           });
@@ -175,7 +174,7 @@ export default {
           state.isLoading = pollResponse.isLoading;
           if (questionResponse.statusCode === 200) {
             for (const answer of question.options) {
-              const optionResponse = await usePut(`/poll/${store.state.Polls.editData.id}/question/${question.id}/option/${answer.id}`, {
+              const optionResponse = await usePut(`/poll/${store.state.Polls.edit.id}/question/${question.id}/option/${answer.id}`, {
                 name: answer.name,
               });
               if(optionResponse.isError) state.errMsg = optionResponse.errorData.message
@@ -230,7 +229,7 @@ export default {
     }
     onUnmounted(() => {
       store.editMode = false;
-      store.commit('Polls/resetEditData',null);
+      store.commit('Polls/resetPickedData');
       state.createdQuestions = [{
         id: uuidv4(),
         name: '',

@@ -15,63 +15,52 @@
         </div>
         <footer class="card-footer text">
           <section>
-            <div
-              v-if="poll.publishedAt === null"
-              class="card-footer-item has-background-light has-text-grey-light"
-            >
-              Wypełnij
-            </div>
-            <div
-              v-else
-              class="card-footer-item has-background-warning vc"
+            <button
+              class="button card-footer-item is-warning vc"
+              :disabled="poll.publishedAt === null"
               @click="fillPoll(poll.id)"
+              :class="{'is-loading':loaders.fillPoll}"
             >
               Wypełnij
-            </div>
+            </button>
           </section>
           <section>
-            <div
-              class="card-footer-item has-background-light has-text-grey-light"
-              @click="getResults(poll.id)"
+            <button
+              class="button card-footer-item is-warning is-light vc"
+              @click="getResults(poll.id,poll)"
+              :disabled="poll.publishedAt === null"
             >
-              Zoba
-            </div>
+              Zobacz wyniki
+            </button>
           </section>
           <section>
-            <div
-              v-if="poll.publishedAt === null"
-              class="card-footer-item has-background-warning-light vc"
-                 @click="passEditData(poll)"
-            >
-              Edytuj
-            </div>
-            <div
-              v-else
-              class="card-footer-item has-background-light has-text-grey-light vcc"
+            <button
+              class="button card-footer-item is-info is-light vc"
+              @click="passEditData(poll)"
+              :disabled="poll.publishedAt !== null"
+              :class="{'is-loading':loaders.edit}"
             >
               Edytuj
-            </div>
+            </button>
           </section>
-          <div
-            class="card-footer-item has-background-warning-light vc"
-            @click="deletePoll(poll.id)"
-          >
-            Usuń
-          </div>
           <section>
-            <div
-              v-if="poll.publishedAt === null"
-              class="card-footer-item has-background-info-light vc"
+            <button
+              class="button card-footer-item is-danger vc"
+              @click="deletePoll(poll.id)"
+              :class="{'is-loading':loaders.delete}"
+            >
+              Usuń
+            </button>
+          </section>
+          <section>
+            <button
+              :disabled="poll.publishedAt !== null"
+              class="button card-footer-item is-info vc"
               @click="publishPoll(poll.id)"
+              :class="{'is-loading':loaders.publish}"
             >
               Publikuj
-            </div>
-            <div
-              v-else
-              class="card-footer-item has-background-light has-text-grey-light vcc"
-            >
-              Publikuj
-            </div>
+            </button>
           </section>
         </footer>
       </div>
@@ -87,7 +76,17 @@ export default {
   props: {
     poll: Object,
     fetchAllHandler: Function,
-    errors: Object
+    errors: Object,
+  },
+  data(){
+    return {
+      loaders: {
+        fillPoll: false,
+        delete: false,
+        edit: false,
+        publish: false
+      }
+    }
   },
   methods: {
     parseDate,
@@ -96,18 +95,22 @@ export default {
     },
     async fillPoll(id){
       try {
+        this.loaders.fillPoll = true;
         const res = await axios.get(`/poll/${id}/link`);
         const { pollId,pollHash } = res.data;
-        await this.$router.push({name: 'pickedPoll', params: {id: pollId, str: pollHash}})
+        await this.$router.push({name: 'pickedPoll', params: {id: pollId, str: pollHash}});
       } catch (e) {
         this.errors.fill = {
           status: true,
           message: e.message
         }
+      } finally {
+        this.loaders.fillPoll = false;
       }
     },
     async deletePoll(id) {
       try {
+        this.loaders.delete = true;
         const response = await axios.delete(`/poll/${id}`);
         if (response.status === 204) {
           await this.fetchAllHandler();
@@ -117,10 +120,13 @@ export default {
           status: true,
           message: e.message
         }
+      } finally {
+        this.loaders.delete = false;
       }
     },
     async publishPoll(id) {
       try {
+        this.loaders.publish = true;
         const response = await axios.post(`/poll/${id}/publish`);
         console.log(response)
         if (response.status === 201) {
@@ -131,18 +137,16 @@ export default {
           status: true,
           message: e.message
         }
+      } finally {
+        this.loaders.publish = false;
       }
     },
-    async getResults(id){
-      try {
-        const res = await axios.get(`/poll/${id}/votes`)
-        console.log(res)
-      } catch {
-
-      }
+    getResults(id,data){
+      this.$store.commit('Polls/passPickedData', data);
+      this.$router.push({name: 'results', params: {id}});
     },
     passEditData(data) {
-      this.$store.commit('Polls/editData', data);
+      this.$store.commit('Polls/passEditData', data);
       this.$router.push('/creator');
     },
   },
@@ -152,7 +156,7 @@ export default {
 <style lang="scss" scoped>
 .vc {
   cursor: pointer;
-
+  height: 100%;
   &:hover {
     color: darkgoldenrod;
   }
@@ -164,6 +168,7 @@ export default {
   }
 }
 .vcc {
+  height: 100%;
   user-select: none;
 }
 .card {
