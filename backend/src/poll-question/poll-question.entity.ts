@@ -19,7 +19,7 @@ export class PollQuestion {
 	})
 	required!: boolean;
 
-	@ManyToOne(_ => Poll, {
+	@ManyToOne(_ => Poll, poll => poll.pollQuestions, {
 		onDelete: 'CASCADE',
 	})
 	poll!: Poll;

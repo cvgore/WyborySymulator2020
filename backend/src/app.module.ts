@@ -49,6 +49,7 @@ type SupportedDatabaseType = Extract<DatabaseType, 'mysql' | 'postgres'>;
 					User, Poll, PollCode, PollVote, PollQuestion, PollOption, PollCustomOption, Receiver, ReceiverGroup, Voter
 				],
 				synchronize: configService.get<boolean>('db.sync'),
+				logging: ["query"],
 			}),
 		}),
 		HcaptchaModule.forRootAsync({

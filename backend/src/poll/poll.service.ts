@@ -46,23 +46,23 @@ export class PollService {
 		});
 	}
 
-	async getVotes(id: number): Promise<PollVote[]> {
-		await this.pollRepository.findOneOrFail({
-			id
-		});
-
-		return await this.pollVoteRepository.find({
-			relations: ['pollOption'],
+	async getVotes(id: number): Promise<any> {
+		const poll = await this.pollRepository.findOneOrFail({
 			where: {
-				pollOption: {
-					pollQuestion: {
-						poll: {
-							id
-						}
-					}
-				}
+				id
 			}
 		});
+
+		return await this.pollVoteRepository.query(
+				'SELECT po."name", COUNT(pv."pollOptionId") AS "votes" ' +
+					'FROM public.poll_vote AS pv ' +
+					'INNER JOIN public.poll_option AS po ON po.id = pv."pollOptionId" ' +
+					'INNER JOIN public.poll_question AS pq ON pq.id = po."pollQuestionId" ' +
+					'INNER JOIN public.poll ON poll.id = pq."pollId" ' +
+					'WHERE poll.id = $1 ' +
+					'GROUP BY po."name"',
+			[id]
+		);
 	}
 
 	async createPoll(data: CreatePollDto): Promise<Poll> {

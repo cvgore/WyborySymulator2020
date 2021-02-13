@@ -101,17 +101,15 @@ export class PollController {
 	@Get(':id/votes')
 	@UseGuards(JwtGuard)
 	async votes(@Param('id') id: number): Promise<any> {
+		const val: Record<string, number> = {};
+
 		const votes = await this.pollService.getVotes(id);
 
-		return votes.map(v => v.pollOption.name).reduce((acc: { [key: string]: number }, val) => {
-			if (typeof acc[val] === 'undefined') {
-				acc[val] = -1;
-			}
+		votes.forEach((x: any) => {
+			val[x.name] = x.votes;
+		});
 
-			acc[val]++;
-
-			return acc;
-		}, {});
+		return val;
 	}
 }
 
